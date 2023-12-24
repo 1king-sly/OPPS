@@ -17,8 +17,8 @@ export default function RootLayout({
 }) {
   return (
     <>
-    <div className='w-screen h-screen flex flex-col '>
-      <div className='w-full bg-gray-100 h-[10vh]'>
+    <div className='w-screen h-screen flex flex-col overflow-hidden gap-1'>
+      <div className='w-full bg-gray-200 shadow-md h-[10vh]'>
         <Header></Header>
       </div>
       <div className='w-full  max-h-full h-full flex flex-row'>
@@ -26,7 +26,7 @@ export default function RootLayout({
           <SideNav></SideNav>
 
         </div>
-        <div className='h-full overflow-y-auto w-full bg-rose-500'>{children}
+        <div className='h-full overflow-y-auto w-full bg-gray-100'>{children}
         </div>
       </div>
    

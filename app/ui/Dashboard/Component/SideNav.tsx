@@ -20,18 +20,20 @@ export default function SideNav() {
   
   return (
     <div className='flex flex-col py-4 gap-3 '>
-      <Link className={clsx(` w-full px-2 py-1 rounded-md `,{'bg-sky-300 ':pathName=== '/ui/Dashboard/{pages}/Dashboard'})} href='/ui/Dashboard/Profile'>Dashboard</Link>
-      <Link className={clsx(` w-full px-2 py-1 rounded-md `,{'bg-sky-300 ':pathName=== '/ui/Dashboard/Projects'})}  href='/'>Projects</Link>
-      <Link className='px-2 py-1' href='#'>
+      <Link className={clsx(` w-full px-2 py-1 rounded-md `,{'bg-sky-300 ':pathName=== '/ui/Dashboard/Dashboard'})} href='/ui/Dashboard/Dashboard'>Dashboard</Link>
+      <Link className={clsx(` w-full px-2 py-1 rounded-md `,{'bg-sky-300 ':pathName=== '/ui/Dashboard/Projects'})}  href='/ui/Dashboard/Projects'>Projects</Link>
+      <div className='px-2 py-1' >
       <label htmlFor="school" onClick={toggleVisibility}>Create</label>
       <div>
-       <select  name='school' id='school' title='school' className={isOpen?'hidden':'block'}>
-        <option className={clsx(` w-full px-2 py-1 rounded-md `,{'bg-sky-300 ':pathName=== '/ui/Dashboard/Create/Sonas'})}  value="">SONAS</option>
-        <option  className={clsx(` w-full px-2 py-1 rounded-md `,{'bg-sky-300 ':pathName=== '/ui/Dashboard/Create/Sass'})} value="">SASS</option>
-       </select>
+       <div id='school'  className={clsx(`flex flex-col ease-in-out`,isOpen?'hidden':'block')}>
+       
+        <Link className={clsx(` w-full px-2 py-1 rounded-md `,{'bg-sky-300 ':pathName=== '/ui/Dashboard/Create/Sonas'})} href="/ui/Dashboard/Create/Sonas"  >
+        SONAS</Link>
+        <Link href='/ui/Dashboard/Create/Sass'  className={clsx(` w-full px-2 py-1 rounded-md `,{'bg-sky-300 ':pathName=== '/ui/Dashboard/Create/Sass'})} >SASS</Link>
+       </div>
       </div>
-      </Link>
-      <Link className={clsx(` w-full px-2 py-1 rounded-md `,{'bg-sky-300 ':pathName=== '/ui/Dashboard/Profile'})}  href='/'>Profile</Link>
+      </div>
+      <Link className={clsx(` w-full px-2 py-1 rounded-md `,{'bg-sky-300 ':pathName=== '/ui/Dashboard/Profile'})}  href='/ui/Dashboard/Profile'>Profile</Link>
       <Link className='px-2 py-1' href='/'>logout</Link>
     </div>
 
