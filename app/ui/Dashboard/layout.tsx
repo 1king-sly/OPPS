@@ -17,14 +17,19 @@ export default function RootLayout({
 }) {
   return (
     <>
-    <div>
+    <div className='w-screen h-screen flex flex-col '>
+      <div className='w-full bg-gray-100 h-[10vh]'>
         <Header></Header>
-    </div>
-    <div className='flex h-screen flex-col md:flex-row md:overflow-hidden mt-20 absolute '>
-        <div className='w-full flex-none md:w-64'>
-            <SideNav></SideNav>
+      </div>
+      <div className='w-full  max-h-full h-full flex flex-row'>
+        <div className='h-full overflow-hidden w-[15vw]   bg-sky-500  flex justify-center' >
+          <SideNav></SideNav>
+
         </div>
-        <div className='flex-grow p-6 md:overflow-y-auto md:p-12 '>{children} </div>
+        <div className='h-full overflow-y-auto w-full bg-rose-500'>{children}
+        </div>
+      </div>
+   
     </div>
     </>
   )
