@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import students from '@/public/images/student1.png'
 import logo from '@/public/images/Mmust logo.png'
-import AuthForm from './ui/AuthForm'
+import AuthForm from '@/app/(ui)/AuthForm'
 
 
 export default function Home() {

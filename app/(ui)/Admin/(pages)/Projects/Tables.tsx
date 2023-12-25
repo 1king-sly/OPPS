@@ -1,5 +1,5 @@
 import React from 'react'
-import Table from '@/app/ui/Admin/Component/Table'
+import Table from '@/app/(ui)/Admin/Component/Table'
 
 export default function Tables() {
   type details={

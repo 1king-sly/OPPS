@@ -2,7 +2,7 @@
 import React,{useState} from 'react'
 import Image from 'next/image'
 import profile from '@/public/images/profile.png'
-import Button from '@/app/ui/Button'
+import Button from '@/app/(ui)/Button'
 
 
 export default function Page() {

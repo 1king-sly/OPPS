@@ -15,16 +15,16 @@ export default function SideNav() {
 
   const links:link[]=[{
     name:'Dashboard',
-    href:'/ui/Admin/Dashboard'
+    href:'/Admin/Dashboard'
   },{
     name:'Projects',
-    href:'/ui/Admin/Projects'
+    href:'/Admin/Projects'
   },{
     name:'Reviewed',
-    href:'/ui/Admin/Reviewed'
+    href:'/Admin/Reviewed'
   },{
     name:'Profile',
-    href:'/ui/Admin/Profile'
+    href:'/Admin/Profile'
   },{
     name:'Logout',
     href:'#'
