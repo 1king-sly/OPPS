@@ -4,7 +4,7 @@ import Table from '@/app/ui/Dashboard/Component/Table'
 export default function Tables() {
   return (
     <>
-    <div className='w-full gap-1 flex flex-col '>
+    <div className='w-full gap-1 flex flex-col pb-6 '>
         <div className='w-full h-16 items-center justify-around flex '>
             <div>Title</div>
             <div>Date</div>

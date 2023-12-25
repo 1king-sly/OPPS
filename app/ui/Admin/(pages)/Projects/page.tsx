@@ -5,9 +5,6 @@ import Projects from '../../Skeleton/Projects'
 export default function page() {
   return (
     <>
-    <div>
-      
-    </div>
     <Tables></Tables>
     {/* use as fallback when rendering */}
     {/* <Projects></Projects> */}

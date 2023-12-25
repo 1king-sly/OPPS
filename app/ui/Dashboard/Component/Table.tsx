@@ -8,9 +8,9 @@ export default function Table({title,date,status}:{title:string,date:string,stat
     <div className='w-full h-16 items-center justify-around flex '>
         <div>{title} </div>
         <div>{date} </div>
-        <div className='
-        px-2 py-2 rounded-lg 
-        '
+        <div className={clsx(`px-2 py-2 rounded-lg w-24 flex justify-center`,{
+          'bg-green-400':status==='Accepted','bg-gray-300':status==='Pending','bg-rose-500':status==='Rejected'
+        })}
         >{status} </div>
 
     </div>
