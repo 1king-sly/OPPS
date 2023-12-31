@@ -34,13 +34,13 @@ const projects:details[]=[{
 
   return (
     <>
-    <div className='w-5/6 gap-1 flex flex-col '>
+    <div className='w-full gap-1 flex flex-col '>
         <div className='w-full h-16 items-center justify-around flex sm:-ml-4 md:-ml-0'>
             <div className='md:-ml-8'>REG. NUMBER</div>
             <div className='md:-ml-8 '>Title</div>
             <div>Date</div>
         </div>
-        <div className='-mt-6 flex flex-col gap-3 px-6'>
+        <div className='-mt-6'>
        
         {projects.map((project)=>{
           return(
