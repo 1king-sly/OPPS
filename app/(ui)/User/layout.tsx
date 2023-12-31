@@ -20,7 +20,7 @@ export default function RootLayout({
       <div className='w-full bg-gray-200 shadow-md h-[10vh]'>
         <Header></Header>
       </div>
-      <div className='w-full  max-h-full h-full flex flex-row'>
+      <div className='w-full justify-center  max-h-full h-full flex flex-row'>
         <div className='h-full overflow-hidden w-[15vw]   bg-sky-500  flex justify-center' >
           <SideNav></SideNav>
 

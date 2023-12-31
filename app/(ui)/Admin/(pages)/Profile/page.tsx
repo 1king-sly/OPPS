@@ -37,7 +37,7 @@ export default function Page() {
                 <input
                   type="file"
                   accept="image/*"
-                  sr-only
+                  sr-only="true"
                   className='hidden'
                   // onChange={handleImageChange}
                 
@@ -50,17 +50,17 @@ export default function Page() {
         <div className=' gap-3 flex flex-col ' >
           <label >
           <p className='text-sm'>Name</p>
-          <input type="text" disabled className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder='Byrone Kinsly' />
+          <input type="text" disabled className='bg-white outline-sky-400 px-2 py-1 rounded-md  ' id='name' autoComplete='false' placeholder='Byrone Kinsly' />
 
           </label>
           <label >
           <p className='text-sm'>Email Address</p>
-          <input type="email" className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder='kinslybyrone17@gmail.com' />
+          <input id='email' type="email" className='bg-white outline-sky-400 px-2 py-1 rounded-md ' autoComplete='false' placeholder='kinslybyrone17@gmail.com' />
 
           </label>
           <label  >
           <p className='text-sm'>Contacts</p>
-          <input type="text" className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder='0720041750' />
+          <input type="text" id='contact' className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder='0720041750' />
 
           </label>
 

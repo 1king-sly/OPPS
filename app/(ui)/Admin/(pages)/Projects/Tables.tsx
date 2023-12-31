@@ -101,7 +101,7 @@ export default function Tables() {
             <div>Title</div>
             <div>Date</div>
         </div>
-        <div className='-mt-6'>
+        <div className='-mt-4 flex flex-col gap-3 px-6'>
         
 
           {projects.map((project)=>{

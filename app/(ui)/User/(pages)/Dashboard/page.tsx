@@ -7,8 +7,12 @@ export default function page() {
   return (
   <>
   <Cards></Cards>
+
+ <div className='w-full flex items-center justify-center mt-4'>
   <Tables></Tables>
-  {/* use as fallback when rendering data */}
+
+  </div> 
+   {/* use as fallback when rendering data */}
   {/* <Dashboard></Dashboard> */}
   </> 
  )
