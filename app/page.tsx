@@ -20,6 +20,8 @@ export default function Home() {
         <Image src={logo} alt='logo' className='w-20 h-20 '></Image>
         <h2>Sign in to your account</h2>
         <div className='mx-auto'>
+
+          
           <AuthForm></AuthForm>
         </div>
 
