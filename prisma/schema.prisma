@@ -30,7 +30,6 @@ model Project {
   projectId      Int      @id @default(autoincrement())
   title          String
   createdAt      DateTime @default(now())
-  body           String
   ans1           String
   ans2           String
   ans3           String
