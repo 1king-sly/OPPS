@@ -16,10 +16,11 @@ export default function AuthForm() {
   const [disabled, setDisabled] = useState(false);
 
   const [formData, setFormData] = useState({
-    FName: '',
-    SName: '',
+    firstName: '',
+    secondName: '',
     email: '',
-    Pword: '',
+    password: '',
+    registrationNumber:'',
   });
 
   const toggleLoading = () => {
@@ -52,7 +53,7 @@ export default function AuthForm() {
     setisLoading(true)
 
     if(variant === 'REGISTER'){
-      axios.post('/app/api/register', formData)
+      axios.post('/api/register', formData)
       .catch(()=>toast.error('Something went wrong'))
       .finally(()=> setisLoading(false))
       .then(()=> signIn('credentials',formData))
@@ -95,24 +96,35 @@ export default function AuthForm() {
             <>
               <Input
                 id='FName'
-                name='FName'
+                name='firstName'
                 label='First Name'
                 type='text'
                 required
                 placeholder='Enter First Name'
                 disabled={disabled}
-                value={formData.FName}
+                value={formData.firstName}
                 onChange={handleChange}
               />
               <Input
                 id='SName'
-                name='SName'
+                name='secondName'
                 label='Second Name'
                 required
                 type='text'
                 placeholder='Enter Second Name'
                 disabled={disabled}
-                value={formData.SName}
+                value={formData.secondName}
+                onChange={handleChange}
+              />
+              <Input
+                id='regNo'
+                name='registrationNumber'
+                label='Registration Number'
+                required
+                type='text'
+                placeholder='Enter Registration Numbe'
+                disabled={disabled}
+                value={formData.registrationNumber}
                 onChange={handleChange}
               />
             </>
@@ -131,12 +143,12 @@ export default function AuthForm() {
           <Input
             required
             id='Pword'
-            name='Pword'
+            name='password'
             label='Password'
             type='password'
             placeholder='Enter Password'
             disabled={disabled}
-            value={formData.Pword}
+            value={formData.password}
             onChange={handleChange}
           />
 
