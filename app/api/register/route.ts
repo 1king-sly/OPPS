@@ -28,7 +28,7 @@ import { NextResponse
                 secondName,
                 hashedPassword,
                 registrationNumber,
-                userType: UserType.ADMIN,             },
+                userType: UserType.STUDENT,             },
         });
         
 
