@@ -7,7 +7,7 @@ import { UserType } from '@prisma/client';
 
 // Define the User type
 type User = {
-  id: string; // Change the type of 'id' to string
+  id: string;
   firstName: string;
   secondName: string;
   hashedPassword: string;
@@ -18,7 +18,7 @@ type User = {
 };
 
 // Define authentication options
-  export const authOptions: AuthOptions = {
+export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
@@ -36,17 +36,24 @@ type User = {
           where: {
             email: credentials.email,
           },
+          select: {
+            id: true,
+            firstName: true,
+            secondName: true,
+            userType: true,
+            hashedPassword: true,
+            registrationNumber: true,
+            createdAt: true,
+            email: true,
+          },
         });
       
         if (!user || !user.hashedPassword) {
           throw new Error('Invalid credentials');
         }
         
-        
         const isCorrectPassword = await bcrypt.compare(credentials.password, user.hashedPassword);
          
-        console.log(isCorrectPassword)
-        
         if (!isCorrectPassword) {
           throw new Error('Password Invalid');
         }
@@ -58,8 +65,7 @@ type User = {
         };
       
         return userWithIdAsString;
-      }
-      ,
+      },
     }),
   ],
   debug: process.env.NODE_ENV === 'development',
@@ -69,3 +75,5 @@ type User = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
+// Export authentication options
+export default authOptions;
