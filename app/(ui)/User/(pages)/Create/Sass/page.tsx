@@ -5,6 +5,7 @@ import logo from '@/public/images/Mmust logo.png';
 import Button from '@/app/(ui)/Button';
 import Question from '../Question';
 import axios from 'axios';
+import { getSession } from 'next-auth/react';
 
 export default function Page() {
   const [formData, setFormData] = useState({
@@ -23,7 +24,19 @@ export default function Page() {
     try {
       console.log('Form Data:', formData);
 
-      const response = await axios.post('/api/createProject', formData);
+      
+      const session = await getSession()
+
+
+      if(!session){
+        console.log('user not authenticated')
+      }
+
+      const response = await axios.post('/api/createProject', formData,{
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      });
 
       console.log('Project created:', response.data);
     } catch (error) {
