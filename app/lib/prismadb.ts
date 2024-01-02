@@ -1,11 +1,20 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
-declare global{
-    var prisma = PrismaClient | undefined;
+declare global {
+  var prisma: PrismaClient;
 }
 
-const client = globalThis.prisma || new PrismaClient()
+let prisma: PrismaClient;
 
-if(process.env.NODE_ENV === 'production') globalThis.prisma=client
+if (process.env.NODE_ENV === 'production') {
+  prisma = global.prisma || new PrismaClient();
+  if (!global.prisma) global.prisma = prisma;
+} else {
+  if (!process.env.DATABASE_URL) {
+    throw new Error('DATABASE_URL environment variable is not set');
+  }
 
-export default client
+  prisma = new PrismaClient();
+}
+
+export default prisma;

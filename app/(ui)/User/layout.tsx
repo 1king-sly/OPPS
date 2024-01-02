@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import SideNav from './Component/SideNav'
 import Header from './Component/Header'
+import getCurrentUser from '@/app/actions/getCurrentUser'
 
 
 
@@ -9,11 +10,15 @@ export const metadata: Metadata = {
   description: 'Dashboard',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+
+  const currentUser =  getCurrentUser
+
+  console.log(currentUser)
   return (
     <>
     <div className='w-screen h-screen flex flex-col overflow-hidden gap-1'>
