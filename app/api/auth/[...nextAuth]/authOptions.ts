@@ -1,25 +1,13 @@
 import bcrypt from 'bcrypt';
-import NextAuth, { AuthOptions } from 'next-auth';
+import NextAuth, {  Awaitable, NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import prisma from '@/app/lib/prismadb';
-import { UserType } from '@prisma/client';
+import client from '@/app/lib/prismadb';
 
-// Define the User type
-type User = {
-  id: string;
-  firstName: string;
-  secondName: string;
-  hashedPassword: string;
-  email: string;
-  registrationNumber: string;
-  userType: UserType;
-  createdAt: Date;
-};
 
-// Define authentication options
-export const authOptions: AuthOptions = {
-  adapter: PrismaAdapter(prisma),
+export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(client),
   providers: [
     CredentialsProvider({
       name: 'credentials',
@@ -27,25 +15,16 @@ export const authOptions: AuthOptions = {
         email: { label: 'email', type: 'text' },
         password: { label: 'password', type: 'password' },
       },
-      async authorize(credentials: Record<'email' | 'password', string> | undefined): Promise<User | null> {
+      async authorize(credentials){
         if (!credentials?.email || !credentials?.password) {
           throw new Error('Invalid credentials');
         }
       
-        const user = await prisma.user.findUnique({
+        const user = await client.user.findUnique({
           where: {
             email: credentials.email,
           },
-          select: {
-            id: true,
-            firstName: true,
-            secondName: true,
-            userType: true,
-            hashedPassword: true,
-            registrationNumber: true,
-            createdAt: true,
-            email: true,
-          },
+         
         });
       
         if (!user || !user.hashedPassword) {
@@ -59,15 +38,40 @@ export const authOptions: AuthOptions = {
         }
       
         // Ensure that the 'id' property is a string
-        const userWithIdAsString: User = {
-          ...user,
-          id: user.id.toString(),
-        };
+        
       
-        return userWithIdAsString;
+        return {
+          id: user.id,
+          firstName :user.firstName,
+          secondName :user.secondName,
+          email :user.email,
+          registrationNumber: user.registrationNumber,
+          userType: user.userType,
+          createdAt: user.createdAt,
+          
+        };
       },
     }),
   ],
+  callbacks:{
+    async jwt ({token,user,account,profile,isNewUser,trigger,session}):Awaitable<jwt>{
+      if(account){
+        return{
+          ...token,
+          firstName:user.firstName
+        }
+      }
+    },
+    async session({session,user,token}){
+      return{
+        ...session,
+        user:{
+          ...session.user,
+          firstName: token.firstName
+        }
+      }
+    }
+  },
   debug: process.env.NODE_ENV === 'development',
   session: {
     strategy: 'jwt',
