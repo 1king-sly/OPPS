@@ -40,11 +40,18 @@ export default function AuthForm() {
   }, []);
 
   const session = useSession()
+  const {data: userType} = useSession()
+
   const router = useRouter()
 
   useEffect(()=>{
     if(session?.status ==='authenticated'){
-      router.push('/User/Dashboard')
+        if(userType?.userType === 'ADMIN'){
+          router.push('/Admin/Dashboard')
+        }else{
+          router.push('/User/Dashboard')
+        }
+        
     }
   })
 

@@ -32,13 +32,18 @@ export default function Page() {
         console.log('user not authenticated')
       }
 
-      const response = await axios.post('/api/createProject', formData,{
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
+      const response = await fetch('/api/createProject',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json'
         },
+        body:JSON.stringify(formData)
       });
 
-      console.log('Project created:', response.data);
+      if(response.ok){
+        console.log(response.formData)
+      }
+
     } catch (error) {
       console.error('Error creating project:', error);
       // Handle error as needed

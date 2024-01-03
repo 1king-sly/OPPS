@@ -4,6 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import prisma from '@/app/lib/prismadb';
 import { UserType } from '@prisma/client';
+import { useState } from 'react';
 
 // Define the User type
 type User = {
@@ -18,7 +19,7 @@ type User = {
 };
 
 // Define authentication options
-export const authOptions: AuthOptions = {
+export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
@@ -65,7 +66,7 @@ export const authOptions: AuthOptions = {
         };
       
         return {
-          id: `{user.id}`,
+          id: `${user.id}`,
           firstName :user.firstName,
           secondName :user.secondName,
           email :user.email,
@@ -80,6 +81,46 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
+  callbacks:{
+
+   async jwt({ token, account, profile,user }) {
+    // Persist the OAuth access_token and or the user id to the token right after signin
+    if (user) {
+      return{
+        ...token,
+        firstName: user.firstName,
+        secondName:user.secondName,
+        email: user.email,
+        userType:user.userType,
+        registrationNumber:user.registrationNumber,
+      }
+    }
+    
+
+
+    return token
+  },
+    
+  async session({ session, user, token }) {
+
+    
+
+    console.log("Token Data", token.secondName)
+
+    console.log('Session', session)
+    return{
+      ...session,
+      firstName:token.firstName,
+      secondName:token.secondName,
+      email:token.email,
+      userType:token.userType,
+      registrationNumber:token.registrationNumber,
+
+    }
+    },
+  
+},
+
   debug: process.env.NODE_ENV === 'development',
   session: {
     strategy: 'jwt',
