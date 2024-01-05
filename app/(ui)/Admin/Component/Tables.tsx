@@ -9,30 +9,38 @@ export default async function Tables() {
   const session = await getServerSession(authOptions);
   console.log(session);
 
+  if(!session){
+    return null
+  }
+
+  
   const datas = await fetchAdminDashboardProjects(session?.id);
 
   return (
     <>
-      <div className='w-full gap-1 flex flex-col'>
-        <div className='w-full h-16 items-center justify-around flex '>
-          <div>Title</div>
-          <div>Date</div>
-          <div>Reg No</div>
-        </div>
-        <div className='-mt-6'>
-          {datas?.map((data) => (
+      <table className='w-full '>
+        <thead>
+          <tr>
+            <th>TITLE</th>
+            <th>DATE</th>
+            <th>REGISTRATION NUMBER</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        {datas?.map((data) => (
+          
             <Link href={`/Projects/${data.projectId}`} key={data.projectId}>
               <Table
-              key={data.projectId}
               title={data.title}
               date={data.createdAt.toLocaleDateString()}
-              regNumber={data.school}
+              regNumber={'{data?.userId}'}
             />
-            </Link>
-            
+            </Link>  
           ))}
-        </div>
-      </div>
+         
+        </tbody>
+      </table>
     </>
   );
 }
