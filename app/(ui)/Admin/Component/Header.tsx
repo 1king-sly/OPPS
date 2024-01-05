@@ -13,13 +13,6 @@ export default async  function Header() {
   if(!data){
     return null
   }
-  const firstName = data?.firstName 
-
-  
-
- 
-
- 
   return (
     <div className='w-full h-full flex items-center justify-around px-1 sm:px-4 lg:px-8 '>
       <div className='sm:w-1/4  flex justify-start   '>
@@ -28,7 +21,7 @@ export default async  function Header() {
       <div className='flex-1 flex justify-center   md:text-lg lg:text-xl text-sky-400 text-sm'>
         ONLINE PROJECT PROPOSAL SYSTEM
       </div>
-      <div className='w-1/4 flex justify-end'><span className='text-sky-400'> {firstName} </span> </div>
+      <div className='w-1/4 flex justify-end'><span className='text-sky-400'> {data?.firstName } </span> </div>
     </div>
   )
 }

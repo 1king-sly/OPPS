@@ -19,10 +19,12 @@ datasource db {
    firstName           String
    secondName           String
    hashedPassword String
+   image           String
    email          String    @unique
    registrationNumber String @unique
    userType       UserType
    createdAt      DateTime @default(now())
+   updatedAt      DateTime @default(now())
    projects       Project[]
  }
 
@@ -34,6 +36,7 @@ model Project {
   ans2           String
   ans3           String
   ans4           String
+  comment        String
   school         School
   status         ProjectStatus @default(PENDING)
   userId         Int
@@ -47,6 +50,7 @@ model Project {
  enum UserType {
    ADMIN
    STUDENT
+   SUPERADMIN
  }
  enum School {
    SONAS

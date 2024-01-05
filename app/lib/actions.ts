@@ -18,7 +18,6 @@ export const addProject = async (formData) => {
         console.log('Email missing')
     }
 
-    console.log(email)
     const user = await prisma.user.findUnique({
       where: {
         email: email,
@@ -61,7 +60,6 @@ export const addProject = async (formData) => {
 export const fetchUserDashboardProjects = async (userId) => {
   'use server';
 
-  console.log('User Id', userId)
 
   try{
 
@@ -75,7 +73,6 @@ export const fetchUserDashboardProjects = async (userId) => {
     });
 
 
-    console.log(user, "User");
 
     if (user) {
 
@@ -101,7 +98,6 @@ export const fetchUserDashboardProjects = async (userId) => {
 export const fetchUserProjects = async (userId) => {
   'use server';
 
-  console.log('User Id', userId)
 
   try{
 
@@ -115,7 +111,6 @@ export const fetchUserProjects = async (userId) => {
     });
 
 
-    console.log(user, "User");
 
     if (user) {
 
@@ -126,7 +121,6 @@ export const fetchUserProjects = async (userId) => {
         },
        }
       )
-      console.log('User Projects', projects)
       return projects
     }
 
@@ -156,18 +150,292 @@ export const fetchAllAdminProjects = async (userId) => {
 
     if (user) {
 
-      const projects = await prisma.project.findMany()
+      const projects = await prisma.project.findMany(
+        {where:{
+          status:ProjectStatus.PENDING
+         }
+         }
+      )
       return projects
     }
 
   }catch(error){
-    console.log("Error fetching All Projects",error)
+    console.error("Error fetching All Projects",error)
   }
 
   
 };
 
 
+export const fetchAllAdminReviewedProjects = async (userId) => {
+  'use server';
+
+
+  try{
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: parseInt(userId),
+      },
+      select: {
+        id: true,
+      },
+    });
+
+
+
+    if (user) {
+
+      const projects = await prisma.project.findMany(
+        {where:{
+          status:ProjectStatus.ACCEPTED || ProjectStatus.REJECTED
+         }
+         }
+      )
+      return projects
+    }
+
+  }catch(error){
+    console.error("Error fetching All Projects",error)
+  }
+
+  
+};
+export const countAllProjects = async (userId) => {
+  'use server';
+
+
+  try{
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: parseInt(userId),
+      },
+      select: {
+        id: true,
+      },
+    });
+
+
+
+    if (user) {
+
+      const projects = await prisma.project.count({
+        where:{
+          status:ProjectStatus.ACCEPTED || ProjectStatus.REJECTED || ProjectStatus.PENDING
+        }
+      })
+      return projects
+    }
+
+  }catch(error){
+    console.error("Error fetching All Projects",error)
+  }
+
+  
+};
+export const countReviewedProjects = async (userId) => {
+  'use server';
+
+
+  try{
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: parseInt(userId),
+      },
+      select: {
+        id: true,
+      },
+    });
+
+
+
+    if (user) {
+
+      const projects = await prisma.project.count({
+        where:{
+          status:ProjectStatus.ACCEPTED || ProjectStatus.REJECTED 
+        }
+      })
+      return projects
+    }
+
+  }catch(error){
+    console.error("Error fetching All Projects",error)
+  }
+
+  
+};
+export const countPendingProjects = async (userId) => {
+  'use server';
+
+
+  try{
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: parseInt(userId),
+      },
+      select: {
+        id: true,
+      },
+    });
+
+
+
+    if (user) {
+
+      const projects = await prisma.project.count({
+        where:{
+          status:ProjectStatus.PENDING
+        }
+      })
+      return projects
+    }
+
+  }catch(error){
+    console.error("Error fetching All Projects",error)
+  }
+
+  
+};
+export const countUserPendingProjects = async (userId) => {
+  'use server';
+
+
+  try{
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: parseInt(userId),
+      },
+      select: {
+        id: true,
+      },
+    });
+
+
+
+    if (user) {
+
+      const projects = await prisma.project.count({
+        where:{
+          userId:userId,
+          status:ProjectStatus.PENDING
+        }
+      })
+      return projects
+    }
+
+  }catch(error){
+    console.error("Error fetching All Projects",error)
+  }
+
+  
+};
+export const countUserTotalProjects = async (userId) => {
+  'use server';
+
+
+  try{
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: parseInt(userId),
+      },
+      select: {
+        id: true,
+      },
+    });
+
+
+
+    if (user) {
+
+      const projects = await prisma.project.count({
+        where:{
+          userId:userId,
+          status:ProjectStatus.PENDING || ProjectStatus.ACCEPTED || ProjectStatus.REJECTED
+        }
+      })
+      return projects
+    }
+
+  }catch(error){
+    console.error("Error fetching All Projects",error)
+  }
+
+  
+};
+export const countUserAcceptedProjects = async (userId) => {
+  'use server';
+
+
+  try{
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: parseInt(userId),
+      },
+      select: {
+        id: true,
+      },
+    });
+
+
+
+    if (user) {
+
+      const projects = await prisma.project.count({
+        where:{
+          userId:userId,
+          status:ProjectStatus.ACCEPTED
+        }
+      })
+      return projects
+    }
+
+  }catch(error){
+    console.error("Error fetching All Projects",error)
+  }
+
+  
+};
+export const countUserRejectedProjects = async (userId) => {
+  'use server';
+
+
+  try{
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: parseInt(userId),
+      },
+      select: {
+        id: true,
+      },
+    });
+
+
+
+    if (user) {
+
+      const projects = await prisma.project.count({
+        where:{
+          userId:userId,
+          status:ProjectStatus.REJECTED
+        }
+      })
+      return projects
+    }
+
+  }catch(error){
+    console.error("Error fetching All Projects",error)
+  }
+
+  
+};
 
 export const fetchAdminDashboardProjects = async (userId) => {
   'use server';
@@ -187,7 +455,6 @@ export const fetchAdminDashboardProjects = async (userId) => {
     });
 
 
-    console.log(user, "User");
 
     if (user) {
 
@@ -198,12 +465,11 @@ export const fetchAdminDashboardProjects = async (userId) => {
         take: 5,
        }
       )
-      console.log('User Projects', projects)
       return projects
     }
 
   }catch(error){
-    console.log("Error fetching Dashboard User Projects",error)
+    console.error("Error fetching Dashboard User Projects",error)
   }
 
   
@@ -239,6 +505,7 @@ export const fetchSingleProject = async (userId,projectId) => {
           ans2:true,
           ans3:true,
           ans4:true,
+          comment:true,
           status:true,
           school:true,
           userId:true,
@@ -248,7 +515,7 @@ export const fetchSingleProject = async (userId,projectId) => {
     }
 
   }catch(error){
-    console.log("Error fetching Project",error)
+    console.error("Error fetching Project",error)
   }
 
   
@@ -286,7 +553,7 @@ export const acceptProject = async (formData) => {
     }
 
   }catch(error){
-    console.log("Error Accepting Project",error)
+    console.error("Error Accepting Project",error)
   }
 
   
@@ -328,7 +595,7 @@ export const rejectProject = async (formData) => {
     }
 
   }catch(error){
-    console.log("Error Rejecting Project",error)
+    console.error("Error Rejecting Project",error)
   }
 
   
@@ -368,7 +635,7 @@ export const updateUser = async (formData) => {
     }
 
   }catch(error){
-    console.log("Error Rejecting Project",error)
+    console.log("Error Updating User",error)
   }
 
   

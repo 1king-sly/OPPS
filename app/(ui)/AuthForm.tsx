@@ -27,11 +27,9 @@ export default function AuthForm() {
     if (loading === false) {
       setisLoading(true);
       setDisabled(true);
-      console.log(disabled);
     } else {
       setisLoading(false);
       setDisabled(false);
-      console.log(disabled);
     }
   };
 
@@ -44,9 +42,10 @@ export default function AuthForm() {
 
   const router = useRouter()
 
+
   useEffect(()=>{
     if(session?.status ==='authenticated'){
-        if(userType?.userType === 'ADMIN'){
+        if(session.data.userType === 'ADMIN'){
           router.push('/Admin/Dashboard')
         }else{
           router.push('/User/Dashboard')
@@ -79,9 +78,7 @@ export default function AuthForm() {
       .finally(()=> setisLoading(false))
     }
   
-    console.log('Before Form Data Log');
-    console.log('Form Data:', formData);
-    console.log('After Form Data Log');
+   
 
     
   };

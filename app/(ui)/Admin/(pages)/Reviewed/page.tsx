@@ -1,17 +1,58 @@
-import React from 'react'
+import React from 'react';
+import { getServerSession } from 'next-auth';
+import authOptions from '@/utils/authUptions';
+import { fetchAllAdminReviewedProjects } from '@/app/lib/actions';
+import Link from 'next/link';
+import Table from '../../Component/Table';
 
-export default function page() {
+export default async  function Page() {
+  const session = await getServerSession(authOptions);
+
+  const datas = await fetchAllAdminReviewedProjects(session?.id);
+
+  
+
+  if(!datas){
+    return null
+  }
+
   return (
     <>
-    <div className='w-full h-full flex justify-center mt-3'>
-        <div className='w-1/3 h-12  flex gap-2 items-center justify-center text-gray-700 '>
-            <div className='cursor-pointer  ' >SOCIAL SCIENCES</div>
-            <div className='h-2/5 w-[1px] bg-sky-300 '></div>
-            <div>APPLIED SCIENCES</div>
-        </div>
-        <div></div>
+    <div className=' p-10  '>
+    <table className=' w-full'>
+        <thead className='  '>
+          <tr className=' flex justify-around w-full'>
+            <th className='' >TITLE</th>
+            <th className=' ml-48'>DATE</th>
+            <th className=''>REGISTRATION NUMBER</th>
+          </tr>
+        </thead>
+
+        <tbody className='  flex-col mt-4 gap-3 flex'>
+
+          {datas?.map((data)=>(
+
+            
+            <Link href={`/Admin/Projects/${data.projectId}`} key={data.projectId}>
+
+            <tr className='justify-around w-full flex bg-gray-100 py-2 '>
+                  <td className=''>{data.title}  </td>
+                  <td >{data.createdAt.toLocaleDateString()} </td>
+                  <td >{data.school} </td>
+                </tr>
+            </Link>
+          ))}
+          
+          
+           
+         
+          
+            
+         
+        </tbody>
+      </table>
     </div>
-    
+      
     </>
-  )
+  );
 }

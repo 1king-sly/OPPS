@@ -13,6 +13,8 @@ type User = {
   registrationNumber: string;
   userType: UserType;
   createdAt: Date;
+  updatedAt:Date;
+  image:string;
 };
 
 export const authOptions = {
@@ -41,7 +43,9 @@ export const authOptions = {
             hashedPassword: true,
             registrationNumber: true,
             createdAt: true,
+            updatedAt: true,
             email: true,
+            image:true,
           },
         });
       
@@ -65,7 +69,9 @@ export const authOptions = {
           registrationNumber: user.registrationNumber,
           userType: user.userType,
           createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
           hashedPassword: user.hashedPassword,
+          image:user.image
 
           
           
@@ -86,6 +92,9 @@ export const authOptions = {
         email: user.email,
         userType:user.userType,
         registrationNumber:user.registrationNumber,
+        createdAt:user.createdAt,
+        updatedAt:user.updatedAt,
+        image:user.image,
       }
     }
     
@@ -107,6 +116,9 @@ export const authOptions = {
       email:token.email,
       userType:token.userType,
       registrationNumber:token.registrationNumber,
+      createdAt:token.createdAt,
+      updatedAt:token.updatedAt,
+      image:token.image,
 
     }
     },

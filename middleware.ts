@@ -10,6 +10,5 @@ export const config ={
     matcher:[
         '/Admin/:path*',
         '/User/:path*',
-        '/api/createProject',
     ]
 }
