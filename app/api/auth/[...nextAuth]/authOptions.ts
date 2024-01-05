@@ -5,7 +5,6 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import prisma from '@/app/lib/prismadb';
 import { UserType } from '@prisma/client';
 
-// Define the User type
 type User = {
   id: string;
   firstName: string;
@@ -17,7 +16,6 @@ type User = {
   createdAt: Date;
 };
 
-// Define authentication options
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -58,7 +56,6 @@ export const authOptions: AuthOptions = {
           throw new Error('Password Invalid');
         }
       
-        // Ensure that the 'id' property is a string
         const userWithIdAsString: User = {
           ...user,
           id: user.id.toString(),
@@ -87,5 +84,4 @@ export const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-// Export authentication options
 export default authOptions;

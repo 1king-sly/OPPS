@@ -1,18 +1,25 @@
-'use client'
 import React from 'react'
 import Image from 'next/image'
 import logo from '@/public/images/Mmust logo.png'
-import { useSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
+import authOptions from '@/utils/authUptions'
+import { getServerSession } from 'next-auth'
 
-export default function Header() {
+export default async  function Header() {
 
-  const {data: session} = useSession()
 
-  let email, firstName, secondName, userType;
+  const data = await getServerSession(authOptions)
 
-  if(session){
-    const {email,firstName,secondName,userType} = session.user
+  if(!data){
+    return null
   }
+  const firstName = data?.firstName 
+
+  
+
+ 
+
+ 
   return (
     <div className='w-full h-full flex items-center justify-around px-1 sm:px-4 lg:px-8 '>
       <div className='sm:w-1/4  flex justify-start   '>
@@ -21,7 +28,7 @@ export default function Header() {
       <div className='flex-1 flex justify-center   md:text-lg lg:text-xl text-sky-400 text-sm'>
         ONLINE PROJECT PROPOSAL SYSTEM
       </div>
-      <div className='w-1/4 flex justify-end'><span className='text-sky-400'> {email} </span> </div>
+      <div className='w-1/4 flex justify-end'><span className='text-sky-400'> {firstName} </span> </div>
     </div>
   )
 }

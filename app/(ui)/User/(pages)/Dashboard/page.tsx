@@ -8,8 +8,7 @@ export default function page() {
   <>
   <Cards></Cards>
   <Tables></Tables>
-  {/* use as fallback when rendering data */}
-  {/* <Dashboard></Dashboard> */}
+  
   </> 
  )
 }

@@ -6,8 +6,7 @@ export default function page() {
   return (
     <>
     <Tables></Tables>
-    {/* use as fallback when rendering */}
-    {/* <Projects></Projects> */}
+    
     </>
   )
 }

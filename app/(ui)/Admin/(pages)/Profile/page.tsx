@@ -7,23 +7,7 @@ import Button from '@/app/(ui)/Button'
 
 export default function Page() {
 
-  // const [selectedImage, setSelectedImage] = useState(null);
-  // const [imagePreview, setImagePreview] = useState(null);
 
-  // const handleImageChange = (event) => {
-  //   const file = event.target.files[0];
-  
-  //   if (file) {
-  //     const reader = new FileReader();
-  
-  //     reader.onloadend = () => {
-  //       setSelectedImage(reader.result);
-  //       setImagePreview(reader.result);
-  //     };
-  
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
   return (
     <>
     <div className='w-full h-full flex items-center justify-center '>

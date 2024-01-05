@@ -6,6 +6,7 @@ interface QuestionProps {
   max: number;
   id: string;
   number: string;
+  name:string;
   value?:string,
   onChange?:((event:any)=>void)
   
@@ -18,7 +19,8 @@ export default function Question({
   id,
   number,
   value,
-  onChange
+  onChange,
+  name,
 }: QuestionProps) {
  
 
@@ -33,13 +35,13 @@ export default function Question({
       </div>
       <div>
         <textarea
-          name={id}
           id={id}
           maxLength={max}
           title={id}
           className='resize-none h-60 w-full px-2 py-2 outline-sky-200 mt-3'
           value={value}
           onChange={onChange}
+          name={name}
         ></textarea>
       </div>
     </>

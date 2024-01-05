@@ -34,6 +34,7 @@ model Project {
   ans2           String
   ans3           String
   ans4           String
+  school         School
   status         ProjectStatus @default(PENDING)
   userId         Int
   user           User      @relation(fields: [userId], references: [id])
@@ -46,6 +47,10 @@ model Project {
  enum UserType {
    ADMIN
    STUDENT
+ }
+ enum School {
+   SONAS
+   SASS
  }
 
  enum ProjectStatus {

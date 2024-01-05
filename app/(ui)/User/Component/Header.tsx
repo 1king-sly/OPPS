@@ -1,21 +1,25 @@
-import React from 'react';
-import Image from 'next/image';
-import logo from '@/public/images/Mmust logo.png';
-import { useSession } from 'next-auth/react';
-import authOptions from '@/utils/authUptions';
+import React from 'react'
+import Image from 'next/image'
+import logo from '@/public/images/Mmust logo.png'
+import { getSession, useSession } from 'next-auth/react'
+import authOptions from '@/utils/authUptions'
+import { getServerSession } from 'next-auth'
 
-export default function Header() {
-  const { data: session } = useSession({ ...authOptions });
-//go to next-auth.d.ts incase this doesnt work
-  let email, firstName, secondName, userType;
+export default async  function Header() {
 
-  if (session) {
-    secondName = session.secondName;
-    email = session.email;
-    firstName = session.firstName;
-    userType = session.userType;
+
+  const data = await getServerSession(authOptions)
+
+  if(!data){
+    return null
   }
+  const firstName = data?.firstName 
 
+  
+
+ 
+
+ 
   return (
     <div className='w-full h-full flex items-center justify-around px-1 sm:px-4 lg:px-8 '>
       <div className='sm:w-1/4  flex justify-start   '>
@@ -24,9 +28,7 @@ export default function Header() {
       <div className='flex-1 flex justify-center   md:text-lg lg:text-xl text-sky-400 text-sm'>
         ONLINE PROJECT PROPOSAL SYSTEM
       </div>
-      <div className='w-1/4 flex justify-end'>
-        <span className='text-sky-400'> {firstName} </span>
-      </div>
+      <div className='w-1/4 flex justify-end'><span className='text-sky-400'> {firstName} </span> </div>
     </div>
-  );
+  )
 }

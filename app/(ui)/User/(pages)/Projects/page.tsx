@@ -9,8 +9,7 @@ export default function page() {
       
     </div>
     <Tables></Tables>
-    {/* use as fallback when rendering */}
-    {/* <Projects></Projects> */}
+   
     </>
   )
 }
