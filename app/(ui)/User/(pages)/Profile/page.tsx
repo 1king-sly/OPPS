@@ -13,12 +13,13 @@ export default async function Page() {
     return null
   }
 
+
   return (
     <>
     <div className='w-full h-full flex items-center justify-center '>
       <div className='shadow-lg rounded-md flex flex-col w-96 h-96  items-center justify-center'>
         <div className=' h-24 flex items-center justify-center  gap-4 px-2'>
-          <Image className='h-20 w-20 rounded-full shadow-md' src={user.user.image || profile} alt='profile'></Image>
+          <Image className='h-20 w-20 rounded-full shadow-md' src={ profile} alt='profile'></Image>
 
           <Button>
           <label className=" ">
@@ -26,7 +27,6 @@ export default async function Page() {
                 <input
                   type="file"
                   accept="image/*"
-                  sr-only
                   className='hidden'
                   
                 
@@ -38,13 +38,15 @@ export default async function Page() {
 
         <div className=' gap-3 flex flex-col ' >
           <label >
-          <p className='text-sm'>{'$user?.firstName' + '$user?.secondName'} </p>
-          <input type="text" disabled className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder='Byrone Kinsly' />
+          <input type="text" disabled className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={user?.firstName + " " + user?.secondName} />
 
           </label>
           <label >
-          <p className='text-sm'>{user?.email} </p>
-          <input type="email" className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder='kinslybyrone17@gmail.com' />
+          <input type="email" className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={user?.email}/>
+
+          </label>
+          <label >
+          <input type="text" className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={user?.registrationNumber}/>
 
           </label>
         </div>
