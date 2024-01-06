@@ -21,6 +21,31 @@ export default async function Page({params}) {
       notFound()
     }
 
+    const handleSubmit = async (event) => {
+      // 'use server'
+      event.preventDefault();
+  
+      // Get form data
+      console.log(event)
+      const { comment, status } = event.target.elements;
+  
+      // try {
+      //   // Call appropriate server action based on status
+      //   if (status.value === 'REJECT') {
+      //     await rejectProject(event); // Assuming rejectProject accepts a comment
+      //   } else {
+      //     await acceptProject(event); // Assuming acceptProject accepts a comment
+      //   }
+  
+      //   // Handle success (e.g., redirect or display a success message)
+      //   console.log('Project status updated successfully!');
+  
+      // } catch (error) {
+      //   // Handle errors (e.g., display an error message)
+      //   console.error('Error updating project status:', error);
+      // }
+    };
+
     
  
   return (
@@ -35,17 +60,17 @@ export default async function Page({params}) {
           <div>
             { project?.status === 'PENDING'?(
                 <>
-              <form action="">
-              <p>Add a comment (Optional)</p>
-              <textarea name="comment" id="comment" placeholder='Add a comment' className='w-full outline-sky-300 resize-none p-2 h-48 text-gray-900'></textarea>
+              <form onSubmit={handleSubmit}>
+              {/* <p>Add a comment (Optional)</p>
+              <textarea name="comment" id="comment" placeholder='Add a comment' className='w-full outline-sky-300 resize-none p-2 h-48 text-gray-900'></textarea> */}
               <div className='w-full justify-around flex mt-2'>
 
-              <input type="text" name='userId' title='userId' className='hidden'  />
-              <input type="text" name='status' title='status' className='hidden' value={'REJECT'} />
-              <input type="text" name='projectId' title='projectId' className='hidden'  />
+              <input type="text" name='userId' title='userId' className='hidden' value={userId}  />
+              
+              <input type="text" name='projectId' title='projectId' value={projectId} className='hidden'  />
 
-              <button type='submit' name='Reject' className='p-3 bg-rose-500  rounded-md '>Reject</button>
-              <button type='submit' name='Accept' className='p-3 bg-green-500 rounded-md '>Accept</button>
+              <button type='submit' name='status' value='REJECT' className='p-3 bg-rose-500  rounded-md '>Reject</button>
+              <button type='submit' name='status' value='ACCEPT' className='p-3 bg-green-500 rounded-md '>Accept</button>
 
               </div>
 

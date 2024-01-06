@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import Image from 'next/image'
 import profile from '@/public/images/profile.png'
@@ -5,18 +6,18 @@ import Button from '@/app/(ui)/Button'
 import { getServerSession } from 'next-auth'
 import authOptions from '@/utils/authUptions'
 import { fetchUser } from '@/app/lib/actions'
+import { useSession } from 'next-auth/react'
 
 
-export default async function Page() {
+export default   function Page() {
  
-  const session = await getServerSession(authOptions)
+  const session = useSession()
   if(!session){
     return null
   }
-  const userId = session?.id
 
-  const user =await fetchUser(userId)
-
+  
+ 
 
   return (
     <>
@@ -42,15 +43,15 @@ export default async function Page() {
 
         <div className=' gap-3 flex flex-col ' >
           <label >
-          <input type="text" disabled className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={user?.firstName + " " + user?.secondName} />
+          <input type="text" disabled className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={session.data?.firstName + " " + session.data?.secondName} />
 
           </label>
           <label >
-          <input type="email" className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={user?.email}/>
+          <input type="email" className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={session.data?.email}/>
 
           </label>
           <label >
-          <input type="text" className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={user?.userType}/>
+          <input type="text" className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={session.data?.userType}/>
 
           </label>
         </div>
