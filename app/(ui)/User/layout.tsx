@@ -1,4 +1,3 @@
-'use client'
 import React, { useEffect } from 'react';
 import SideNav from './Component/SideNav';
 import Header from './Component/Header';

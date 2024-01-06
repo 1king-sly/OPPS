@@ -1,3 +1,4 @@
+'use server'
 import React from 'react';
 import Table from './Table';
 import { getServerSession } from 'next-auth';

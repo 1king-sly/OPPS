@@ -19,7 +19,6 @@ datasource db {
    firstName           String
    secondName           String
    hashedPassword String
-   image           String
    email          String    @unique
    registrationNumber String @unique
    userType       UserType
@@ -36,7 +35,6 @@ model Project {
   ans2           String
   ans3           String
   ans4           String
-  comment        String
   school         School
   status         ProjectStatus @default(PENDING)
   userId         Int
