@@ -2,6 +2,7 @@ import { Prisma, ProjectStatus, School } from "@prisma/client";
 import prisma from '@/app/lib/prismadb';
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import router from "next/navigation";
 
 
 export const addProject = async (formData) => {
@@ -188,7 +189,9 @@ export const fetchAllAdminReviewedProjects = async (userId) => {
 
       const projects = await prisma.project.findMany(
         {where:{
-          status:ProjectStatus.ACCEPTED || ProjectStatus.REJECTED
+          status: {
+            in: [ProjectStatus.ACCEPTED, ProjectStatus.REJECTED],
+          },
          }
          }
       )
@@ -524,8 +527,10 @@ export const fetchSingleProject = async (userId,projectId) => {
 
   
 };
-export const acceptProject = async (formData) => {
+
+export const updateProject = async (formData) => {
   'use server';
+    console.log(formData)
     const {userId,status,projectId} = Object.fromEntries(formData)
 
   try{
@@ -543,63 +548,32 @@ export const acceptProject = async (formData) => {
 
     if (user) {
 
-      const project = await prisma.project.update({
-        where:{
-          projectId:projectId,
-          status:ProjectStatus.PENDING,
-        },
-        data:{
-          status:status
-        }
-      })
-      revalidatePath('/Admin/Dashboard')
-      return project
-    }
 
-  }catch(error){
-    console.error("Error Accepting Project",error)
-  }
-
-  
-};
-export const rejectProject = async (formData) => {
-  'use server';
-    const {userId,status,projectId} = Object.fromEntries(formData)
-
-  try{
-
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId),
-      },
-      select: {
-        id: true,
-      },
-    });
-
-
-
-    if (user) {
+      
 
       const project = await prisma.project.update({
         where:{
-          projectId:projectId,
+          projectId:parseInt(projectId),
           status:ProjectStatus.PENDING,
 
         },
         data:{
-          status:status
+          status:ProjectStatus[status]
         }
       })
       revalidatePath('/Admin/Dashboard')
       revalidatePath('/Admin/Projects')
       revalidatePath('/User/Dashboard')
       revalidatePath('/User/Projects')
+      revalidatePath('/Admin/Reviewed')
+
+      console.log("New Project", project)
       return project
     }
 
+
   }catch(error){
-    console.error("Error Rejecting Project",error)
+    console.error("Error Updating Project",error)
   }
 
   
