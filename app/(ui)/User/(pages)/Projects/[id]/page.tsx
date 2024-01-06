@@ -12,7 +12,8 @@ export default async function Page({params}) {
         return null
     }
     const userId = session?.id
-    const project = await fetchSingleProject(userId,params)
+    const projectId = params.id
+    const project = await fetchSingleProject(userId,projectId)
 
     if(!project){
       notFound()

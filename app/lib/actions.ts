@@ -644,6 +644,36 @@ export const updateUser = async (formData) => {
 
   
 };
+export const fetchUser = async (userId) => {
+  'use server';
+    
+
+  try{
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: parseInt(userId),
+      },
+      select: {
+        id: true,
+        email:true,
+        userType:true,
+        firstName:true,
+        secondName:true,
+        registrationNumber:true,
+      },
+    });
+
+
+
+    return user;
+
+  }catch(error){
+    console.log("Error Fetching User",error)
+  }
+
+  
+};
 
 
 

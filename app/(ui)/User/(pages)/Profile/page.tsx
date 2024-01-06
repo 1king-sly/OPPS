@@ -4,14 +4,18 @@ import profile from '@/public/images/profile.png'
 import Button from '@/app/(ui)/Button'
 import { getServerSession } from 'next-auth'
 import authOptions from '@/utils/authUptions'
+import { fetchUser } from '@/app/lib/actions'
 
 
 export default async function Page() {
  
-  const user = await getServerSession(authOptions)
-  if(!user){
+  const session = await getServerSession(authOptions)
+  if(!session){
     return null
   }
+  const userId = session?.id
+
+  const user =await fetchUser(userId)
 
 
   return (
@@ -56,9 +60,8 @@ export default async function Page() {
         </Button>
         </div>
        
-
         
-
+        
 
 
       </div>

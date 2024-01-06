@@ -32,7 +32,7 @@ export default async function Tables() {
             <tr className='justify-around w-full flex bg-gray-100 py-2 '>
                   <td className=''>{data.title}  </td>
                   <td >{data.createdAt.toLocaleDateString()} </td>
-                  <td >{data.school} </td>
+                  <td >{data.status} </td>
                 </tr>
             </Link>
 
