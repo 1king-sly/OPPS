@@ -6,7 +6,7 @@ import { fetchAllAdminProjects, fetchUser } from '@/app/lib/actions';
 import Link from 'next/link';
 import Search from '@/app/(ui)/User/Component/Search';
 
-export default async  function Tables({searchParams}) {
+export default async  function Tables({searchParams}:{searchParams:string}) {
 
   const q = searchParams?.query || ''
 

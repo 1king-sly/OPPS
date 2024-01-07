@@ -5,6 +5,8 @@ import authOptions from '@/utils/authUptions';
 import { fetchUser, fetchUserProjects } from '@/app/lib/actions';
 import Link from 'next/link';
 import Table from '@/app/(ui)/User/Component/Table';
+import { CheckIcon, ClockIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+
 
 export default async function Tables() {
   const session = await getServerSession()
@@ -38,7 +40,32 @@ export default async function Tables() {
             <tr className='justify-around w-full flex bg-gray-100 py-2 '>
                   <td className=''>{data.title}  </td>
                   <td >{data.createdAt.toLocaleDateString()} </td>
-                  <td >{data.status} </td>
+                  <td >
+                      {data.status === 'PENDING' ?(
+                        <>
+                        <div className='w-full flex gap-0.5 bg-gray-300 p-2 rounded-md '>
+                      <ClockIcon className="ml-1 w-4 text-gray-500" />
+                          PENDING
+                           </div>
+                        </>
+                      ): null}
+                      {data.status === 'ACCEPTED' ?(
+                        <>
+                        <div className='w-full flex gap-0.5 bg-green-300 p-2 rounded-md '>
+                      <CheckIcon className="ml-1 w-4 text-gray-500" />
+                      ACCEPTED
+                           </div>
+                        </>
+                      ): null}
+                      {data.status === 'REJECTED' ?(
+                        <>
+                        <div className='w-full flex gap-0.5 bg-rose-500 p-2 rounded-md '>
+                      <ExclamationTriangleIcon className="ml-1 w-4 text-gray-500" />
+                      REJECTED
+                           </div>
+                        </>
+                      ): null}
+                  </td>
                 </tr>
             </Link>
 
