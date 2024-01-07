@@ -7,7 +7,7 @@ import {  fetchSingleProject,  fetchUser,  updateProject } from '@/app/lib/actio
 import { notFound } from 'next/navigation';
 import NotFound from './not-found';
 
-export default async function Page({params}) {
+export default async function Page({params}:{params:string}) {
 
   const session = await getServerSession()
   if(!session){
