@@ -54,7 +54,7 @@ export default function AuthForm() {
     }
   })
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setisLoading(true)
 
@@ -83,7 +83,7 @@ export default function AuthForm() {
     
   };
   
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData({
       ...formData,
