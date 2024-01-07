@@ -2,8 +2,8 @@
 import React from 'react';
 import { getServerSession } from 'next-auth';
 import authOptions from '@/utils/authUptions';
-import { acceptProject, fetchAllAdminProjects, fetchSingleProject, rejectProject } from '@/app/lib/actions';
-import { notFound } from 'next/navigation';
+import {  fetchSingleProject } from '@/app/lib/actions';
+import NotFound from './not-found';
 
 export default async function Page({params}) {
 
@@ -16,7 +16,7 @@ export default async function Page({params}) {
     const project = await fetchSingleProject(userId,projectId)
 
     if(!project){
-      notFound()
+      <NotFound/>
     }
     
  
@@ -59,6 +59,18 @@ export default async function Page({params}) {
             <div className='mt-2  px-4 bg-gray-100 py-2 font-thin '>
               <p className=' text-md'>{project?.ans4} </p>
             </div>
+
+            {/* {project?.status === 'ACCEPTED' || 'REJECTED' ?(
+              <>
+               <div className='  px-4'>
+                <div className='w-full flex   font-semibold'>Admin Comment</div>
+            </div>
+            <div className='mt-2  px-4 bg-gray-100 py-2 font-thin '>
+              <p className=' text-md'>{project?.comment} </p>
+            </div>
+              </>
+            ):null} */}
+
             </div>
 
 

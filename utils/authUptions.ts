@@ -14,6 +14,7 @@ type User = {
   userType: UserType;
   createdAt: Date;
   updatedAt:Date;
+  // status:UserStatus;
 };
 
 export const authOptions = {
@@ -44,6 +45,7 @@ export const authOptions = {
             createdAt: true,
             updatedAt: true,
             email: true,
+            // status:true,
           },
         });
       
@@ -69,6 +71,7 @@ export const authOptions = {
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
           hashedPassword: user.hashedPassword,
+          // status: user.status
 
           
           
@@ -91,6 +94,7 @@ export const authOptions = {
         registrationNumber:user.registrationNumber,
         createdAt:user.createdAt,
         updatedAt:user.updatedAt,
+        // status:user.status
       }
     }
     
@@ -114,6 +118,8 @@ export const authOptions = {
       registrationNumber:token.registrationNumber,
       createdAt:token.createdAt,
       updatedAt:token.updatedAt,
+       // status:user.status
+
 
     }
     },

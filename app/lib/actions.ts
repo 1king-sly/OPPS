@@ -2,7 +2,7 @@ import { Prisma, ProjectStatus, School } from "@prisma/client";
 import prisma from '@/app/lib/prismadb';
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import router from "next/navigation";
+import { title } from "process";
 
 
 export const addProject = async (formData) => {
@@ -11,7 +11,7 @@ export const addProject = async (formData) => {
   console.log(formData);
 
   try {
-    const { schoolFromFormData,title, email, ans1, ans2, ans3, ans4 } = Object.fromEntries(formData);
+    const { schoolFromFormData,title, email, ans1, ans2, ans3, ans4,comment } = Object.fromEntries(formData);
 
     const schoolEnum = School[schoolFromFormData.toUpperCase()]
 
@@ -41,14 +41,16 @@ export const addProject = async (formData) => {
           ans3,
           ans4,
           userId,
+          // comment:comment
           school:schoolEnum,
         },
       });
 
       revalidatePath('/User/Dashboard')
+      redirect('/User/Dashboard')
       
       
-      console.log(newProject, "New Project");
+      // console.log(newProject, "New Project");
 
      
     }
@@ -132,7 +134,7 @@ export const fetchUserProjects = async (userId) => {
   
 };
 
-export const fetchAllAdminProjects = async (userId) => {
+export const fetchAllAdminProjects = async (userId,query) => {
   'use server';
 
 
@@ -147,9 +149,21 @@ export const fetchAllAdminProjects = async (userId) => {
       },
     });
 
-
+    
 
     if (user) {
+
+      if(query){
+        const projects = await prisma.project.findMany(
+          {where:{
+            status:ProjectStatus.PENDING,
+            title:query,
+           }
+           }
+        )
+  
+        return projects
+      }
 
       const projects = await prisma.project.findMany(
         {where:{
@@ -168,7 +182,7 @@ export const fetchAllAdminProjects = async (userId) => {
 };
 
 
-export const fetchAllAdminReviewedProjects = async (userId) => {
+export const fetchAllAdminReviewedProjects = async (userId,query) => {
   'use server';
 
 
@@ -186,6 +200,19 @@ export const fetchAllAdminReviewedProjects = async (userId) => {
 
 
     if (user) {
+
+      if(query){
+
+        const projects = await prisma.project.findMany(
+          {where:{
+            status:ProjectStatus.PENDING,
+            title:query,
+           }
+           }
+        )
+  
+        return projects
+      }
 
       const projects = await prisma.project.findMany(
         {where:{
@@ -531,7 +558,7 @@ export const fetchSingleProject = async (userId,projectId) => {
 export const updateProject = async (formData) => {
   'use server';
     console.log(formData)
-    const {userId,status,projectId} = Object.fromEntries(formData)
+    const {userId,status,projectId,comment,amount} = Object.fromEntries(formData)
 
   try{
 
@@ -548,8 +575,21 @@ export const updateProject = async (formData) => {
 
     if (user) {
 
+      if(amount){
 
-      
+        const project = await prisma.project.update({
+          where:{
+            projectId:parseInt(projectId),
+            status:ProjectStatus.ACCEPTED,
+  
+          },
+          data:{
+            // Payment:parseInt(amount)
+          }
+        })
+
+      }
+
 
       const project = await prisma.project.update({
         where:{
@@ -558,17 +598,18 @@ export const updateProject = async (formData) => {
 
         },
         data:{
-          status:ProjectStatus[status]
+          status:ProjectStatus[status],
+          // comment:comment
         }
       })
       revalidatePath('/Admin/Dashboard')
       revalidatePath('/Admin/Projects')
-      revalidatePath('/User/Dashboard')
-      revalidatePath('/User/Projects')
       revalidatePath('/Admin/Reviewed')
+      redirect('/Admin/Projects')
 
-      console.log("New Project", project)
-      return project
+
+      // console.log("New Project", project)
+      // return project
     }
 
 
@@ -635,6 +676,8 @@ export const fetchUser = async (userId) => {
         firstName:true,
         secondName:true,
         registrationNumber:true,
+        // status:true
+
       },
     });
 

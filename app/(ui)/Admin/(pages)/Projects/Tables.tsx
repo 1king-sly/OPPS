@@ -5,11 +5,14 @@ import authOptions from '@/utils/authUptions';
 import { fetchAllAdminProjects } from '@/app/lib/actions';
 import Link from 'next/link';
 
-export default async  function Tables() {
+export default async  function Tables({searchParams}) {
+
+  const q = searchParams?.query || ''
+
   const session = await getServerSession(authOptions);
   console.log(session);
 
-  const datas = await fetchAllAdminProjects(session?.id);
+  const datas = await fetchAllAdminProjects(session?.id,q);
 
   if(!datas){
     return null

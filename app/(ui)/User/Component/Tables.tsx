@@ -5,6 +5,7 @@ import { getServerSession } from 'next-auth';
 import authOptions from '@/utils/authUptions';
 import { fetchUserDashboardProjects, fetchUserProjects } from '@/app/lib/actions';
 import Link from 'next/link';
+import { CheckIcon, ClockIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
 export default async function Tables() {
   const session = await getServerSession(authOptions);
@@ -32,7 +33,32 @@ export default async function Tables() {
             <tr className='justify-around w-full flex bg-gray-100 py-2 '>
                   <td className=''>{data.title}  </td>
                   <td >{data.createdAt.toLocaleDateString()} </td>
-                  <td >{data.status} </td>
+                  <td >
+                      {data.status === 'PENDING' ?(
+                        <>
+                        <div className='w-full flex gap-0.5'>
+                      <ClockIcon className="ml-1 w-4 text-gray-500" />
+                          PENDING
+                           </div>
+                        </>
+                      ): null}
+                      {data.status === 'ACCEPTED' ?(
+                        <>
+                        <div className='w-full flex gap-0.5'>
+                      <CheckIcon className="ml-1 w-4 text-gray-500" />
+                      ACCEPTED
+                           </div>
+                        </>
+                      ): null}
+                      {data.status === 'REJECTED' ?(
+                        <>
+                        <div className='w-full flex gap-0.5'>
+                      <ExclamationTriangleIcon className="ml-1 w-4 text-gray-500" />
+                      REJECTED
+                           </div>
+                        </>
+                      ): null}
+                  </td>
                 </tr>
             </Link>
 

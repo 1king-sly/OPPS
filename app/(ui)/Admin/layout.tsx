@@ -1,19 +1,32 @@
 import type { Metadata } from 'next'
 import SideNav from './Component/SideNav'
 import Header from './Component/Header'
+import authOptions from '@/utils/authUptions'
+import { getServerSession } from 'next-auth'
+import { redirect } from 'next/navigation'
 
 
 
-export const metadata: Metadata = {
-  title: 'Dashboard',
-  description: 'Dashboard',
-}
+// export const metadata: Metadata = {
+//   title: 'Dashboard',
+//   description: 'Dashboard',
+// }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+
+  const data = await getServerSession(authOptions)
+
+  const userType = data?.userType
+
+  if(userType === 'STUDENT'){
+    
+    redirect('/User/Dashboard')
+  }
+
   return (
     <>
     <div className='w-screen h-screen flex flex-col overflow-hidden gap-1'>

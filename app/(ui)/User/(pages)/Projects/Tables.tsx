@@ -7,7 +7,9 @@ import Link from 'next/link';
 import Table from '@/app/(ui)/User/Component/Table';
 
 export default async function Tables() {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession();
+
+  console.log("Session Data", session)
 
   const datas = await fetchUserProjects(session?.id);
 

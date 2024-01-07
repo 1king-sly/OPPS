@@ -5,10 +5,11 @@ import { fetchAllAdminReviewedProjects } from '@/app/lib/actions';
 import Link from 'next/link';
 import Table from '../../Component/Table';
 
-export default async  function Page() {
+export default async  function Page({searchParams}) {
   const session = await getServerSession(authOptions);
 
-  const datas = await fetchAllAdminReviewedProjects(session?.id);
+  const q = searchParams?.q || ''
+  const datas = await fetchAllAdminReviewedProjects(session?.id,q);
 
   
 

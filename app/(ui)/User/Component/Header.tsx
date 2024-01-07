@@ -11,6 +11,7 @@ export default async  function Header() {
 
   const data = await getServerSession(authOptions)
 
+
   if(!data){
     return null
   }

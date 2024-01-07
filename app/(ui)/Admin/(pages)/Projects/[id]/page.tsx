@@ -3,8 +3,9 @@
 import React from 'react';
 import { getServerSession } from 'next-auth';
 import authOptions from '@/utils/authUptions';
-import { acceptProject, fetchAllAdminProjects, fetchSingleProject, rejectProject, updateProject } from '@/app/lib/actions';
+import {  fetchSingleProject,  updateProject } from '@/app/lib/actions';
 import { notFound } from 'next/navigation';
+import NotFound from './not-found';
 
 export default async function Page({params}) {
 
@@ -18,7 +19,7 @@ export default async function Page({params}) {
 
 
     if(!project){
-      notFound()
+      <NotFound/>
     }
 
     
@@ -87,6 +88,34 @@ export default async function Page({params}) {
 
                 </>
             ): null}
+            {/* { project?.status === 'ACCEPTED'?(
+
+              
+                <>
+
+                {project?.Payment === 0 ?(
+                  <>
+              <form action={updateProject}>
+              <p>Add Amount to be granted </p>
+              <input type="number"  placeholder='Add amount in Kshs' name='amount' />
+              <div className='w-full justify-around flex mt-2'>
+
+              <input type="text" name='userId' title='userId' className='hidden' value={userId}  />
+              <input type="text" name='projectId' title='projectId' className='hidden' value={projectId}  />
+              <button type='submit' className='p-3 bg-green-500 rounded-md '>GRANT</button>
+
+              </div>
+
+            </form>
+                  
+                  </>
+                ):null}
+              
+
+                </>
+            ): null} */}
+
+
           
            
 
