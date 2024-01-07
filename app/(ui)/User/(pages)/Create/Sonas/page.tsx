@@ -7,18 +7,22 @@ import axios from 'axios';
 import { getSession, useSession } from 'next-auth/react';
 import authOptions from '@/utils/authUptions';
 import { getServerSession } from 'next-auth';
-import { addProject } from '@/app/lib/actions';
+import { addProject, fetchUser } from '@/app/lib/actions';
 
 export default async  function Page() {
-  const session = await getServerSession(authOptions)
-
-
-  let email
-
-  if (session) {
-    email = session.email
-    
+  const session = await getServerSession()
+  if(!session){
+    return null
   }
+  const SessionEmail = session.user.email
+
+
+  const data =await fetchUser(SessionEmail)
+
+
+
+ 
+   const  email = data?.email
 
   return (
     <>

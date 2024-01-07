@@ -37,7 +37,7 @@ model Project {
   ans3           String
   ans4           String
   school         School
-  // comment        String
+  //  comment        String        @default("")
   // Payment        Int @default(0)
   // paymentStatus        PaymentStatus @default(UNPAID)
   status         ProjectStatus @default(PENDING)

@@ -3,29 +3,37 @@ import React from 'react';
 import Table from './Table';
 import { getServerSession } from 'next-auth';
 import authOptions from '@/utils/authUptions';
-import { fetchUserDashboardProjects, fetchUserProjects } from '@/app/lib/actions';
+import { fetchUser, fetchUserDashboardProjects, fetchUserProjects } from '@/app/lib/actions';
 import Link from 'next/link';
 import { CheckIcon, ClockIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
 export default async function Tables() {
-  const session = await getServerSession(authOptions);
-  console.log(session);
+  const session = await getServerSession()
+  if(!session){
+    return null
+  }
+  const email = session.user.email
 
-  const datas = await fetchUserDashboardProjects(session?.id);
+
+  const data =await fetchUser(email)
+
+  const datas = await fetchUserDashboardProjects(data?.id);
 
   return (
     <>
        <div className=' p-10  '>
     <table className=' w-full'>
         <thead className='  '>
-          <tr className=' flex justify-around w-full'>
-            <th className='' >TITLE</th>
-            <th className=' ml-48'>DATE</th>
-            <th className=''>STATUS</th>
-          </tr>
+       
         </thead>
 
         <tbody className='  flex-col mt-4 gap-3 flex'>
+
+        <tr className=' flex justify-around w-full'>
+            <td className='' >TITLE</td>
+            <td className=' ml-48'>DATE</td>
+            <td className=''>STATUS</td>
+          </tr>
 
           {datas?.map((data)=>(
             <Link href={`/User/Projects/${data.projectId}`} key={data.projectId}>
@@ -36,7 +44,7 @@ export default async function Tables() {
                   <td >
                       {data.status === 'PENDING' ?(
                         <>
-                        <div className='w-full flex gap-0.5'>
+                        <div className='w-full flex gap-0.5 bg-gray-300 p-2 rounded-md '>
                       <ClockIcon className="ml-1 w-4 text-gray-500" />
                           PENDING
                            </div>
@@ -44,7 +52,7 @@ export default async function Tables() {
                       ): null}
                       {data.status === 'ACCEPTED' ?(
                         <>
-                        <div className='w-full flex gap-0.5'>
+                        <div className='w-full flex gap-0.5 bg-green-300 p-2 rounded-md '>
                       <CheckIcon className="ml-1 w-4 text-gray-500" />
                       ACCEPTED
                            </div>
@@ -52,7 +60,7 @@ export default async function Tables() {
                       ): null}
                       {data.status === 'REJECTED' ?(
                         <>
-                        <div className='w-full flex gap-0.5'>
+                        <div className='w-full flex gap-0.5 bg-rose-500 p-2 rounded-md '>
                       <ExclamationTriangleIcon className="ml-1 w-4 text-gray-500" />
                       REJECTED
                            </div>

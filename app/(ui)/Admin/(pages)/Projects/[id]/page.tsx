@@ -3,17 +3,21 @@
 import React from 'react';
 import { getServerSession } from 'next-auth';
 import authOptions from '@/utils/authUptions';
-import {  fetchSingleProject,  updateProject } from '@/app/lib/actions';
+import {  fetchSingleProject,  fetchUser,  updateProject } from '@/app/lib/actions';
 import { notFound } from 'next/navigation';
 import NotFound from './not-found';
 
 export default async function Page({params}) {
 
-    const session = await getServerSession(authOptions)
-    if(!session){
-        return null
-    }
-    const userId = session?.id
+  const session = await getServerSession()
+  if(!session){
+    return null
+  }
+  const email = session.user.email
+
+
+  const data =await fetchUser(email)
+    const userId = data?.id
     const projectId = params.id
     const project = await fetchSingleProject(userId,projectId)
 

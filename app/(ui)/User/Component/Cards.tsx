@@ -1,20 +1,23 @@
 import React from 'react'
 import Card from './Card'
-import { countUserAcceptedProjects, countUserPendingProjects, countUserRejectedProjects, countUserTotalProjects } from '@/app/lib/actions'
+import { countUserAcceptedProjects, countUserPendingProjects, countUserRejectedProjects, countUserTotalProjects, fetchUser } from '@/app/lib/actions'
 import { getServerSession } from 'next-auth'
 import authOptions from '@/utils/authUptions'
 
 export default async function  Cards() {
-  const session =await getServerSession(authOptions)
-
+  const session = await getServerSession()
   if(!session){
     return null
   }
+  const email = session.user.email
 
-  const total = await countUserTotalProjects(session?.id)
-  const pending = await countUserPendingProjects(session?.id)
-  const accepted = await countUserAcceptedProjects(session?.id)
-  const rejected = await countUserRejectedProjects(session?.id)
+
+  const data =await fetchUser(email)
+
+  const total = await countUserTotalProjects(data?.id)
+  const pending = await countUserPendingProjects(data?.id)
+  const accepted = await countUserAcceptedProjects(data?.id)
+  const rejected = await countUserRejectedProjects(data?.id)
   return (
     <>
     <div className='w-full h-48 flex gap-3 justify-around items-center'>

@@ -2,32 +2,37 @@
 import { MagnifyingGlassCircleIcon } from '@heroicons/react/24/outline'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
+import { useDebouncedCallback } from 'use-debounce'
 
-// I need to import useDebounceCallback npm i use-debounce
 
-export default function Search({placeholder}) {
+export default function Search({placeholder}:{placeholder:string}) {
     const pathname = usePathname()
     const searchParams = useSearchParams()
     const {replace} = useRouter()
     
-    const handleSearch = useDebounceCallback( (e) =>{
+    const handleSearch = useDebouncedCallback( (term:string) =>{
     
     const params = new URLSearchParams(searchParams)
-    if(e.target.value){
-      e.target.value.length > 2 &&  params.set("q",e.target.value)
-       
-      }
+    
+     if(term){
+      params.set('query',term)
+      console.log("Query value",term)
+     }
+     else{
+      params.delete('query')
+     }
 
-      params.delete("q")
-       replace(`${pathname}?${params}`)
+     replace(`${pathname}?${params.toString()}`)
 
     },300)
 
     
   return (
-    <div>
-      <MagnifyingGlassCircleIcon/>
-      <input type="text" placeholder={placeholder} onChange={handleSearch} className='' />
+    <div className='relative flex flex-1 flex-shrink-0  '>
+      <MagnifyingGlassCircleIcon className='absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900'/>
+      <input type="text" placeholder={placeholder} onChange={(e)=>{
+        handleSearch(e.target.value)
+      }} className='peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500 outline-sky-300 ' />
     </div>
   )
 }

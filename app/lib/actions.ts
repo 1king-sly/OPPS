@@ -47,8 +47,6 @@ export const addProject = async (formData) => {
       });
 
       revalidatePath('/User/Dashboard')
-      redirect('/User/Dashboard')
-      
       
       // console.log(newProject, "New Project");
 
@@ -58,6 +56,10 @@ export const addProject = async (formData) => {
     console.error(error, 'Failed to create project');
     
   }
+  finally {
+    // Optionally redirect even if an error occurs, if desired
+    redirect('/User/Dashboard');
+}
 };
 
 export const fetchUserDashboardProjects = async (userId) => {
@@ -85,6 +87,9 @@ export const fetchUserDashboardProjects = async (userId) => {
           userId: user.id,
         },
         take: 5,
+        orderBy: {
+          createdAt: 'desc',
+        },
        }
       )
       console.log('User Projects', projects)
@@ -134,7 +139,7 @@ export const fetchUserProjects = async (userId) => {
   
 };
 
-export const fetchAllAdminProjects = async (userId,query) => {
+export const fetchAllAdminProjects = async (userId,q) => {
   'use server';
 
 
@@ -153,17 +158,17 @@ export const fetchAllAdminProjects = async (userId,query) => {
 
     if (user) {
 
-      if(query){
-        const projects = await prisma.project.findMany(
-          {where:{
-            status:ProjectStatus.PENDING,
-            title:query,
-           }
-           }
-        )
+      // if(q){
+      //   const projects = await prisma.project.findMany(
+      //     {where:{
+      //       status:ProjectStatus.PENDING,
+      //       title:q,
+      //      }
+      //      }
+      //   )
   
-        return projects
-      }
+      //   return projects
+      // }
 
       const projects = await prisma.project.findMany(
         {where:{
@@ -201,18 +206,18 @@ export const fetchAllAdminReviewedProjects = async (userId,query) => {
 
     if (user) {
 
-      if(query){
+      // if(query){
 
-        const projects = await prisma.project.findMany(
-          {where:{
-            status:ProjectStatus.PENDING,
-            title:query,
-           }
-           }
-        )
+      //   const projects = await prisma.project.findMany(
+      //     {where:{
+      //       status:ProjectStatus.PENDING,
+      //       title:query,
+      //      }
+      //      }
+      //   )
   
-        return projects
-      }
+      //   return projects
+      // }
 
       const projects = await prisma.project.findMany(
         {where:{
@@ -605,7 +610,6 @@ export const updateProject = async (formData) => {
       revalidatePath('/Admin/Dashboard')
       revalidatePath('/Admin/Projects')
       revalidatePath('/Admin/Reviewed')
-      redirect('/Admin/Projects')
 
 
       // console.log("New Project", project)
@@ -615,6 +619,10 @@ export const updateProject = async (formData) => {
 
   }catch(error){
     console.error("Error Updating Project",error)
+  }
+  finally {
+    // Optionally redirect even if an error occurs, if desired
+    redirect('/Admin/Projects')
   }
 
   
@@ -659,7 +667,7 @@ export const updateUser = async (formData) => {
 
   
 };
-export const fetchUser = async (userId) => {
+export const fetchUser = async (email) => {
   'use server';
     
 
@@ -667,7 +675,7 @@ export const fetchUser = async (userId) => {
 
     const user = await prisma.user.findUnique({
       where: {
-        id: parseInt(userId),
+        email: email,
       },
       select: {
         id: true,

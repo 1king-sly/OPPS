@@ -1,4 +1,4 @@
-'use client'
+'use server'
 import React from 'react'
 import Image from 'next/image'
 import profile from '@/public/images/profile.png'
@@ -9,12 +9,16 @@ import { fetchUser } from '@/app/lib/actions'
 import { useSession } from 'next-auth/react'
 
 
-export default   function Page() {
+export default async   function Page() {
  
-  const session = useSession()
+  const session = await getServerSession()
   if(!session){
     return null
   }
+  const email = session.user.email
+
+
+  const data =await fetchUser(email)
 
   
  
@@ -24,34 +28,20 @@ export default   function Page() {
     <div className='w-full h-full flex items-center justify-center '>
       <div className='shadow-lg rounded-md flex flex-col w-96 h-96  items-center justify-center'>
         <div className=' h-24 flex items-center justify-center  gap-4 px-2'>
-          <Image className='h-20 w-20 rounded-full shadow-md' src={ profile} alt='profile'></Image>
-
-          <Button>
-          <label className=" ">
-                <p className=''>Edit</p>
-                <input
-                  type="file"
-                  accept="image/*"
-                  className='hidden'
-                  
-                
-                />
-           </label>
-          </Button>
-         
+          <Image className='h-20 w-20 rounded-full shadow-md' src={ profile} alt='profile'></Image>         
         </div>
 
         <div className=' gap-3 flex flex-col ' >
           <label >
-          <input type="text" disabled className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={session.data?.firstName + " " + session.data?.secondName} />
+          <input type="text" disabled className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={data?.firstName + " " + data?.secondName} />
 
           </label>
           <label >
-          <input type="email" className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={session.data?.email}/>
+          <input type="email" className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={data?.email}/>
 
           </label>
           <label >
-          <input type="text" className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={session.data?.userType}/>
+          <input type="text" className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={data?.userType}/>
 
           </label>
         </div>

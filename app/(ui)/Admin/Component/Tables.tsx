@@ -2,32 +2,37 @@
 import React from 'react';
 import { getServerSession } from 'next-auth';
 import authOptions from '@/utils/authUptions';
-import { fetchAdminDashboardProjects } from '@/app/lib/actions';
+import { fetchAdminDashboardProjects, fetchUser } from '@/app/lib/actions';
 import Link from 'next/link';
 
 export default async function Tables() {
-  const session = await getServerSession(authOptions);
-
+  const session = await getServerSession()
   if(!session){
     return null
   }
+  const email = session.user.email
+
+
+  const data =await fetchUser(email)
 
   
-  const datas = await fetchAdminDashboardProjects(session?.id);
+  const datas = await fetchAdminDashboardProjects(data?.id);
 
   return (
     <>
        <div className=' p-10  '>
     <table className=' w-full'>
         <thead className='  '>
-          <tr className=' flex justify-around w-full'>
-            <th className='' >TITLE</th>
-            <th className=' ml-48'>DATE</th>
-            <th className=''>REGISTRATION NUMBER</th>
-          </tr>
+         
         </thead>
 
-        <tbody className='  flex-col mt-4 gap-3 flex'>
+        <tbody className='  flex-col  gap-3 flex'>
+
+        <tr className=''>
+            <td className='' >TITLE</td>
+            <td className=''>DATE</td>
+            <td className=''>REGISTRATION NUMBER</td>
+          </tr>
 
           {datas?.map((data)=>(
             <Link href={`/Admin/Projects/${data.projectId}`} key={data.projectId}>

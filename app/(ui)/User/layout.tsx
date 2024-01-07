@@ -4,6 +4,7 @@ import Header from './Component/Header'
 import authOptions from '@/utils/authUptions'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
+import { fetchUser } from '@/app/lib/actions'
 
 
 
@@ -18,7 +19,14 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
 
-  const data = await getServerSession(authOptions)
+  const session = await getServerSession()
+  if(!session){
+    return null
+  }
+  const email = session.user.email
+
+
+  const data =await fetchUser(email)
 
   const userType = data?.userType
 
