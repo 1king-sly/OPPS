@@ -8,7 +8,7 @@ import Search from '@/app/(ui)/User/Component/Search';
 
 export default async  function Tables({searchParams}:{searchParams:string}) {
 
-  const q = searchParams?.query || ''
+  const q = searchParams || ''
 
   const session = await getServerSession()
   if(!session){
