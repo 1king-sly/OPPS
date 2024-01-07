@@ -28,7 +28,7 @@ export default async function Tables() {
 
         <tbody className='  flex-col  gap-3 flex'>
 
-        <tr className=''>
+        <tr className='justify-around w-full flex bg-gray-100 py-2 '>
             <td className='' >TITLE</td>
             <td className=''>DATE</td>
             <td className=''>REGISTRATION NUMBER</td>

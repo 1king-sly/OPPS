@@ -5,7 +5,7 @@ import authOptions from '@/utils/authUptions';
 import {  fetchSingleProject, fetchUser } from '@/app/lib/actions';
 import NotFound from './not-found';
 
-export default async function Page({params}:{params:string}) {
+export default async function Page({ params }: { params: { id: string } }) {
 
   const session = await getServerSession()
   if(!session){
