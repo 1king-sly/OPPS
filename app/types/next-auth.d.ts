@@ -8,7 +8,7 @@ declare module "next-auth" {
     registrationNumber: string,
     email:string,
     id:string,
-    image:string,
+    // image:string,
   }
   interface Session {
     user:User 
@@ -18,7 +18,7 @@ declare module "next-auth" {
     registrationNumber: string,
     email:string,
     id:string,
-    image:string,
+    // image:string,
 
     
   }
