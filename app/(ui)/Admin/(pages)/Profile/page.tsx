@@ -7,13 +7,14 @@ import { getServerSession } from 'next-auth'
 import authOptions from '@/utils/authUptions'
 import { fetchUser } from '@/app/lib/actions'
 import { useSession } from 'next-auth/react'
+import { redirect } from 'next/navigation'
 
 
 export default async   function Page() {
  
   const session = await getServerSession()
   if(!session){
-    return null
+    redirect('/')
   }
   const email = session.user.email
 

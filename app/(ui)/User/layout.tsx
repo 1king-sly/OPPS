@@ -21,7 +21,7 @@ export default async function RootLayout({
 
   const session = await getServerSession()
   if(!session){
-    return null
+    redirect('/')
   }
   const email = session.user.email
 

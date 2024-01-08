@@ -5,6 +5,7 @@ import authOptions from '@/utils/authUptions';
 import { fetchAllAdminProjects, fetchUser } from '@/app/lib/actions';
 import Link from 'next/link';
 import Search from '@/app/(ui)/User/Component/Search';
+import { redirect } from 'next/navigation';
 
 export default async  function Tables({searchParams}:{searchParams:string}) {
 
@@ -12,7 +13,7 @@ export default async  function Tables({searchParams}:{searchParams:string}) {
 
   const session = await getServerSession()
   if(!session){
-    return null
+    redirect('/')
   }
   const email = session.user.email
 
@@ -27,7 +28,7 @@ export default async  function Tables({searchParams}:{searchParams:string}) {
 
   return (
     <>
-    <div className=' p-10  '>
+    <div className=' p-10   '>
     <Search placeholder="Search for a project ..."/>
 
     <table className=' w-full'>
@@ -37,7 +38,7 @@ export default async  function Tables({searchParams}:{searchParams:string}) {
         <tr className=' flex justify-around w-full'>
             <th className='' >TITLE</th>
             <th className=''>DATE</th>
-            <th className=''>REGISTRATION NUMBER</th>
+            <th className=''>SCHOOL </th>
           </tr>
           {datas?.map((data)=>(
             <Link href={`/Admin/Projects/${data.projectId}`} key={data.projectId}>

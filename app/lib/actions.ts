@@ -3,18 +3,26 @@ import prisma from '@/app/lib/prismadb';
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { title } from "process";
+import { ProjectFormData } from "next-auth";
 
 
-export const addProject = async (formData) => {
+
+
+export const addProject = async (formData: FormData) => {
   'use server';
 
   console.log(formData);
 
   try {
-    const { schoolFromFormData,title, email, ans1, ans2, ans3, ans4,comment } = Object.fromEntries(formData);
+    const schoolFromFormData = formData.get('schoolFromFormData');
+    const title = formData.get('title') as string;
+     const email = formData.get('email') as string;
+    const ans1 = formData.get('ans1') as string;
+    const ans2 = formData.get('ans2') as string;
+    const ans3 = formData.get('ans3') as string;
+    const ans4 = formData.get('ans4') as string;
 
-    const schoolEnum = School[schoolFromFormData.toUpperCase()]
-
+    const schoolEnum = School[schoolFromFormData as keyof typeof School];
     if(!email){
         console.log('Email missing')
     }
@@ -62,7 +70,7 @@ export const addProject = async (formData) => {
 }
 };
 
-export const fetchUserDashboardProjects = async (userId) => {
+export const fetchUserDashboardProjects = async (userId:string) => {
   'use server';
 
 
@@ -103,7 +111,7 @@ export const fetchUserDashboardProjects = async (userId) => {
   
 };
 
-export const fetchUserProjects = async (userId) => {
+export const fetchUserProjects = async (userId:string) => {
   'use server';
 
 
@@ -139,7 +147,7 @@ export const fetchUserProjects = async (userId) => {
   
 };
 
-export const fetchAllAdminProjects = async (userId,q) => {
+export const fetchAllAdminProjects = async (userId:string,q:string) => {
   'use server';
 
 
@@ -187,7 +195,7 @@ export const fetchAllAdminProjects = async (userId,q) => {
 };
 
 
-export const fetchAllAdminReviewedProjects = async (userId,query) => {
+export const fetchAllAdminReviewedProjects = async (userId:string,query:string) => {
   'use server';
 
 
@@ -236,7 +244,7 @@ export const fetchAllAdminReviewedProjects = async (userId,query) => {
 
   
 };
-export const countAllProjects = async (userId) => {
+export const countAllProjects = async (userId:string) => {
   'use server';
 
 
@@ -271,7 +279,7 @@ export const countAllProjects = async (userId) => {
 
   
 };
-export const countReviewedProjects = async (userId) => {
+export const countReviewedProjects = async (userId:string) => {
   'use server';
 
 
@@ -306,7 +314,7 @@ export const countReviewedProjects = async (userId) => {
 
   
 };
-export const countPendingProjects = async (userId) => {
+export const countPendingProjects = async (userId:string) => {
   'use server';
 
 
@@ -339,7 +347,7 @@ export const countPendingProjects = async (userId) => {
 
   
 };
-export const countUserPendingProjects = async (userId) => {
+export const countUserPendingProjects = async (userId:string) => {
   'use server';
 
 
@@ -373,7 +381,7 @@ export const countUserPendingProjects = async (userId) => {
 
   
 };
-export const countUserTotalProjects = async (userId) => {
+export const countUserTotalProjects = async (userId:string) => {
   'use server';
 
 
@@ -409,7 +417,7 @@ export const countUserTotalProjects = async (userId) => {
 
   
 };
-export const countUserAcceptedProjects = async (userId) => {
+export const countUserAcceptedProjects = async (userId:string) => {
   'use server';
 
 
@@ -443,7 +451,7 @@ export const countUserAcceptedProjects = async (userId) => {
 
   
 };
-export const countUserRejectedProjects = async (userId) => {
+export const countUserRejectedProjects = async (userId:string) => {
   'use server';
 
 
@@ -478,7 +486,7 @@ export const countUserRejectedProjects = async (userId) => {
   
 };
 
-export const fetchAdminDashboardProjects = async (userId) => {
+export const fetchAdminDashboardProjects = async (userId:string) => {
   'use server';
 
   console.log('User Id', userId)
@@ -517,7 +525,7 @@ export const fetchAdminDashboardProjects = async (userId) => {
 };
 
 
-export const fetchSingleProject = async (userId,projectId) => {
+export const fetchSingleProject = async (userId:string,projectId:string) => {
   'use server';
 
   try{
@@ -560,10 +568,19 @@ export const fetchSingleProject = async (userId,projectId) => {
   
 };
 
-export const updateProject = async (formData) => {
+export const updateProject = async (formData: FormData) => {
   'use server';
     console.log(formData)
-    const {userId,status,projectId,comment,amount} = Object.fromEntries(formData)
+    // const {userId,status,projectId,comment,amount} = Object.fromEntries(formData)
+
+    const userId = formData.get('userId') as string;
+    const status = formData.get('status') as string;
+    const projectId = formData.get('projectId') as string;
+    const comment = formData.get('comment') as string;
+    const amount = formData.get('amount') as string;
+
+    const statusEnum = ProjectStatus[status as keyof typeof ProjectStatus]
+
 
   try{
 
@@ -603,7 +620,7 @@ export const updateProject = async (formData) => {
 
         },
         data:{
-          status:ProjectStatus[status],
+          status:statusEnum
           // comment:comment
         }
       })
@@ -612,8 +629,7 @@ export const updateProject = async (formData) => {
       revalidatePath('/Admin/Reviewed')
 
 
-      // console.log("New Project", project)
-      // return project
+     
     }
 
 
@@ -621,53 +637,53 @@ export const updateProject = async (formData) => {
     console.error("Error Updating Project",error)
   }
   finally {
-    // Optionally redirect even if an error occurs, if desired
+    
     redirect('/Admin/Projects')
   }
 
   
 };
 // Updating the user info based on the client needs[Awaiting details from the system consumer]
-export const updateUser = async (formData) => {
-  'use server';
-    const {userId,image} = Object.fromEntries(formData)
+// export const updateUser = async (formData) => {
+//   'use server';
+//     const {userId,image} = Object.fromEntries(formData)
 
-  try{
+//   try{
 
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId),
-      },
-      select: {
-        id: true,
-      },
-    });
+//     const user = await prisma.user.findUnique({
+//       where: {
+//         id: parseInt(userId),
+//       },
+//       select: {
+//         id: true,
+//       },
+//     });
 
 
 
-    if (user) {
-      const newUser = await prisma.user.update({
-        where:{
-          id:parseInt(userId)
-        },
-        data:{
+//     if (user) {
+//       const newUser = await prisma.user.update({
+//         where:{
+//           id:parseInt(userId)
+//         },
+//         data:{
 
-        }
-      })
+//         }
+//       })
      
-      revalidatePath('/Admin/Profile')
-      revalidatePath('/User/Profile')
+//       revalidatePath('/Admin/Profile')
+//       revalidatePath('/User/Profile')
       
-      return newUser
-    }
+//       return newUser
+//     }
 
-  }catch(error){
-    console.log("Error Updating User",error)
-  }
+//   }catch(error){
+//     console.log("Error Updating User",error)
+//   }
 
   
-};
-export const fetchUser = async (email) => {
+// };
+export const fetchUser = async (email:string) => {
   'use server';
     
 

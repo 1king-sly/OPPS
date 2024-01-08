@@ -3,12 +3,13 @@ import Card from './Card'
 import { countPendingProjects,countAllProjects,countReviewedProjects,fetchUser } from '@/app/lib/actions'
 import { getServerSession } from 'next-auth';
 import authOptions from '@/utils/authUptions'
+import { redirect } from 'next/navigation';
 
 
 export default async function Cards() {
   const session = await getServerSession()
   if(!session){
-    return null
+    redirect('/')
   }
   const email = session.user.email
 

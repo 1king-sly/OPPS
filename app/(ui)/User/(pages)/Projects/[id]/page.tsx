@@ -4,12 +4,13 @@ import { getServerSession } from 'next-auth';
 import authOptions from '@/utils/authUptions';
 import {  fetchSingleProject, fetchUser } from '@/app/lib/actions';
 import NotFound from './not-found';
+import { redirect } from 'next/navigation';
 
 export default async function Page({ params }: { params: { id: string } }) {
 
   const session = await getServerSession()
   if(!session){
-    return null
+    redirect('/')
   }
   const email = session.user.email
 
@@ -20,7 +21,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     const project = await fetchSingleProject(userId,projectId)
 
     if(!project){
-      <NotFound/>
+      return <NotFound/>
     }
     
  

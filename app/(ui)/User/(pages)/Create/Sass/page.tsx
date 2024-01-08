@@ -7,11 +7,12 @@ import Question from '../Question';
 import authOptions from '@/utils/authUptions';
 import { getServerSession } from 'next-auth';
 import { addProject, fetchUser } from '@/app/lib/actions';
+import { redirect } from 'next/navigation';
 
 export default async  function Page() {
   const session = await getServerSession()
   if(!session){
-    return null
+    redirect('/')
   }
   const SessionEmail = session.user.email
 
@@ -22,6 +23,8 @@ export default async  function Page() {
 
  
    const  email = data?.email
+
+   
     
   
 
@@ -34,7 +37,12 @@ export default async  function Page() {
         </div>
 
         <div>
-          <form action={addProject} className='w-[80vw] flex flex-col gap-2' >
+          <form onSubmit={(event) => {
+    event.preventDefault();
+    const form = event.currentTarget as HTMLFormElement;
+    const formData = new FormData(form);
+    addProject(formData);
+}} className='w-[80vw] flex flex-col gap-2' >
             <div className='w-full flex justify-center'>
               <textarea
                 name="title"

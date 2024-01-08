@@ -6,13 +6,14 @@ import Button from '@/app/(ui)/Button'
 import { useSession } from 'next-auth/react'
 import { getServerSession } from 'next-auth'
 import { fetchUser } from '@/app/lib/actions'
+import { redirect } from 'next/navigation'
 
 
 export default async function Page() {
  
   const session = await getServerSession()
   if(!session){
-    return null
+    redirect('/')
   }
   const email = session.user.email
 

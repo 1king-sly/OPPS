@@ -1,17 +1,16 @@
-'use server'
 
 import React from 'react';
 import { getServerSession } from 'next-auth';
 import authOptions from '@/utils/authUptions';
 import {  fetchSingleProject,  fetchUser,  updateProject } from '@/app/lib/actions';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import NotFound from './not-found';
 
 export default async function Page({ params }: { params: { id: string } }) {
 
   const session = await getServerSession()
   if(!session){
-    return null
+    redirect('/')
   }
   const email = session.user.email
 
@@ -23,7 +22,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
 
     if(!project){
-      <NotFound/>
+     return <NotFound/>
     }
 
     
@@ -74,7 +73,12 @@ export default async function Page({ params }: { params: { id: string } }) {
           <div>
             { project?.status === 'PENDING'?(
                 <>
-              <form action={updateProject}>
+              <form onSubmit={(event) => {
+    event.preventDefault();
+    const form = event.currentTarget as HTMLFormElement;
+    const formData = new FormData(form);
+    updateProject(formData);
+}}>
               <p>Add a comment (Optional)</p>
               <textarea name="comment" id="comment" placeholder='Add a comment' className='w-full outline-sky-300 resize-none p-2 h-48 text-gray-900'></textarea>
               <div className='w-full justify-around flex mt-2'>

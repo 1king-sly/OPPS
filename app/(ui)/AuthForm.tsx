@@ -55,7 +55,11 @@ export default function AuthForm() {
   })
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    if (!event) {
+      return;
+    }
     event.preventDefault();
+
     setisLoading(true)
 
     if(variant === 'REGISTER'){
@@ -84,6 +88,9 @@ export default function AuthForm() {
   };
   
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event) {
+      return;
+    }
     const { name, value } = event.target;
     setFormData({
       ...formData,
