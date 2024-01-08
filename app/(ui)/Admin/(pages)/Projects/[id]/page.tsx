@@ -1,16 +1,17 @@
+'use server'
 
 import React from 'react';
 import { getServerSession } from 'next-auth';
 import authOptions from '@/utils/authUptions';
 import {  fetchSingleProject,  fetchUser,  updateProject } from '@/app/lib/actions';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import NotFound from './not-found';
 
 export default async function Page({ params }: { params: { id: string } }) {
 
   const session = await getServerSession()
   if(!session){
-    redirect('/')
+    return null
   }
   const email = session.user.email
 
@@ -18,11 +19,14 @@ export default async function Page({ params }: { params: { id: string } }) {
   const data =await fetchUser(email)
     const userId = data?.id
     const projectId = params.id
+    if(!userId || !projectId){
+      return null
+    }
     const project = await fetchSingleProject(userId,projectId)
 
 
     if(!project){
-     return <NotFound/>
+      <NotFound/>
     }
 
     
@@ -73,19 +77,14 @@ export default async function Page({ params }: { params: { id: string } }) {
           <div>
             { project?.status === 'PENDING'?(
                 <>
-              <form onSubmit={(event) => {
-    event.preventDefault();
-    const form = event.currentTarget as HTMLFormElement;
-    const formData = new FormData(form);
-    updateProject(formData);
-}}>
+              <form action={updateProject}>
               <p>Add a comment (Optional)</p>
               <textarea name="comment" id="comment" placeholder='Add a comment' className='w-full outline-sky-300 resize-none p-2 h-48 text-gray-900'></textarea>
               <div className='w-full justify-around flex mt-2'>
 
-              <input type="text" name='userId' title='userId' className='hidden' value={userId}  />
-              <input type="text" name='status' title='status' className='hidden' value={'REJECT'} />
+            
               <input type="text" name='projectId' title='projectId' className='hidden' value={projectId}  />
+              <input type="text" name='userId' title='userId' className='hidden' value={userId}  />
 
               <button type='submit' name='status' value={'REJECTED'} className='p-3 bg-rose-500  rounded-md '>Reject</button>
               <button type='submit' name='status' value={'ACCEPTED'} className='p-3 bg-green-500 rounded-md '>Accept</button>

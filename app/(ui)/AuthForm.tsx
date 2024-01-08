@@ -54,7 +54,8 @@ export default function AuthForm() {
     }
   })
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async () => {
+    const event = window.event; 
     if (!event) {
       return;
     }
@@ -164,7 +165,8 @@ export default function AuthForm() {
           />
 
           <div className='mt-4 text-gray-100'>
-          <Button type='submit' fullWidth onClick={() => { handleSubmit(event); toggleLoading(); }} disabled={disabled}>
+          <Button type='submit' fullWidth onClick={() => { handleSubmit(); toggleLoading(); }}
+           disabled={disabled}>
               {variant === 'LOGIN' ? 'Sign in' : 'Register'}
             </Button>
 

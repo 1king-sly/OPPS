@@ -525,14 +525,14 @@ export const fetchAdminDashboardProjects = async (userId:string) => {
 };
 
 
-export const fetchSingleProject = async (userId:string,projectId:string) => {
+export const fetchSingleProject = async (userId:number | undefined,projectId:string) => {
   'use server';
 
   try{
 
     const user = await prisma.user.findUnique({
       where: {
-        id: parseInt(userId),
+        id: parseInt(userId as unknown as string),
       },
       select: {
         id: true,
@@ -571,16 +571,18 @@ export const fetchSingleProject = async (userId:string,projectId:string) => {
 export const updateProject = async (formData: FormData) => {
   'use server';
     console.log(formData)
-    // const {userId,status,projectId,comment,amount} = Object.fromEntries(formData)
+    
 
     const userId = formData.get('userId') as string;
     const status = formData.get('status') as string;
     const projectId = formData.get('projectId') as string;
-    const comment = formData.get('comment') as string;
-    const amount = formData.get('amount') as string;
+    // const comment = formData.get('comment') as string;
+    // const amount = formData.get('amount') as string;
 
     const statusEnum = ProjectStatus[status as keyof typeof ProjectStatus]
 
+
+    
 
   try{
 
@@ -597,20 +599,20 @@ export const updateProject = async (formData: FormData) => {
 
     if (user) {
 
-      if(amount){
+      // if(amount){
 
-        const project = await prisma.project.update({
-          where:{
-            projectId:parseInt(projectId),
-            status:ProjectStatus.ACCEPTED,
+      //   const project = await prisma.project.update({
+      //     where:{
+      //       projectId:parseInt(projectId),
+      //       status:ProjectStatus.ACCEPTED,
   
-          },
-          data:{
-            // Payment:parseInt(amount)
-          }
-        })
+      //     },
+      //     data:{
+      //       // Payment:parseInt(amount)
+      //     }
+      //   })
 
-      }
+      // }
 
 
       const project = await prisma.project.update({
@@ -624,6 +626,7 @@ export const updateProject = async (formData: FormData) => {
           // comment:comment
         }
       })
+
       revalidatePath('/Admin/Dashboard')
       revalidatePath('/Admin/Projects')
       revalidatePath('/Admin/Reviewed')
