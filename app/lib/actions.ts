@@ -37,7 +37,6 @@ export const addProject = async (formData: FormData) => {
     });
 
 
-    console.log(user, "User");
 
     if (user) {
       const userId = user.id;
@@ -70,7 +69,7 @@ export const addProject = async (formData: FormData) => {
 }
 };
 
-export const fetchUserDashboardProjects = async (userId:string) => {
+export const fetchUserDashboardProjects = async (userId:number | undefined) => {
   'use server';
 
 
@@ -78,7 +77,7 @@ export const fetchUserDashboardProjects = async (userId:string) => {
 
     const user = await prisma.user.findUnique({
       where: {
-        id: parseInt(userId),
+        id: parseInt(userId as unknown as string),
       },
       select: {
         id: true,
@@ -111,7 +110,7 @@ export const fetchUserDashboardProjects = async (userId:string) => {
   
 };
 
-export const fetchUserProjects = async (userId:string) => {
+export const fetchUserProjects = async (userId:number | undefined) => {
   'use server';
 
 
@@ -119,7 +118,7 @@ export const fetchUserProjects = async (userId:string) => {
 
     const user = await prisma.user.findUnique({
       where: {
-        id: parseInt(userId),
+        id: parseInt(userId as unknown as string),
       },
       select: {
         id: true,
@@ -147,7 +146,7 @@ export const fetchUserProjects = async (userId:string) => {
   
 };
 
-export const fetchAllAdminProjects = async (userId:string,q:string) => {
+export const fetchAllAdminProjects = async (userId:number | undefined,q:string) => {
   'use server';
 
 
@@ -155,7 +154,7 @@ export const fetchAllAdminProjects = async (userId:string,q:string) => {
 
     const user = await prisma.user.findUnique({
       where: {
-        id: parseInt(userId),
+        id: parseInt(userId as unknown as string),
       },
       select: {
         id: true,
@@ -195,7 +194,7 @@ export const fetchAllAdminProjects = async (userId:string,q:string) => {
 };
 
 
-export const fetchAllAdminReviewedProjects = async (userId:string,query:string) => {
+export const fetchAllAdminReviewedProjects = async (userId:number | undefined,query:string) => {
   'use server';
 
 
@@ -203,7 +202,7 @@ export const fetchAllAdminReviewedProjects = async (userId:string,query:string) 
 
     const user = await prisma.user.findUnique({
       where: {
-        id: parseInt(userId),
+        id: parseInt(userId as unknown as string),
       },
       select: {
         id: true,
@@ -244,7 +243,7 @@ export const fetchAllAdminReviewedProjects = async (userId:string,query:string) 
 
   
 };
-export const countAllProjects = async (userId:string) => {
+export const countAllProjects = async (userId:number | undefined) => {
   'use server';
 
 
@@ -252,7 +251,7 @@ export const countAllProjects = async (userId:string) => {
 
     const user = await prisma.user.findUnique({
       where: {
-        id: parseInt(userId),
+        id: parseInt(userId as unknown as string),
       },
       select: {
         id: true,
@@ -279,7 +278,7 @@ export const countAllProjects = async (userId:string) => {
 
   
 };
-export const countReviewedProjects = async (userId:string) => {
+export const countReviewedProjects = async (userId:number | undefined) => {
   'use server';
 
 
@@ -287,7 +286,7 @@ export const countReviewedProjects = async (userId:string) => {
 
     const user = await prisma.user.findUnique({
       where: {
-        id: parseInt(userId),
+        id: parseInt(userId as unknown as string),
       },
       select: {
         id: true,
@@ -314,7 +313,7 @@ export const countReviewedProjects = async (userId:string) => {
 
   
 };
-export const countPendingProjects = async (userId:string) => {
+export const countPendingProjects = async (userId:number | undefined) => {
   'use server';
 
 
@@ -322,7 +321,7 @@ export const countPendingProjects = async (userId:string) => {
 
     const user = await prisma.user.findUnique({
       where: {
-        id: parseInt(userId),
+        id: parseInt(userId as unknown as string),
       },
       select: {
         id: true,
@@ -347,7 +346,7 @@ export const countPendingProjects = async (userId:string) => {
 
   
 };
-export const countUserPendingProjects = async (userId:string) => {
+export const countUserPendingProjects = async (userId:number | undefined) => {
   'use server';
 
 
@@ -355,7 +354,7 @@ export const countUserPendingProjects = async (userId:string) => {
 
     const user = await prisma.user.findUnique({
       where: {
-        id: parseInt(userId),
+        id: parseInt(userId as unknown as string),
       },
       select: {
         id: true,
@@ -368,7 +367,7 @@ export const countUserPendingProjects = async (userId:string) => {
 
       const projects = await prisma.project.count({
         where:{
-          userId: parseInt(userId),
+          userId: parseInt(userId as unknown as string),
           status:ProjectStatus.PENDING
         }
       })
@@ -381,7 +380,7 @@ export const countUserPendingProjects = async (userId:string) => {
 
   
 };
-export const countUserTotalProjects = async (userId:string) => {
+export const countUserTotalProjects = async (userId:number | undefined) => {
   'use server';
 
 
@@ -389,7 +388,7 @@ export const countUserTotalProjects = async (userId:string) => {
 
     const user = await prisma.user.findUnique({
       where: {
-        id: parseInt(userId),
+        id: parseInt(userId as unknown as string),
       },
       select: {
         id: true,
@@ -402,7 +401,7 @@ export const countUserTotalProjects = async (userId:string) => {
 
       const projects = await prisma.project.count({
         where:{
-          userId:parseInt(userId),
+          userId:parseInt(userId as unknown as string),
           status: {
             in: [ProjectStatus.ACCEPTED, ProjectStatus.REJECTED, ProjectStatus.PENDING],
           },
@@ -417,7 +416,7 @@ export const countUserTotalProjects = async (userId:string) => {
 
   
 };
-export const countUserAcceptedProjects = async (userId:string) => {
+export const countUserAcceptedProjects = async (userId:number | undefined) => {
   'use server';
 
 
@@ -425,7 +424,7 @@ export const countUserAcceptedProjects = async (userId:string) => {
 
     const user = await prisma.user.findUnique({
       where: {
-        id: parseInt(userId),
+        id: parseInt(userId as unknown as string),
       },
       select: {
         id: true,
@@ -438,7 +437,7 @@ export const countUserAcceptedProjects = async (userId:string) => {
 
       const projects = await prisma.project.count({
         where:{
-          userId:parseInt(userId),
+          userId:parseInt(userId as unknown as string),
           status:ProjectStatus.ACCEPTED
         }
       })
@@ -451,7 +450,7 @@ export const countUserAcceptedProjects = async (userId:string) => {
 
   
 };
-export const countUserRejectedProjects = async (userId:string) => {
+export const countUserRejectedProjects = async (userId:number | undefined) => {
   'use server';
 
 
@@ -459,7 +458,7 @@ export const countUserRejectedProjects = async (userId:string) => {
 
     const user = await prisma.user.findUnique({
       where: {
-        id: parseInt(userId),
+        id: parseInt(userId as unknown as string),
       },
       select: {
         id: true,
@@ -472,7 +471,7 @@ export const countUserRejectedProjects = async (userId:string) => {
 
       const projects = await prisma.project.count({
         where:{
-          userId:parseInt(userId),
+          userId:parseInt(userId as unknown as string),
           status:ProjectStatus.REJECTED
         }
       })
@@ -486,16 +485,15 @@ export const countUserRejectedProjects = async (userId:string) => {
   
 };
 
-export const fetchAdminDashboardProjects = async (userId:string) => {
+export const fetchAdminDashboardProjects = async (userId:number | undefined) => {
   'use server';
 
-  console.log('User Id', userId)
 
   try{
 
     const user = await prisma.user.findUnique({
       where: {
-        id: parseInt(userId),
+        id: parseInt(userId as unknown as string),
        
       },
       select: {
