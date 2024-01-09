@@ -13,17 +13,10 @@ export default async function Page({ params }: { params: { id: string } }) {
   if(!session){
     return null
   }
-  const email = session.user.email
-
-
-  const data =await fetchUser(email)
-    const userId = data?.id
+  
     const projectId = params.id
-    if(!userId || !projectId){
-      return null
-    }
-    const project = await fetchSingleProject(userId,projectId)
-
+    
+    const project = await fetchSingleProject(projectId)
 
     if(!project){
       <NotFound/>
@@ -84,8 +77,6 @@ export default async function Page({ params }: { params: { id: string } }) {
 
             
               <input type="text" name='projectId' title='projectId' className='hidden' value={projectId}  />
-              <input type="text" name='userId' title='userId' className='hidden' value={userId}  />
-
               <button type='submit' name='status' value={'REJECTED'} className='p-3 bg-rose-500  rounded-md '>Reject</button>
               <button type='submit' name='status' value={'ACCEPTED'} className='p-3 bg-green-500 rounded-md '>Accept</button>
 

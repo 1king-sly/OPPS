@@ -21,7 +21,6 @@ datasource db {
    hashedPassword String
    email          String    @unique
    registrationNumber String @unique
-  //  status         UserStatus @default(ACTIVE)
    userType       UserType
    createdAt      DateTime @default(now())
    updatedAt      DateTime @default(now())
@@ -37,18 +36,10 @@ model Project {
   ans3           String
   ans4           String
   school         School
-  //  comment        String        @default("")
-  // Payment        Int @default(0)
-  // paymentStatus        PaymentStatus @default(UNPAID)
   status         ProjectStatus @default(PENDING)
   userId         Int
   user           User      @relation(fields: [userId], references: [id])
 }
-
-
-
-
-
  enum UserType {
    ADMIN
    STUDENT
@@ -63,12 +54,4 @@ model Project {
    PENDING
    ACCEPTED
    REJECTED
- }
- enum UserStatus {
-   ACTIVE
-   INACTIVE
- }
- enum PaymentStatus {
-   PAID
-   UNPAID
  }

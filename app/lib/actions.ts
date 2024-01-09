@@ -75,23 +75,10 @@ export const fetchUserDashboardProjects = async (userId:number | undefined) => {
 
   try{
 
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId as unknown as string),
-      },
-      select: {
-        id: true,
-      },
-    });
-
-
-
-    if (user) {
-
       const projects = await prisma.project.findMany(
        {
         where: {
-          userId: user.id,
+          userId: parseInt(userId as unknown as string),
         },
         take: 5,
         orderBy: {
@@ -101,7 +88,7 @@ export const fetchUserDashboardProjects = async (userId:number | undefined) => {
       )
       console.log('User Projects', projects)
       return projects
-    }
+    
 
   }catch(error){
     console.log("Error fetching Dashboard User Projects",error)
@@ -115,29 +102,15 @@ export const fetchUserProjects = async (userId:number | undefined) => {
 
 
   try{
-
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId as unknown as string),
-      },
-      select: {
-        id: true,
-      },
-    });
-
-
-
-    if (user) {
-
       const projects = await prisma.project.findMany(
        {
         where: {
-          userId: user.id,
+          userId:parseInt(userId as unknown as string),
         },
        }
       )
       return projects
-    }
+    
 
   }catch(error){
     console.log("Error fetching All User Projects",error)
@@ -152,18 +125,10 @@ export const fetchAllAdminProjects = async (userId:number | undefined,q:string) 
 
   try{
 
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId as unknown as string),
-      },
-      select: {
-        id: true,
-      },
-    });
+    
 
     
 
-    if (user) {
 
       // if(q){
       //   const projects = await prisma.project.findMany(
@@ -184,7 +149,7 @@ export const fetchAllAdminProjects = async (userId:number | undefined,q:string) 
          }
       )
       return projects
-    }
+    
 
   }catch(error){
     console.error("Error fetching All Projects",error)
@@ -200,18 +165,10 @@ export const fetchAllAdminReviewedProjects = async (userId:number | undefined,qu
 
   try{
 
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId as unknown as string),
-      },
-      select: {
-        id: true,
-      },
-    });
+    
 
 
 
-    if (user) {
 
       // if(query){
 
@@ -235,7 +192,7 @@ export const fetchAllAdminReviewedProjects = async (userId:number | undefined,qu
          }
       )
       return projects
-    }
+   
 
   }catch(error){
     console.error("Error fetching Reviewed Projects",error)
@@ -243,26 +200,13 @@ export const fetchAllAdminReviewedProjects = async (userId:number | undefined,qu
 
   
 };
-export const countAllProjects = async (userId:number | undefined) => {
+export const countAllProjects = async () => {
   'use server';
 
 
   try{
 
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId as unknown as string),
-      },
-      select: {
-        id: true,
-      },
-    });
-
-
-
-    if (user) {
-
-      const projects = await prisma.project.count({
+        const projects = await prisma.project.count({
         where:{
           status: {
             in: [ProjectStatus.ACCEPTED, ProjectStatus.REJECTED, ProjectStatus.PENDING],
@@ -270,7 +214,7 @@ export const countAllProjects = async (userId:number | undefined) => {
         }
       })
       return projects
-    }
+    
 
   }catch(error){
     console.error("Error fetching All Count Projects",error)
@@ -278,24 +222,12 @@ export const countAllProjects = async (userId:number | undefined) => {
 
   
 };
-export const countReviewedProjects = async (userId:number | undefined) => {
+export const countReviewedProjects = async () => {
   'use server';
 
 
   try{
 
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId as unknown as string),
-      },
-      select: {
-        id: true,
-      },
-    });
-
-
-
-    if (user) {
 
       const projects = await prisma.project.count({
         where:{
@@ -305,7 +237,7 @@ export const countReviewedProjects = async (userId:number | undefined) => {
         }
       })
       return projects
-    }
+   
 
   }catch(error){
     console.error("Error fetching All Reviewed Projects",error)
@@ -313,24 +245,12 @@ export const countReviewedProjects = async (userId:number | undefined) => {
 
   
 };
-export const countPendingProjects = async (userId:number | undefined) => {
+export const countPendingProjects = async () => {
   'use server';
 
 
   try{
-
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId as unknown as string),
-      },
-      select: {
-        id: true,
-      },
-    });
-
-
-
-    if (user) {
+   
 
       const projects = await prisma.project.count({
         where:{
@@ -338,7 +258,7 @@ export const countPendingProjects = async (userId:number | undefined) => {
         }
       })
       return projects
-    }
+   
 
   }catch(error){
     console.error("Error fetching All Pending Projects",error)
@@ -352,19 +272,6 @@ export const countUserPendingProjects = async (userId:number | undefined) => {
 
   try{
 
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId as unknown as string),
-      },
-      select: {
-        id: true,
-      },
-    });
-
-
-
-    if (user) {
-
       const projects = await prisma.project.count({
         where:{
           userId: parseInt(userId as unknown as string),
@@ -372,7 +279,7 @@ export const countUserPendingProjects = async (userId:number | undefined) => {
         }
       })
       return projects
-    }
+    
 
   }catch(error){
     console.error("Error fetching Count User Projects",error)
@@ -386,19 +293,6 @@ export const countUserTotalProjects = async (userId:number | undefined) => {
 
   try{
 
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId as unknown as string),
-      },
-      select: {
-        id: true,
-      },
-    });
-
-
-
-    if (user) {
-
       const projects = await prisma.project.count({
         where:{
           userId:parseInt(userId as unknown as string),
@@ -408,7 +302,7 @@ export const countUserTotalProjects = async (userId:number | undefined) => {
         }
       })
       return projects
-    }
+    
 
   }catch(error){
     console.error("Error fetching All Count User Projects",error)
@@ -422,19 +316,6 @@ export const countUserAcceptedProjects = async (userId:number | undefined) => {
 
   try{
 
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId as unknown as string),
-      },
-      select: {
-        id: true,
-      },
-    });
-
-
-
-    if (user) {
-
       const projects = await prisma.project.count({
         where:{
           userId:parseInt(userId as unknown as string),
@@ -442,7 +323,6 @@ export const countUserAcceptedProjects = async (userId:number | undefined) => {
         }
       })
       return projects
-    }
 
   }catch(error){
     console.error("Error fetching All User Accepted Projects",error)
@@ -455,20 +335,6 @@ export const countUserRejectedProjects = async (userId:number | undefined) => {
 
 
   try{
-
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId as unknown as string),
-      },
-      select: {
-        id: true,
-      },
-    });
-
-
-
-    if (user) {
-
       const projects = await prisma.project.count({
         where:{
           userId:parseInt(userId as unknown as string),
@@ -476,7 +342,6 @@ export const countUserRejectedProjects = async (userId:number | undefined) => {
         }
       })
       return projects
-    }
 
   }catch(error){
     console.error("Error fetching All User Rejected Projects",error)
@@ -485,25 +350,11 @@ export const countUserRejectedProjects = async (userId:number | undefined) => {
   
 };
 
-export const fetchAdminDashboardProjects = async (userId:number | undefined) => {
+export const fetchAdminDashboardProjects = async () => {
   'use server';
 
 
   try{
-
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId as unknown as string),
-       
-      },
-      select: {
-        id: true,
-      }
-    });
-
-
-
-    if (user) {
 
       const projects = await prisma.project.findMany(
        {where:{
@@ -513,7 +364,7 @@ export const fetchAdminDashboardProjects = async (userId:number | undefined) => 
        }
       )
       return projects
-    }
+    
 
   }catch(error){
     console.error("Error fetching Dashboard Admin Projects",error)
@@ -523,23 +374,10 @@ export const fetchAdminDashboardProjects = async (userId:number | undefined) => 
 };
 
 
-export const fetchSingleProject = async (userId:number | undefined,projectId:string) => {
+export const fetchSingleProject = async (projectId:string) => {
   'use server';
 
   try{
-
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId as unknown as string),
-      },
-      select: {
-        id: true,
-      },
-    });
-
-
-
-    if (user) {
 
       const project = await prisma.project.findUnique({
         where:{
@@ -557,7 +395,7 @@ export const fetchSingleProject = async (userId:number | undefined,projectId:str
         },
       })
       return project
-    }
+   
 
   }catch(error){
     console.error("Error fetching Single Project",error)
@@ -570,8 +408,6 @@ export const updateProject = async (formData: FormData) => {
   'use server';
     console.log(formData)
     
-
-    const userId = formData.get('userId') as string;
     const status = formData.get('status') as string;
     const projectId = formData.get('projectId') as string;
     // const comment = formData.get('comment') as string;
@@ -583,20 +419,6 @@ export const updateProject = async (formData: FormData) => {
     
 
   try{
-
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(userId),
-      },
-      select: {
-        id: true,
-      },
-    });
-
-
-
-    if (user) {
-
       // if(amount){
 
       //   const project = await prisma.project.update({
@@ -628,11 +450,6 @@ export const updateProject = async (formData: FormData) => {
       revalidatePath('/Admin/Dashboard')
       revalidatePath('/Admin/Projects')
       revalidatePath('/Admin/Reviewed')
-
-
-     
-    }
-
 
   }catch(error){
     console.error("Error Updating Project",error)

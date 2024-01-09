@@ -11,14 +11,10 @@ export default async function Cards() {
   if(!session){
     redirect('/')
   }
-  const email = session.user.email
-
-
-  const data =await fetchUser(email)
-
-  const pending = await countPendingProjects(data?.id)
-  const total = await countAllProjects(data?.id)
-  const reviewed = await countReviewedProjects(data?.id)
+  
+  const pending = await countPendingProjects()
+  const total = await countAllProjects()
+  const reviewed = await countReviewedProjects()
 
 
   return (

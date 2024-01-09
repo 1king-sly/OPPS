@@ -11,13 +11,8 @@ export default async function Tables() {
   if(!session){
     redirect('/')
   }
-  const email = session.user.email
-
-
-  const data =await fetchUser(email)
-
   
-  const datas = await fetchAdminDashboardProjects(data?.id);
+  const datas = await fetchAdminDashboardProjects();
 
   return (
     <>

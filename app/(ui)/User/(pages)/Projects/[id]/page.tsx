@@ -12,13 +12,9 @@ export default async function Page({ params }: { params: { id: string } }) {
   if(!session){
     redirect('/')
   }
-  const email = session.user.email
-
-
-  const data =await fetchUser(email)
-    const userId = data?.id
+  
     const projectId = params.id
-    const project = await fetchSingleProject(userId,projectId)
+    const project = await fetchSingleProject(projectId)
 
     if(!project){
       return <NotFound/>

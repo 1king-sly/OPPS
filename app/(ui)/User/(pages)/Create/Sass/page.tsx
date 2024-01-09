@@ -36,12 +36,7 @@ export default async  function Page() {
         </div>
 
         <div>
-          <form onSubmit={(event) => {
-    event.preventDefault();
-    const form = event.currentTarget as HTMLFormElement;
-    const formData = new FormData(form);
-    addProject(formData);
-}} className='w-[80vw] flex flex-col gap-2' >
+          <form action={addProject} className='w-[80vw] flex flex-col gap-2' >
             <div className='w-full flex justify-center'>
               <textarea
                 name="title"
