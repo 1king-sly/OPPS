@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import SideNav from './Component/SideNav'
 import Header from './Component/Header'
-import authOptions from '@/utils/authUptions'
+import authOptions from '@/app/api/auth/[...nextauth]/authUptions'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import { fetchUser } from '@/app/lib/actions'

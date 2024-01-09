@@ -5,7 +5,7 @@ import Button from '@/app/(ui)/Button';
 import Question from '../Question';
 import axios from 'axios';
 import { getSession, useSession } from 'next-auth/react';
-import authOptions from '@/utils/authUptions';
+import authOptions from '@/app/api/auth/[...nextauth]/authUptions';
 import { getServerSession } from 'next-auth';
 import { addProject, fetchUser } from '@/app/lib/actions';
 import { redirect } from 'next/navigation';
