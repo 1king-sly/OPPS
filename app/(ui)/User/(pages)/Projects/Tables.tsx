@@ -1,10 +1,8 @@
 'use server'
 import React from 'react';
 import { getServerSession } from 'next-auth';
-import authOptions from '@/app/api/auth/[...nextauth]/authUptions';
 import { fetchUser, fetchUserProjects } from '@/app/lib/actions';
 import Link from 'next/link';
-import Table from '@/app/(ui)/User/Component/Table';
 import { CheckIcon, ClockIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { redirect } from 'next/navigation';
 import Search from '../../Component/Search';

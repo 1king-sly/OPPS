@@ -2,7 +2,6 @@ import React from 'react'
 import Card from './Card'
 import { countPendingProjects,countAllProjects,countReviewedProjects,fetchUser } from '@/app/lib/actions'
 import { getServerSession } from 'next-auth';
-import authOptions from '@/app/api/auth/[...nextauth]/authUptions'
 import { redirect } from 'next/navigation';
 
 

@@ -2,7 +2,6 @@
 import React from 'react';
 import Table from './Table';
 import { getServerSession } from 'next-auth';
-import authOptions from '@/app/api/auth/[...nextauth]/authUptions';
 import { fetchUser, fetchUserDashboardProjects, fetchUserProjects } from '@/app/lib/actions';
 import Link from 'next/link';
 import { CheckIcon, ClockIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';

@@ -1,7 +1,6 @@
 'use server'
 import React from 'react';
 import { getServerSession } from 'next-auth';
-import authOptions from '@/app/api/auth/[...nextauth]/authUptions';
 import { fetchAllAdminProjects, fetchUser } from '@/app/lib/actions';
 import Link from 'next/link';
 import Search from '@/app/(ui)/User/Component/Search';

@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { getServerSession } from 'next-auth';
-import authOptions from '@/app/api/auth/[...nextauth]/authUptions';
 import {  fetchSingleProject,  fetchUser,  updateProject } from '@/app/lib/actions';
 import { notFound } from 'next/navigation';
 import NotFound from './not-found';
