@@ -32,7 +32,7 @@ export default async function Tables() {
             <Link href={`/Admin/Projects/${data.projectId}`} key={data.projectId}>
 
             <tr className='justify-around w-full flex bg-gray-100 py-2 '>
-                  <td className='w-1/3'>{data.title}  </td>
+                  <td className='w-1/3 truncate'>{data.title}  </td>
                   <td className='w-1/3' >{data.createdAt.toLocaleDateString()} </td>
                   <td className='w-1/12' >{data.school} </td>
                 </tr>

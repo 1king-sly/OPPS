@@ -7,9 +7,10 @@ import Link from 'next/link';
 import Table from '@/app/(ui)/User/Component/Table';
 import { CheckIcon, ClockIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { redirect } from 'next/navigation';
+import Search from '../../Component/Search';
 
 
-export default async function Tables() {
+export default async function Tables({searchParams}:{searchParams:string}) {
   const session = await getServerSession()
   if(!session){
     redirect('/')
@@ -19,11 +20,16 @@ export default async function Tables() {
 
   const data =await fetchUser(email)
 
-  const datas = await fetchUserProjects(data?.id);
+  const params = new URLSearchParams(searchParams);
+  const q = params.get('query') || '';
+
+  const datas = await fetchUserProjects(data?.id,q);
 
   return (
     <>
  <div className=' p-10  pb-40 '>
+
+ <Search placeholder="Search for a project ..."/>
     <table className=' w-full'>
         <tbody className='  flex-col mt-4 gap-3 flex'>
         <tr className=' flex justify-around w-full'>

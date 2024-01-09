@@ -16,8 +16,11 @@ export default async  function Page({searchParams}:{searchParams:string}) {
 
   const data =await fetchUser(email)
 
-  const q = searchParams || ''
-  const datas = await fetchAllAdminReviewedProjects(data?.id,q);
+  const params = new URLSearchParams(searchParams);
+  const q = params.get('query') || '';
+  const datas = await fetchAllAdminReviewedProjects(data?.id, q);
+  
+
 
 
   return (

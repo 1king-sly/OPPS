@@ -1,9 +1,8 @@
-import { Prisma, ProjectStatus, School } from "@prisma/client";
+import {  ProjectStatus, School } from "@prisma/client";
 import prisma from '@/app/lib/prismadb';
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { title } from "process";
-import { ProjectFormData } from "next-auth";
+
 
 
 
@@ -16,16 +15,19 @@ export const addProject = async (formData: FormData) => {
   try {
     const schoolFromFormData = formData.get('schoolFromFormData');
     const title = formData.get('title') as string;
-     const email = formData.get('email') as string;
+    const email = formData.get('email') as string;
     const ans1 = formData.get('ans1') as string;
     const ans2 = formData.get('ans2') as string;
     const ans3 = formData.get('ans3') as string;
     const ans4 = formData.get('ans4') as string;
 
-    const schoolEnum = School[schoolFromFormData as keyof typeof School];
-    if(!email){
-        console.log('Email missing')
+    
+    if (!email || !title || !ans1 || !ans2 || !ans3 || !ans4) {
+      console.log('Required field is missing');
+      throw new Error('Required field is missing'); 
     }
+
+    const schoolEnum = School[schoolFromFormData as keyof typeof School];
 
     const user = await prisma.user.findUnique({
       where: {
@@ -35,8 +37,6 @@ export const addProject = async (formData: FormData) => {
         id: true,
       },
     });
-
-
 
     if (user) {
       const userId = user.id;
@@ -48,26 +48,23 @@ export const addProject = async (formData: FormData) => {
           ans3,
           ans4,
           userId,
-          // comment:comment
-          school:schoolEnum,
+          school: schoolEnum,
         },
       });
 
-      revalidatePath('/User/Dashboard')
-      
-      // console.log(newProject, "New Project");
+      revalidatePath('/User/Dashboard');
 
-     
+      
     }
   } catch (error) {
     console.error(error, 'Failed to create project');
     
-  }
-  finally {
-    // Optionally redirect even if an error occurs, if desired
+  } finally {
+    
     redirect('/User/Dashboard');
-}
+  }
 };
+
 
 export const fetchUserDashboardProjects = async (userId:number | undefined) => {
   'use server';
@@ -97,11 +94,21 @@ export const fetchUserDashboardProjects = async (userId:number | undefined) => {
   
 };
 
-export const fetchUserProjects = async (userId:number | undefined) => {
+export const fetchUserProjects = async (userId:number | undefined, query: string) => {
   'use server';
 
 
   try{
+    if  (typeof query === 'string' && query.trim() !== '') {
+      const projects = await prisma.project.findMany({
+        where: {
+          title: {
+            contains: query.trim(),
+          },
+        },
+      });
+      return projects;
+    }
       const projects = await prisma.project.findMany(
        {
         where: {
@@ -119,30 +126,25 @@ export const fetchUserProjects = async (userId:number | undefined) => {
   
 };
 
-export const fetchAllAdminProjects = async (userId:number | undefined,q:string) => {
+export const fetchAllAdminProjects = async (userId:number | undefined,query:string) => {
   'use server';
 
 
   try{
 
-    
+    if  (typeof query === 'string' && query.trim() !== '') {
+      const projects = await prisma.project.findMany({
+        where: {
+          status:ProjectStatus.PENDING,
+          title: {
+            contains: query.trim(),
+          },
+        },
+      });
+      return projects;
+    }
 
-    
-
-
-      // if(q){
-      //   const projects = await prisma.project.findMany(
-      //     {where:{
-      //       status:ProjectStatus.PENDING,
-      //       title:q,
-      //      }
-      //      }
-      //   )
-  
-      //   return projects
-      // }
-
-      const projects = await prisma.project.findMany(
+    const projects = await prisma.project.findMany(
         {where:{
           status:ProjectStatus.PENDING
          }
@@ -159,47 +161,40 @@ export const fetchAllAdminProjects = async (userId:number | undefined,q:string) 
 };
 
 
-export const fetchAllAdminReviewedProjects = async (userId:number | undefined,query:string) => {
+export const fetchAllAdminReviewedProjects = async (userId: number | undefined, query: string) => {
   'use server';
 
-
-  try{
-
-    
-
-
-
-
-      // if(query){
-
-      //   const projects = await prisma.project.findMany(
-      //     {where:{
-      //       status:ProjectStatus.PENDING,
-      //       title:query,
-      //      }
-      //      }
-      //   )
-  
-      //   return projects
-      // }
-
-      const projects = await prisma.project.findMany(
-        {where:{
+  try {
+    if  (typeof query === 'string' && query.trim() !== '') {
+      const projects = await prisma.project.findMany({
+        where: {
           status: {
             in: [ProjectStatus.ACCEPTED, ProjectStatus.REJECTED],
           },
-         }
-         }
-      )
-      return projects
-   
+          title: {
+            contains: query.trim(),
+          },
+        },
+      });
+      return projects;
+    }
 
-  }catch(error){
-    console.error("Error fetching Reviewed Projects",error)
+    const projects = await prisma.project.findMany({
+      where: {
+        status: {
+          in: [ProjectStatus.ACCEPTED, ProjectStatus.REJECTED],
+        },
+      },
+    });
+    return projects;
+  } catch (error) {
+    console.error('Error fetching Reviewed Projects', error);
   }
-
-  
 };
+
+
+
+
 export const countAllProjects = async () => {
   'use server';
 

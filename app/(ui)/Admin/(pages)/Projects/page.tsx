@@ -10,7 +10,6 @@ import { redirect } from 'next/navigation';
 
 export default async  function Page({searchParams}:{searchParams:string}) {
 
-  const q = searchParams || ''
 
   const session = await getServerSession()
   if(!session){
@@ -18,6 +17,8 @@ export default async  function Page({searchParams}:{searchParams:string}) {
   }
   const email = session.user.email
 
+  const params = new URLSearchParams(searchParams);
+  const q = params.get('query') || '';
 
   const data =await fetchUser(email)
   const datas = await fetchAllAdminProjects(data?.id,q);
