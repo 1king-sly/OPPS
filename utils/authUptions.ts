@@ -3,6 +3,8 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import prisma from '@/app/lib/prismadb';
 import { UserType } from '@prisma/client';
+import NextAuth from 'next-auth';
+import Auth0 from 'next-auth/providers/auth0';
 
 type User = {
   id: string;
@@ -16,6 +18,8 @@ type User = {
   updatedAt:Date;
   // status:UserStatus;
 };
+type SessionStrategyType = 'jwt';
+
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
@@ -128,9 +132,12 @@ export const authOptions = {
 
   debug: process.env.NODE_ENV === 'development',
   session: {
-    strategy: 'jwt',
+    strategy: 'jwt' as SessionStrategyType,
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-export default authOptions;
+export default NextAuth;
+
+
+
