@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import NextAuth, { SessionStrategy } from 'next-auth';
 
-import { authOptions } from '@/app/api/auth/[...nextauth]/authUptions';
+import { authOptions } from './authUptions';
 
 // Ensure authOptions.secret is defined or provide a default value
 const secret = authOptions.secret || 'default-secret';
