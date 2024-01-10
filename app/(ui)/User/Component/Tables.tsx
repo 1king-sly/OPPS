@@ -43,24 +43,23 @@ export default async function Tables() {
                       {data.status === 'PENDING' ?(
                         <>
                         <div className='w-full flex gap-0.5 bg-gray-300 p-2 rounded-md '>
-                      <ClockIcon className="ml-1 w-4 text-gray-500" />
-                          PENDING
+                        <p className=' text-sm'>PENDING</p>
                            </div>
                         </>
                       ): null}
                       {data.status === 'ACCEPTED' ?(
                         <>
                         <div className='w-full flex gap-0.5 bg-green-300 p-2 rounded-md '>
-                      <CheckIcon className="ml-1 w-4 text-gray-500" />
-                      ACCEPTED
+                     
+                        <p className=' text-sm'>ACCEPTED</p>
                            </div>
                         </>
                       ): null}
                       {data.status === 'REJECTED' ?(
                         <>
-                        <div className='w-full flex gap-0.5 bg-rose-500 p-2 rounded-md '>
-                      <ExclamationTriangleIcon className="ml-1 w-4 text-gray-500" />
-                      REJECTED
+                        <div className='w-full flex  bg-rose-500 p-2 rounded-md  '>
+                        <p className=' text-sm'>REJECTED</p>
+                      
                            </div>
                         </>
                       ): null}

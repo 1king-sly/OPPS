@@ -2,19 +2,19 @@
 import React from 'react'
 import Image from 'next/image'
 import logo from '@/public/images/Mmust logo.png'
-import { getSession, useSession } from 'next-auth/react'
 import { getServerSession } from 'next-auth'
 import { fetchUser } from '@/app/lib/actions'
 import { redirect } from 'next/navigation'
+import { authOptions } from '@/utils/authUptions'
 
 export default async  function Header() {
 
 
-  const session = await getServerSession()
+  const session = await getServerSession(authOptions)
   if(!session){
     redirect('/')
   }
-  const email = session.user.email
+  const email = session?.email
 
 
   const data =await fetchUser(email)
