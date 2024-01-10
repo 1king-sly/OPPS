@@ -6,9 +6,9 @@ export default withAuth({
     }
 });
 
-// export const config ={
-//     matcher:[
-//         '/Admin/:path*',
-//         '/User/:path*',
-//     ]
-// }
+export const config ={
+    matcher:[
+        '/Admin/:path*',
+        '/User/:path*',
+    ]
+}
