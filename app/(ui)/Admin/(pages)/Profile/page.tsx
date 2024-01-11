@@ -5,7 +5,6 @@ import profile from '@/public/images/profile.png'
 import Button from '@/app/(ui)/Button'
 import { getServerSession } from 'next-auth'
 import { fetchUser } from '@/app/lib/actions'
-import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 
 

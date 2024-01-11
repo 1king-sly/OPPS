@@ -3,8 +3,8 @@ import React from 'react';
 import { getServerSession } from 'next-auth';
 import Image from 'next/image'
 import profile from '@/public/images/profile.png'
-import {  fetchSingleProject,  fetchUser,  updateProject,fetchSuperAdminUser, updateUser } from '@/app/lib/actions';
-import { notFound, redirect } from 'next/navigation';
+import { fetchSuperAdminUser, updateUser } from '@/app/lib/actions';
+import {  redirect } from 'next/navigation';
 import NotFound from './not-found';
 import Button from '@/app/(ui)/Button';
 
@@ -19,7 +19,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     
     const user = await fetchSuperAdminUser(userId)
     if(!user){
-      <NotFound/>
+     return <NotFound/>
     }
 
     

@@ -1,4 +1,3 @@
-import type { Metadata } from 'next'
 import SideNav from './Component/SideNav'
 import Header from './Component/Header'
 import { getServerSession } from 'next-auth'
@@ -7,10 +6,7 @@ import { fetchUser } from '@/app/lib/actions'
 
 
 
-// export const metadata: Metadata = {
-//   title: 'Dashboard',
-//   description: 'Dashboard',
-// }
+
 
 export default async function RootLayout({
   children,

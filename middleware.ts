@@ -10,5 +10,6 @@ export const config ={
     matcher:[
         '/Admin/:path*',
         '/User/:path*',
+        '/SuperAdmin/:path*',
     ]
 }

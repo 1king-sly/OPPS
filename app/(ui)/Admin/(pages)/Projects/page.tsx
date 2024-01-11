@@ -1,7 +1,7 @@
 'use server'
 import React, { Suspense } from 'react';
 import { getServerSession } from 'next-auth';
-import { fetchAllAdminProjects, fetchUser } from '@/app/lib/actions';
+import { fetchAllAdminProjects } from '@/app/lib/actions';
 import Link from 'next/link';
 import Search from '@/app/(ui)/User/Component/Search';
 import Projects from '@/app/(ui)/User/Skeleton/Projects';

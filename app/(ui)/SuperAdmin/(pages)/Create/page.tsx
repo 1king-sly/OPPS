@@ -1,10 +1,8 @@
 'use server'
 import React from 'react';
 import { getServerSession } from 'next-auth';
-import Image from 'next/image'
-import profile from '@/public/images/profile.png'
 import {  createUser } from '@/app/lib/actions';
-import { notFound, redirect } from 'next/navigation';
+import {  redirect } from 'next/navigation';
 import Button from '@/app/(ui)/Button';
 
 export default async function Page() {

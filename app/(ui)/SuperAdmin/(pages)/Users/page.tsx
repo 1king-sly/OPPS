@@ -1,10 +1,9 @@
 import React from 'react';
 import { getServerSession } from 'next-auth';
-import {fetchUsers,deleteSingleUser } from '@/app/lib/actions';
+import {fetchUsers } from '@/app/lib/actions';
 import Link from 'next/link';
 import Search from '@/app/(ui)/User/Component/Search';
 import { redirect } from 'next/navigation';
-import { TrashIcon } from '@heroicons/react/24/outline';
 
 export default async  function Page({searchParams}:{searchParams:string}) {
   const session = await getServerSession()

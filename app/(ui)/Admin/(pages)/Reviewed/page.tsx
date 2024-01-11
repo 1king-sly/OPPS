@@ -1,6 +1,6 @@
 import React from 'react';
 import { getServerSession } from 'next-auth';
-import { fetchAllAdminReviewedProjects, fetchUser } from '@/app/lib/actions';
+import { fetchAllAdminReviewedProjects } from '@/app/lib/actions';
 import Link from 'next/link';
 import Search from '@/app/(ui)/User/Component/Search';
 import { redirect } from 'next/navigation';

@@ -3,8 +3,6 @@ import Image from 'next/image';
 import logo from '@/public/images/Mmust logo.png';
 import Button from '@/app/(ui)/Button';
 import Question from '../Question';
-import axios from 'axios';
-import { getSession, useSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth';
 import { addProject, fetchUser } from '@/app/lib/actions';
 import { redirect } from 'next/navigation';

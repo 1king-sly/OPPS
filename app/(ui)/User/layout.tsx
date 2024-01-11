@@ -6,12 +6,6 @@ import { redirect } from 'next/navigation'
 import { fetchUser } from '@/app/lib/actions'
 
 
-
-// export const metadata: Metadata = {
-//   title: 'Dashboard',
-//   description: 'Dashboard',
-// }
-
 export default async function RootLayout({
   children,
 }: {

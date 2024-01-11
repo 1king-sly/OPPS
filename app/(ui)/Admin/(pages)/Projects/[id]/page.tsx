@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { getServerSession } from 'next-auth';
-import {  fetchSingleProject,  fetchUser,  updateProject } from '@/app/lib/actions';
-import { notFound, redirect } from 'next/navigation';
+import {  fetchSingleProject,updateProject } from '@/app/lib/actions';
+import {  redirect } from 'next/navigation';
 import NotFound from './not-found';
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -18,7 +18,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     const project = await fetchSingleProject(projectId)
 
     if(!project){
-      <NotFound/>
+     return <NotFound/>
     }
 
     

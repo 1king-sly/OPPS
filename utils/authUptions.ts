@@ -4,7 +4,6 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import prisma from '@/app/lib/prismadb';
 import { UserType } from '@prisma/client';
 import NextAuth from 'next-auth';
-import Auth0 from 'next-auth/providers/auth0';
 
 type User = {
   id: string;

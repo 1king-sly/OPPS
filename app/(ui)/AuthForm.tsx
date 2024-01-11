@@ -31,7 +31,6 @@ export default function AuthForm() {
   }, []);
 
   const session = useSession();
-  const { data: userType } = useSession();
 
   const router = useRouter();
 

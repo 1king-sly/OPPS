@@ -1,7 +1,7 @@
 'use server'
 import React from 'react';
 import { getServerSession } from 'next-auth';
-import { fetchAdminDashboardProjects, fetchUser } from '@/app/lib/actions';
+import { fetchAdminDashboardProjects } from '@/app/lib/actions';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 

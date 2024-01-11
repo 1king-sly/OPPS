@@ -3,7 +3,6 @@ import React from 'react';
 import { getServerSession } from 'next-auth';
 import { fetchUser, fetchUserProjects } from '@/app/lib/actions';
 import Link from 'next/link';
-import { CheckIcon, ClockIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { redirect } from 'next/navigation';
 import Search from '../../Component/Search';
 

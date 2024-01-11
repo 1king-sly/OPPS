@@ -4,15 +4,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import bcrypt from 'bcrypt'
 
-
-
-
-
-
 export const addProject = async (formData: FormData) => {
   'use server';
-
-  console.log(formData);
 
   try {
     const schoolFromFormData = formData.get('schoolFromFormData');
@@ -25,7 +18,6 @@ export const addProject = async (formData: FormData) => {
 
     
     if (!email || !title || !ans1 || !ans2 || !ans3 || !ans4) {
-      console.log('Required field is missing');
       throw new Error('Required field is missing'); 
     }
 
@@ -85,7 +77,6 @@ export const fetchUserDashboardProjects = async (userId:number | undefined) => {
         },
        }
       )
-      console.log('User Projects', projects)
       return projects
     
 
@@ -460,7 +451,6 @@ export const updateUser = async (formData: FormData) => {
   'use server';
   const userId = formData.get('userId') as string;
 
-  // Extract fields from formData
   const email = formData.get('email') as string | null;
   const userType = formData.get('userType') as string | null;
   const registrationNumber = formData.get('registrationNumber') as string | null;
@@ -469,7 +459,7 @@ export const updateUser = async (formData: FormData) => {
   try {
     const data: Record<string, string> = {};
 
-    // Dynamically construct data object based on provided fields
+    
     if (email !== null && email !== '') {
       data.email = email;
     }
@@ -485,7 +475,7 @@ export const updateUser = async (formData: FormData) => {
       data.hashedPassword = await bcrypt.hash(password, 12);
     }
 
-    // Update user with dynamically constructed data object
+    
     const updatedUser = await prisma.user.update({
       where: {
         id: parseInt(userId),
@@ -623,9 +613,9 @@ export const fetchUsers = async (query: string) => {
     return users;
   } catch (error) {
     console.log('Error fetching All Users ', error);
-    throw error; // Rethrow the error to indicate that an error occurred during the fetch.
+    throw error; 
   } finally {
-    await prisma.$disconnect(); // Disconnect Prisma client to avoid resource leaks.
+    await prisma.$disconnect();
   }
 };
 
@@ -704,7 +694,6 @@ export const createUser = async (formData: FormData) => {
 
 export const deleteSingleUser = async (formData: FormData) => {
   'use server';
-  console.log('Deleted FormData', formData)
 
 
   const userId = formData.get('userId') as string;
@@ -717,7 +706,6 @@ export const deleteSingleUser = async (formData: FormData) => {
         }
       })
 
-      console.log('Deleted User', deletedUser)
       revalidatePath('/SuperAdmin/Users')
    
 

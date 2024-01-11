@@ -1,6 +1,6 @@
 import React from 'react'
 import Card from './Card'
-import { countPendingProjects,countAllProjects,countReviewedProjects,fetchUser, countAdmin, countUsers } from '@/app/lib/actions'
+import { countAllProjects, countAdmin, countUsers } from '@/app/lib/actions'
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
