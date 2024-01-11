@@ -5,16 +5,15 @@ import logo from '@/public/images/Mmust logo.png'
 import { getServerSession } from 'next-auth'
 import { fetchUser } from '@/app/lib/actions'
 import { redirect } from 'next/navigation'
-import { authOptions } from '@/utils/authUptions'
 
 export default async  function Header() {
 
 
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession()
   if(!session){
     redirect('/')
   }
-  const email = session?.email
+  const email = session.user.email
 
 
   const data =await fetchUser(email)

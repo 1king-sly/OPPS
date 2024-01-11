@@ -45,7 +45,6 @@ export default async function Tables({searchParams}:{searchParams:string}) {
                       {data.status === 'PENDING' ?(
                         <>
                         <div className='w-full flex gap-0.5 bg-gray-300 p-2 rounded-md '>
-                      <ClockIcon className="ml-1 w-4 text-gray-500" />
                       <p className='text-sm'>
                       PENDING
                       </p>
@@ -56,7 +55,6 @@ export default async function Tables({searchParams}:{searchParams:string}) {
                       {data.status === 'ACCEPTED' ?(
                         <>
                         <div className='w-full flex gap-0.5 bg-green-300 p-2 rounded-md '>
-                      <CheckIcon className="ml-1 w-4 text-gray-500" />
                       <p className='text-sm'>
                       ACCEPTED
                       </p>
@@ -68,7 +66,6 @@ export default async function Tables({searchParams}:{searchParams:string}) {
                       {data.status === 'REJECTED' ?(
                         <>
                         <div className='w-full flex gap-0.5 bg-rose-500 p-2 rounded-md '>
-                      <ExclamationTriangleIcon className="ml-1 w-4 text-gray-500" />
                       <p className='text-sm'>
                       REJECTED
                       </p>

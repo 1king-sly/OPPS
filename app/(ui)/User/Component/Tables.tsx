@@ -4,7 +4,6 @@ import Table from './Table';
 import { getServerSession } from 'next-auth';
 import { fetchUser, fetchUserDashboardProjects, fetchUserProjects } from '@/app/lib/actions';
 import Link from 'next/link';
-import { CheckIcon, ClockIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { redirect } from 'next/navigation';
 
 export default async function Tables() {
@@ -16,6 +15,7 @@ export default async function Tables() {
 
 
   const data =await fetchUser(email)
+
 
   const datas = await fetchUserDashboardProjects(data?.id);
 

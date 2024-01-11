@@ -102,6 +102,7 @@ export const fetchUserProjects = async (userId:number | undefined, query: string
     if  (typeof query === 'string' && query.trim() !== '') {
       const projects = await prisma.project.findMany({
         where: {
+          userId:parseInt(userId as unknown as string),
           title: {
             contains: query.trim(),
           },
