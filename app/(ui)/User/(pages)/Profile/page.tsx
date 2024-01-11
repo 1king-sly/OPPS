@@ -36,11 +36,11 @@ export default async function Page() {
 
           </label>
           <label >
-          <input type="email" className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={data?.email}/>
+          <input type="email" disabled className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={data?.email}/>
 
           </label>
           <label >
-          <input type="text" className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={data?.registrationNumber}/>
+          <input type="text" disabled className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={data?.registrationNumber}/>
 
           </label>
         </div>

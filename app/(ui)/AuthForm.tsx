@@ -39,9 +39,12 @@ export default function AuthForm() {
     if (session?.status === 'authenticated') {
       if (session.data.userType === 'ADMIN') {
         router.push('/Admin/Dashboard');
-      } else {
+      } else if(session.data.userType === 'STUDENT') {
         router.push('/User/Dashboard');
+      }else{
+        router.push('/SuperAdmin/Dashboard')
       }
+
     }
   });
 

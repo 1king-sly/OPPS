@@ -1,7 +1,9 @@
-import {  ProjectStatus, School } from "@prisma/client";
+import {  ProjectStatus, School, UserType } from "@prisma/client";
 import prisma from '@/app/lib/prismadb';
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import bcrypt from 'bcrypt'
+
 
 
 
@@ -127,7 +129,7 @@ export const fetchUserProjects = async (userId:number | undefined, query: string
   
 };
 
-export const fetchAllAdminProjects = async (userId:number | undefined,query:string) => {
+export const fetchAllAdminProjects = async (query:string) => {
   'use server';
 
 
@@ -162,7 +164,7 @@ export const fetchAllAdminProjects = async (userId:number | undefined,query:stri
 };
 
 
-export const fetchAllAdminReviewedProjects = async (userId: number | undefined, query: string) => {
+export const fetchAllAdminReviewedProjects = async ( query: string) => {
   'use server';
 
   try {
@@ -192,9 +194,6 @@ export const fetchAllAdminReviewedProjects = async (userId: number | undefined, 
     console.error('Error fetching Reviewed Projects', error);
   }
 };
-
-
-
 
 export const countAllProjects = async () => {
   'use server';
@@ -402,7 +401,6 @@ export const fetchSingleProject = async (projectId:string) => {
 
 export const updateProject = async (formData: FormData) => {
   'use server';
-    console.log(formData)
     
     const status = formData.get('status') as string;
     const projectId = formData.get('projectId') as string;
@@ -457,46 +455,55 @@ export const updateProject = async (formData: FormData) => {
 
   
 };
-// Updating the user info based on the client needs[Awaiting details from the system consumer]
-// export const updateUser = async (formData) => {
-//   'use server';
-//     const {userId,image} = Object.fromEntries(formData)
 
-//   try{
+export const updateUser = async (formData: FormData) => {
+  'use server';
+  const userId = formData.get('userId') as string;
 
-//     const user = await prisma.user.findUnique({
-//       where: {
-//         id: parseInt(userId),
-//       },
-//       select: {
-//         id: true,
-//       },
-//     });
+  // Extract fields from formData
+  const email = formData.get('email') as string | null;
+  const userType = formData.get('userType') as string | null;
+  const registrationNumber = formData.get('registrationNumber') as string | null;
+  const password = formData.get('password') as string | null;
 
+  try {
+    const data: Record<string, string> = {};
 
+    // Dynamically construct data object based on provided fields
+    if (email !== null && email !== '') {
+      data.email = email;
+    }
+    if (registrationNumber !== null && registrationNumber !== '') {
+      data.registrationNumber = registrationNumber;
+    }
 
-//     if (user) {
-//       const newUser = await prisma.user.update({
-//         where:{
-//           id:parseInt(userId)
-//         },
-//         data:{
+    if (userType !== null && userType !== '') {
+      data.userType = userType;
+    }
 
-//         }
-//       })
-     
-//       revalidatePath('/Admin/Profile')
-//       revalidatePath('/User/Profile')
-      
-//       return newUser
-//     }
+    if (password !== null && password !== '') {
+      data.hashedPassword = await bcrypt.hash(password, 12);
+    }
 
-//   }catch(error){
-//     console.log("Error Updating User",error)
-//   }
+    // Update user with dynamically constructed data object
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: parseInt(userId),
+      },
+      data: data,
+    });
 
-  
-// };
+    revalidatePath(`/SuperAdmin/Users/${userId}`);
+    revalidatePath('/SuperAdmin/Users');
+
+    return updatedUser;
+  } catch (error) {
+    console.log('Error Updating User', error);
+  } finally {
+    redirect('/SuperAdmin/Users');
+  }
+};
+
 export const fetchUser = async (email:string) => {
   'use server';
     
@@ -515,6 +522,7 @@ export const fetchUser = async (email:string) => {
         secondName:true,
         registrationNumber:true,
         // status:true
+        hashedPassword:true,
 
       },
     });
@@ -532,3 +540,190 @@ export const fetchUser = async (email:string) => {
 
 
 
+export const countUsers = async () => {
+  'use server';
+
+
+  try{
+
+
+      const users = await prisma.user.count({
+        where:{
+          userType:UserType.STUDENT
+        }
+      })
+      return users
+   
+
+  }catch(error){
+    console.error("Error Counting all users",error)
+  }
+
+  
+};
+export const countAdmin = async () => {
+  'use server';
+
+
+  try{
+   
+
+    const users = await prisma.user.count({
+      where:{
+        userType:UserType.ADMIN
+      }
+    })
+    return users
+   
+
+  }catch(error){
+    console.error("Error counting Admins",error)
+  }
+
+  
+};
+
+
+
+
+export const fetchUsers = async (query: string) => {
+  try {
+    if (typeof query === 'string' && query.trim()) {
+      const users = await prisma.user.findMany({
+        where: {
+          userType: {
+            in: [UserType.STUDENT,UserType.ADMIN],
+          }, 
+          OR: [
+            {
+              registrationNumber: {
+                contains: query.trim(),
+              },
+            },
+            {
+              firstName: {
+                contains: query.trim(),
+              },
+            },
+          ],
+        },
+      });
+      return users;
+    }
+
+    const users = await prisma.user.findMany(
+      {
+        where:{
+          userType: {
+            in: [UserType.STUDENT,UserType.ADMIN],
+          }
+        }
+      }
+    );
+    return users;
+  } catch (error) {
+    console.log('Error fetching All Users ', error);
+    throw error; // Rethrow the error to indicate that an error occurred during the fetch.
+  } finally {
+    await prisma.$disconnect(); // Disconnect Prisma client to avoid resource leaks.
+  }
+};
+
+
+export const fetchSuperAdminUser = async (userId:string) => {
+  'use server';
+
+  try{
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: parseInt(userId)
+         },
+      select: {
+        id: true,
+        email:true,
+        userType:true,
+        firstName:true,
+        secondName:true,
+        registrationNumber:true,
+        // status:true
+        hashedPassword:true,
+
+      },
+    });
+
+
+
+    return user;
+
+  }catch(error){
+    console.log("Error Fetching Super Admin Single User",error)
+  }
+
+  
+};
+
+export const createUser = async (formData: FormData) => {
+  'use server';
+  const firstName = formData.get('firstName') as string;
+  const secondName = formData.get('secondName') as string;
+  const email = formData.get('email') as string ;
+  const registrationNumber = formData.get('registrationNumber') as string;
+  const userType = formData.get('userType') as UserType;
+  const password = formData.get('password') as string;
+  
+
+  try {
+    if (!email || !firstName || !secondName || !registrationNumber || !userType || !password) {
+      console.log('Required field is missing');
+      throw new Error('Required field is missing'); 
+    }
+
+     const hashedPassword = await bcrypt.hash(password, 12);
+    
+    const newUser = await prisma.user.create({
+      data: {
+        firstName:firstName,
+        secondName:secondName,
+        email:email,
+        registrationNumber:registrationNumber,
+        userType:userType,
+        hashedPassword:hashedPassword,
+    },
+    });
+
+    revalidatePath('/SuperAdmin/Users');
+
+    return newUser;
+  } catch (error) {
+    console.log('Error Updating User', error);
+  } finally {
+    redirect('/SuperAdmin/Users');
+  }
+};
+
+export const deleteSingleUser = async (formData: FormData) => {
+  'use server';
+  console.log('Deleted FormData', formData)
+
+
+  const userId = formData.get('userId') as string;
+
+  try{
+
+      const deletedUser=await prisma.user.delete({
+        where:{
+          id:parseInt(userId),
+        }
+      })
+
+      console.log('Deleted User', deletedUser)
+      revalidatePath('/SuperAdmin/Users')
+   
+
+  }catch(error){
+    console.error("Error Deleting Single User",error)
+  }
+
+  
+};

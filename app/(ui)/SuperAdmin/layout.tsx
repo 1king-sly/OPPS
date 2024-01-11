@@ -33,10 +33,11 @@ export default async function RootLayout({
     
     redirect('/User/Dashboard')
   }
-  if(userType === 'SUPERADMIN'){
+  if(userType === 'ADMIN'){
     
-    redirect('/SuperAdmin/Dashboard')
+    redirect('/Admin/Dashboard')
   }
+
   return (
     <>
     <div className='w-screen h-screen flex flex-col overflow-hidden gap-1'>

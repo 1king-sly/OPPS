@@ -46,7 +46,7 @@ export default async   function Page() {
           </label>
         </div>
         <div className='mt-2 w-[236px] '>
-        <Button type='submit' disabled fullWidth>
+        <Button type='submit' fullWidth>
           SAVE
         </Button>
         </div>
