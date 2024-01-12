@@ -116,3 +116,43 @@ model Project {
 //    PAID
 //    UNPAID
 //  }
+
+
+
+
+
+
+// Exam Bank Model
+
+// model Exam {
+//   examId          Int       @id @default(autoincrement())
+//   examTitle       String
+//   examSubject     String
+//   examCategory    ExamCategory
+//   examFile        String    // Assuming you store the file path or use a storage solution
+//   markingScheme   String    // Similarly, store the path or use a storage solution
+//   creator         User      @relation(fields: [createdById], references: [userId])
+//   createdById     Int
+// }
+
+// enum ExamCategory {
+//   KCSE
+//   Predictions
+//   Normal
+// }
+
+
+// model User {
+//   userId             Int       @id @default(autoincrement())
+//   userName           String
+//   registrationNumber String    @unique
+//   userType           UserType
+//   userExams          Exam[]    @relation("UserExams", references: [examId])
+//   userCreatedExams   Exam[]    @relation("UserCreatedExams", references: [createdById])
+// }
+
+// enum UserType {
+//   Admin
+//   Student
+//   SuperAdmin
+// }
