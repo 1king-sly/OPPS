@@ -20,13 +20,6 @@ export default async function Tables() {
        
 
         <tbody className='  flex-col  gap-3 flex'>
-
-        <tr className='justify-around w-full flex bg-gray-100 py-2 '>
-            <td className='w-1/3' >TITLE</td>
-            <td className='w-1/3'>DATE</td>
-            <td className='w-1/12'> SCHOOL</td>
-          </tr>
-
           {datas?.map((data)=>(
             <Link href={`/Admin/Projects/${data.projectId}`} key={data.projectId}>
 

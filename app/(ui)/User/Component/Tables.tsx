@@ -1,9 +1,10 @@
 'use server'
 import React from 'react';
 import { getServerSession } from 'next-auth';
-import { fetchUser, fetchUserDashboardProjects } from '@/app/lib/actions';
+import { deleteSingleProject, fetchUser, fetchUserDashboardProjects } from '@/app/lib/actions';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+
 
 export default async function Tables() {
   const session = await getServerSession()
@@ -25,17 +26,10 @@ export default async function Tables() {
         
 
         <tbody className='  flex-col mt-4 gap-3 flex'>
-
-        <tr className=' flex justify-around w-full'>
-            <td className='w-1/3' >TITLE</td>
-            <td className='w-1/3'>DATE</td>
-            <td className='w-1/12'>STATUS</td>
-          </tr>
-
           {datas?.map((data)=>(
-            <Link href={`/User/Projects/${data.projectId}`} key={data.projectId}>
+            
 
-            <tr className='justify-around w-full flex bg-gray-100 py-2 '>
+            <tr className='justify-around w-full flex bg-gray-100 py-2 ' key={data.projectId}>
                   <td className='w-1/3 truncate'>{data.title}  </td>
                   <td className='w-1/3' >{data.createdAt.toLocaleDateString()} </td>
                   <td className='w-1/12' >
@@ -62,9 +56,26 @@ export default async function Tables() {
                            </div>
                         </>
                       ): null}
+                      </td>
+                  <Link href={`/User/Projects/${data.projectId}`} key={data.projectId}>
+                  <td className='w-1/12' >
+                  <button className='bg-sky-300 p-2 text-white text-sm rounded-md '>View</button>
+                  </td>
+                  </Link>
+
+                  <td className='w-1/12' >
+                    {data.status === 'PENDING' ?(
+                  <>
+                  <form action={deleteSingleProject} className='bg-rose-500 p-2 text-white text-sm rounded-md w-full flex items-center justify-center'>
+                      <input type="text" hidden value={data.projectId} name='projectId' />
+                    <button>Delete</button>
+                    </form>
+                  
+                  </>
+                 ): null}
+                  
                   </td>
                 </tr>
-            </Link>
 
           ))}
           

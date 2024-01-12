@@ -70,6 +70,7 @@ export const fetchUserDashboardProjects = async (userId:number | undefined) => {
        {
         where: {
           userId: parseInt(userId as unknown as string),
+          status:ProjectStatus.PENDING
         },
         take: 5,
         orderBy: {
@@ -129,7 +130,6 @@ export const fetchAllAdminProjects = async (query:string) => {
     if  (typeof query === 'string' && query.trim() !== '') {
       const projects = await prisma.project.findMany({
         where: {
-          status:ProjectStatus.PENDING,
           title: {
             contains: query.trim(),
           },
@@ -138,12 +138,7 @@ export const fetchAllAdminProjects = async (query:string) => {
       return projects;
     }
 
-    const projects = await prisma.project.findMany(
-        {where:{
-          status:ProjectStatus.PENDING
-         }
-         }
-      )
+    const projects = await prisma.project.findMany()
       return projects
     
 
@@ -727,5 +722,34 @@ export const deleteSingleUser = async (formData: FormData) => {
   } catch (error) {
     console.error("Error Deleting Single User", error);
   }
+};
+
+
+export const deleteSingleProject = async (formData: FormData) => {
+  'use server';
+
+
+  const projectId = formData.get('projectId') as string;
+
+  try{
+
+      const deletedProject=await prisma.project.delete({
+        where:{
+          status:ProjectStatus.PENDING,
+          projectId:parseInt(projectId),
+        }
+      })
+
+      console.log("Deleted Project", deletedProject)
+
+      revalidatePath('/Users/Projects')
+      revalidatePath('/Users/Projects')
+   
+
+  }catch(error){
+    console.error("Error Deleting Single User",error)
+  }
+
+  
 };
 

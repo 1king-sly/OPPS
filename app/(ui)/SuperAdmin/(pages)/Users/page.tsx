@@ -25,14 +25,6 @@ export default async  function Page({searchParams}:{searchParams:string}) {
     <table className=' w-full'>
         
         <tbody className='  flex-col mt-4 gap-3 flex'>
-
-        <tr className=' flex justify-around w-full ml-10'>
-            <td className='w-1/3' >Registration Number</td>
-            <td className='w-1/3'>FirstName</td>
-            <td className='w-1/12 '>UserType </td>
-            <td className='w-1/12 '></td>
-            <td className='w-1/12 '></td>
-          </tr>
           {users?.map((user)=>(
 
             <tr className='justify-around w-full flex bg-gray-100 py-2  ' key={user.id}>

@@ -32,19 +32,37 @@ export default async  function Page({searchParams}:{searchParams:string}) {
     <table className=' w-full'>
         
         <tbody className='  flex-col mt-4 gap-3 flex'>
-
-        <tr className=' flex justify-around w-full py-2'>
-            <td className='w-1/3' >TITLE</td>
-            <td className='w-1/3'>DATE</td>
-            <td className='w-1/12'> SCHOOL</td>
-          </tr>
           {datas?.map((data)=>(
             <Link href={`/Admin/Projects/${data.projectId}`} key={data.projectId}>
 
             <tr className='justify-around w-full flex bg-gray-100 py-2 '>
                   <td className='w-1/3 truncate'>{data.title}  </td>
                   <td className='w-1/3' >{data.createdAt.toLocaleDateString()} </td>
-                  <td className='w-1/12' >{data.school} </td>
+                  <td className='w-1/12' >
+                      {data.status === 'PENDING' ?(
+                        <>
+                        <div className='w-full flex gap-0.5 bg-gray-300 p-2 rounded-md '>
+                        <p className=' text-sm'>PENDING</p>
+                           </div>
+                        </>
+                      ): null}
+                      {data.status === 'ACCEPTED' ?(
+                        <>
+                        <div className='w-full flex gap-0.5 bg-green-300 p-2 rounded-md '>
+                     
+                        <p className=' text-sm'>ACCEPTED</p>
+                           </div>
+                        </>
+                      ): null}
+                      {data.status === 'REJECTED' ?(
+                        <>
+                        <div className='w-full flex  bg-rose-500 p-2 rounded-md  '>
+                        <p className=' text-sm'>REJECTED</p>
+                      
+                           </div>
+                        </>
+                      ): null}
+                      </td>
                 </tr>
             </Link>
 

@@ -26,12 +26,6 @@ export default async  function Page({searchParams}:{searchParams:string}) {
     <table className=' w-full'>
         
         <tbody className='  flex-col mt-4 gap-3 flex'>
-
-        <tr className=' flex justify-around w-full'>
-            <td className='w-1/3' >TITLE</td>
-            <td className='w-1/3'>DATE</td>
-            <td className='w-1/12 '>SCHOOL </td>
-          </tr>
           {datas?.map((data)=>(
             <Link href={`/Admin/Projects/${data.projectId}`} key={data.projectId}>
 
