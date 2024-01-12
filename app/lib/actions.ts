@@ -695,23 +695,37 @@ export const createUser = async (formData: FormData) => {
 export const deleteSingleUser = async (formData: FormData) => {
   'use server';
 
+  console.log('Delete FormData', formData)
 
   const userId = formData.get('userId') as string;
 
-  try{
+  try {
+    const projectsToDelete = await prisma.project.findMany({
+      where: {
+        userId: parseInt(userId),
+      },
+    });
 
-      const deletedUser=await prisma.user.delete({
-        where:{
-          id:parseInt(userId),
-        }
-      })
 
-      revalidatePath('/SuperAdmin/Users')
-   
+    await Promise.all(projectsToDelete.map(async (project) => {
+      await prisma.project.delete({
+        where: {
+          projectId: project.projectId,
+        },
+      });
+    }));
 
-  }catch(error){
-    console.error("Error Deleting Single User",error)
+    const deletedUser = await prisma.user.delete({
+      where: {
+        id: parseInt(userId),
+      },
+    });
+
+    console.log('Deleted User', deletedUser);
+
+    revalidatePath('/SuperAdmin/Users');
+  } catch (error) {
+    console.error("Error Deleting Single User", error);
   }
-
-  
 };
+
