@@ -30,7 +30,7 @@ export default async  function Page({searchParams}:{searchParams:string}) {
             <Link href={`/Guest/Projects/${data.projectId}`} key={data.projectId}>
 
             <tr className='min-[426px]:justify-around  flex bg-gray-100 py-2 justify-between 
-            max-[425px]:w-4/5 max-[375px]:w-4/6 max-[320px]:w-3/5'>
+            max-[425px]:w-4/5 max-[375px]:w-4/6 max-[320px]:w-3/5 w-full'>
                   <td className='max-[425px]:w-3/5 max-[375px]:w-4/6 max-[320px]:w-3/5 w-1/3 truncate'>{data.title}  </td>
                   <td className='w-1/3 max-[425px]:hidden' >{data.createdAt.toLocaleDateString()} </td>
                   <td className='w-1/12' >
