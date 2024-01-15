@@ -6,6 +6,8 @@ import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import clsx from 'clsx'
+
 
 type Variant = 'REGISTER' | 'LOGIN';
 
@@ -46,6 +48,18 @@ export default function AuthForm() {
 
     }
   });
+
+  const handleGuestSubmit = async() =>{
+    const event = window.event;
+    if (!event) {
+      return;
+    }
+    event.preventDefault();
+
+    toggleLoading();
+
+    router.push('/Guest/Projects');   
+  }
 
   const handleSubmit = async () => {
     const event = window.event;
@@ -171,11 +185,22 @@ export default function AuthForm() {
           </div>
         </form>
         <div className='flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500'>
-          <div>{variant === 'LOGIN' ? 'Create an account?' : 'Already have an account?'}</div>
+          <div>{variant === 'LOGIN' ? "Don't have an account?": "Already have an account?"}
+          </div>
           <div onClick={toggleVariant} className='underline cursor-pointer'>
             {variant === 'LOGIN' ? 'Sign up' : 'Login'}
           </div>
         </div>
+        <div className='mt-4 text-gray-100 '>
+            <button
+              type='submit'
+              onClick={() => handleGuestSubmit()}
+              disabled={disabled}
+              className={clsx(`flex justify-center rounded-md px-2 py-1 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 bg-sky-500 hover:bg-sky-600 focus-visible:outline-sky-600`,disabled&&'opacity-50 cursor-default')}
+            >
+              Access as Guest
+            </button>
+          </div>
       </div>
     </>
   );
