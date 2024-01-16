@@ -112,7 +112,7 @@ export default function AuthForm() {
 
   return (
     <>
-      <div className=' mx-16 bg-white px-10 py-6 mt-2 gap-2 rounded-md  shadow-lg'>
+      <div className=' mx-16 bg-white px-4 lg:px-10 py-6 mt-2 gap-2 rounded-md  shadow-lg'>
         <form>
           {variant === 'REGISTER' && (
              <>
@@ -144,7 +144,7 @@ export default function AuthForm() {
                label='Registration Number'
                required
                type='text'
-               placeholder='Enter Registration Numbe'
+               placeholder='Enter Registration Number'
                disabled={disabled}
                value={formData.registrationNumber}
                onChange={handleChange}
@@ -155,9 +155,9 @@ export default function AuthForm() {
            required
            id='email'
            name='email'
-           label='Student Email'
+           label=' Email'
            type='email'
-           placeholder='Enter Student Email'
+           placeholder='Email address'
            disabled={disabled}
            value={formData.email}
            onChange={handleChange}
@@ -184,7 +184,7 @@ export default function AuthForm() {
             </Button>
           </div>
         </form>
-        <div className='flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500'>
+        <div className='flex gap-2 justify-center text-xs mt-6 px-2 text-gray-500'>
           <div>{variant === 'LOGIN' ? "Don't have an account?": "Already have an account?"}
           </div>
           <div onClick={toggleVariant} className='underline cursor-pointer'>

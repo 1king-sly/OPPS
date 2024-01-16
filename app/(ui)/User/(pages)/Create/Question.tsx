@@ -38,7 +38,7 @@ export default function Question({
           id={id}
           maxLength={max}
           title={id}
-          className='resize-none h-60 w-full px-2 py-2 outline-sky-200 mt-3'
+          className='resize-none min-h-60 w-full px-2 py-2 outline-sky-200 mt-3 max-h-fit'
           value={value}
           onChange={onChange}
           name={name}

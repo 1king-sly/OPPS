@@ -40,7 +40,7 @@ export default async function RootLayout({
           <SideNav></SideNav>
 
         </div>
-        <div className='h-full overflow-y-auto w-full bg-gray-200'>{children}
+        <div className='h-full overflow-y-auto w-full bg-gray-200 overflow-x-clip'>{children}
         </div>
       </div>
    

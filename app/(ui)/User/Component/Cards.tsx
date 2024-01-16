@@ -21,7 +21,6 @@ export default async function  Cards() {
   return (
     <>
     <div className='w-full h-48 flex gap-3 justify-around items-center'>
-        <Card title='Total' number={total || 0}></Card>
         <Card title='Pending' number={pending || 0}></Card>
         <Card title='Accepted' number={accepted || 0}></Card>
         <Card title='Rejected' number={rejected|| 0}></Card>

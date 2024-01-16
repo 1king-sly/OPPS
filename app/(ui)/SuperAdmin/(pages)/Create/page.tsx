@@ -19,7 +19,7 @@ export default async function Page() {
   return (
     <>
        <div className='w-full h-full flex items-center justify-center '>
-      <div className='shadow-lg rounded-md flex flex-col w-2/3 h-2/3  items-center justify-center gap-2'>
+      <div className='shadow-lg rounded-md flex flex-col w-96 h-96  items-center justify-center gap-2 '>
         <div>
             <h1>Fill in the user Details</h1>
         </div>

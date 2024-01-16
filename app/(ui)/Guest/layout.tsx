@@ -1,8 +1,5 @@
 import SideNav from './Component/SideNav'
 import Header from './Component/Header'
-import { getServerSession } from 'next-auth'
-import { redirect } from 'next/navigation'
-import { fetchUser } from '@/app/lib/actions'
 
 export default async function RootLayout({
   children,
@@ -21,7 +18,7 @@ export default async function RootLayout({
           <SideNav></SideNav>
 
         </div>
-        <div className='h-full overflow-y-auto w-full bg-gray-200'>{children}
+        <div className='h-full overflow-y-auto w-full bg-gray-200 overflow-x-clip'>{children}
         </div>
       </div>
    
