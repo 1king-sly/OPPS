@@ -47,10 +47,15 @@ export default async function Page({ params }: { params: { id: string } }) {
           <input type="text" name='registrationNumber' className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={user?.registrationNumber}/>
 
           </label>
-          <label >
-          <input type="text" name='userType' className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={user?.userType}/>
-
-          </label>
+          <label>
+                
+                <select name='userType' className='bg-white outline-sky-400 px-2 py-1 rounded-md w-full'  required title='userType'>
+                  
+                  <option value='ADMIN'>Admin</option>
+                  <option value='STUDENT'>Student</option>
+                  <option value='SUPERADMIN'>Super Admin</option>
+                </select>
+              </label>
           <label >
           <input type="text" name='password' className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={user?.hashedPassword}/>
 

@@ -390,8 +390,8 @@ export const updateProject = async (formData: FormData) => {
     
     const status = formData.get('status') as string;
     const projectId = formData.get('projectId') as string;
-    // const comment = formData.get('comment') as string;
-    // const amount = formData.get('amount') as string;
+    const comment = formData.get('comment') as string;
+    
 
     const statusEnum = ProjectStatus[status as keyof typeof ProjectStatus]
 
@@ -399,20 +399,7 @@ export const updateProject = async (formData: FormData) => {
     
 
   try{
-      // if(amount){
-
-      //   const project = await prisma.project.update({
-      //     where:{
-      //       projectId:parseInt(projectId),
-      //       status:ProjectStatus.ACCEPTED,
-  
-      //     },
-      //     data:{
-      //       // Payment:parseInt(amount)
-      //     }
-      //   })
-
-      // }
+     
 
 
       const project = await prisma.project.update({
@@ -422,7 +409,7 @@ export const updateProject = async (formData: FormData) => {
 
         },
         data:{
-          status:statusEnum
+          status:statusEnum,
           // comment:comment
         }
       })
@@ -650,6 +637,7 @@ export const fetchSuperAdminUser = async (userId:string) => {
 
 export const createUser = async (formData: FormData) => {
   'use server';
+  
   const firstName = formData.get('firstName') as string;
   const secondName = formData.get('secondName') as string;
   const email = formData.get('email') as string ;
