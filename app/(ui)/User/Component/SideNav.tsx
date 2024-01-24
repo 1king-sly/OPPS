@@ -11,8 +11,8 @@ export default function SideNav() {
   const links = [
     { name: 'Home', href: '/User/Dashboard', icon: HomeIcon },
     { name: 'Projects', href: '/User/Projects', icon: FolderIcon },
-    { name: 'Social Sciences', href: '/User/Create/Sonas', icon: PlusCircleIcon },
-    { name: 'Applied Sciences', href: '/User/Create/Sass', icon: PlusCircleIcon },
+    { name: 'Create Project', href: '/User/Create', icon: PlusCircleIcon },
+    // { name: 'Applied Sciences', href: '/User/Create/Sass', icon: PlusCircleIcon },
     { name: 'Profile', href: '/User/Profile', icon: UserIcon },
     { name: 'Logout', href: '#', icon: ArrowRightEndOnRectangleIcon },
   ];

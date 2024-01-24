@@ -9,7 +9,7 @@ export default function NotFound() {
         <h2>404 Not Found</h2>
         <p>Could Not Find Requested Project</p>
 
-        <Link href='/Admin/Projects'>
+        <Link href='/User/Projects'>
             <button className='p-3 text-white bg-sky-300 rounded-md'>Go Back</button>
         </Link>
 
