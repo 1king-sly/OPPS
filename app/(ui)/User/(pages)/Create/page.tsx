@@ -6,25 +6,16 @@ import Question from './Question';
 import { getServerSession } from 'next-auth';
 import { addProject, fetchUser } from '@/app/lib/actions';
 import { redirect } from 'next/navigation';
+import { authOptions } from '@/utils/authUptions';
 
 export default async  function Page() {
-  const session = await getServerSession()
+  const session = await getServerSession(authOptions)
   if(!session){
     redirect('/')
   }
   const SessionEmail = session.user.email
 
-
-  const data =await fetchUser(SessionEmail)
-
-
-
- 
-   const  email = data?.email
-
-   
-    
-  
+   const  email = session?.email
 
   return (
     <>
@@ -63,7 +54,7 @@ export default async  function Page() {
                 </select>
               </label>
           
-             {/* <input type="text" name='schoolFromFormData' title='school' value='SASS' className='sr-only' /> */}
+            
              
             </div>
 
