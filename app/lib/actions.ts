@@ -7,6 +7,7 @@ import bcrypt from 'bcrypt'
 export const addProject = async (formData: FormData) => {
   'use server';
 
+
   try {
     const schoolFromFormData = formData.get('schoolFromFormData');
     const title = formData.get('title') as string;
@@ -45,7 +46,6 @@ export const addProject = async (formData: FormData) => {
           school: schoolEnum,
         },
       });
-
       revalidatePath('/User/Dashboard');
 
       
@@ -366,6 +366,7 @@ export const fetchSingleProject = async (projectId:string) => {
         },
          select: {
           projectId: true,
+          title:true,
           ans1:true,
           ans2:true,
           ans3:true,
@@ -373,6 +374,8 @@ export const fetchSingleProject = async (projectId:string) => {
           status:true,
           school:true,
           userId:true,
+          updatedBy:true,
+          comment:true,
         },
       })
       return project
@@ -388,10 +391,11 @@ export const fetchSingleProject = async (projectId:string) => {
 export const updateProject = async (formData: FormData) => {
   'use server';
     
+  console.log('UpdateProject',formData)
     const status = formData.get('status') as string;
     const projectId = formData.get('projectId') as string;
     const comment = formData.get('comment') as string;
-    
+    const updatedBy = formData.get('updatedBy') as string;    
 
     const statusEnum = ProjectStatus[status as keyof typeof ProjectStatus]
 
@@ -410,9 +414,11 @@ export const updateProject = async (formData: FormData) => {
         },
         data:{
           status:statusEnum,
-          // comment:comment
+          comment:comment,
+          updatedBy:updatedBy,
         }
       })
+      console.log('Updated Project',project)
 
       revalidatePath('/Admin/Dashboard')
       revalidatePath('/Admin/Projects')
@@ -493,8 +499,8 @@ export const fetchUser = async (email:string) => {
         firstName:true,
         secondName:true,
         registrationNumber:true,
-        // status:true
         hashedPassword:true,
+        school:true,
 
       },
     });
@@ -618,8 +624,8 @@ export const fetchSuperAdminUser = async (userId:string) => {
         firstName:true,
         secondName:true,
         registrationNumber:true,
-        // status:true
         hashedPassword:true,
+        school:true,
 
       },
     });
@@ -644,16 +650,18 @@ export const createUser = async (formData: FormData) => {
   const registrationNumber = formData.get('registrationNumber') as string;
   const userType = formData.get('userType') as UserType;
   const password = formData.get('password') as string;
+  const school = formData.get('school') as  string;
+
   
 
   try {
-    if (!email || !firstName || !secondName || !registrationNumber || !userType || !password) {
+    if (!email || !firstName || !secondName || !registrationNumber || !userType || !password || !school ) {
       console.log('Required field is missing');
       throw new Error('Required field is missing'); 
     }
 
      const hashedPassword = await bcrypt.hash(password, 12);
-    
+
     const newUser = await prisma.user.create({
       data: {
         firstName:firstName,
@@ -662,6 +670,7 @@ export const createUser = async (formData: FormData) => {
         registrationNumber:registrationNumber,
         userType:userType,
         hashedPassword:hashedPassword,
+        school:School[school as keyof typeof School],
     },
     });
 
@@ -704,7 +713,6 @@ export const deleteSingleUser = async (formData: FormData) => {
       },
     });
 
-    console.log('Deleted User', deletedUser);
 
     revalidatePath('/SuperAdmin/Users');
   } catch (error) {
@@ -728,7 +736,6 @@ export const deleteSingleProject = async (formData: FormData) => {
         }
       })
 
-      console.log("Deleted Project", deletedProject)
 
       revalidatePath('/Users/Projects')
       revalidatePath('/Users/Projects')

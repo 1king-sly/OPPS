@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import prisma from '@/app/lib/prismadb';
-import { UserType } from '@prisma/client';
+import { School, UserType } from '@prisma/client';
 import NextAuth from 'next-auth';
 
 type User = {
@@ -15,9 +15,8 @@ type User = {
   userType: UserType;
   createdAt: Date;
   updatedAt:Date;
-  // school:School | null
+  school:School | null
 
-  // status:UserStatus;
 };
 type SessionStrategyType = 'jwt';
 
@@ -50,7 +49,7 @@ export const authOptions = {
             createdAt: true,
             updatedAt: true,
             email: true,
-            // school:true,
+            school:true,
           },
         });
       
@@ -76,7 +75,7 @@ export const authOptions = {
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
           hashedPassword: user.hashedPassword,
-          // school:user.school,
+          school:user.school,
 
           
           
@@ -99,7 +98,7 @@ export const authOptions = {
         registrationNumber:user.registrationNumber,
         createdAt:user.createdAt,
         updatedAt:user.updatedAt,
-         // school:user.school,
+         school:user.school,
 
       }
     }
@@ -124,7 +123,7 @@ export const authOptions = {
       registrationNumber:token.registrationNumber,
       createdAt:token.createdAt,
       updatedAt:token.updatedAt,
-      // school:token.school,
+      school:token.school,
 
 
     }
