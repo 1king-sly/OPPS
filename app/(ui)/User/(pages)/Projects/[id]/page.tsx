@@ -26,6 +26,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         <div className='flex flex-col items-center'>
           <div className='w-5/6 mx-auto flex flex-col text-black gap-10'>
             <div>
+            <h1 className='w-full flex justify-center md:text-lg'>Title: <span className='text-sky-300 '>{project?.title}</span>  </h1>
             <div className='  px-4'>
                 <div className='w-full flex  justify-center '>Problem identification and background/Needs assessment</div>
                 <div className=' text-sm'>What issue/challenge/gap does the project aim to address? The objectives should be clear, measureable, realistic and achievable within the duration of the project. For each objective, define appropriate indicators for measuring achievement (including a unit of measurement, baseline value and target value)</div>

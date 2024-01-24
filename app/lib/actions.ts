@@ -438,6 +438,8 @@ export const updateProject = async (formData: FormData) => {
 export const updateUser = async (formData: FormData) => {
   'use server';
   const userId = formData.get('userId') as string;
+  const school = formData.get('school') as  string;
+
 
   const email = formData.get('email') as string | null;
   const userType = formData.get('userType') as string | null;
@@ -450,6 +452,10 @@ export const updateUser = async (formData: FormData) => {
     
     if (email !== null && email !== '') {
       data.email = email;
+    }
+    if (school !== null && school !== '') {
+      data.school = School[school as keyof typeof School];
+
     }
     if (registrationNumber !== null && registrationNumber !== '') {
       data.registrationNumber = registrationNumber;
@@ -678,7 +684,7 @@ export const createUser = async (formData: FormData) => {
 
     return newUser;
   } catch (error) {
-    console.log('Error Updating User', error);
+    console.log('Error Creating User', error);
   } finally {
     redirect('/SuperAdmin/Users');
   }

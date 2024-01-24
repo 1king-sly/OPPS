@@ -47,7 +47,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           <input type="text" name='registrationNumber' className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={user?.registrationNumber}/>
 
           </label>
-          <label>
+               <label>
                 
                 <select name='userType' className='bg-white outline-sky-400 px-2 py-1 rounded-md w-full'  required title='userType'>
                   
@@ -56,6 +56,23 @@ export default async function Page({ params }: { params: { id: string } }) {
                   <option value='SUPERADMIN'>Super Admin</option>
                 </select>
               </label>
+
+              <label>
+                <select
+                  name='school'
+                  className='bg-white outline-sky-400 px-2 py-1 rounded-md w-full '
+                  required
+                  title='school'
+                >
+                  <option value='SONAS'>SONAS</option>
+                  <option value='SASS'>SASS</option>
+                  <option value='SCI'>SCI</option>
+                  <option value='MEDICINE'>MEDICINE</option>
+                  <option value='ENGINEERING'>ENGINEERING</option>
+                  <option value='LAW'>LAW</option>
+                </select>
+              </label>
+
           <label >
           <input type="text" name='password' className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={user?.hashedPassword}/>
 
