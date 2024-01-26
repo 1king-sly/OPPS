@@ -391,7 +391,6 @@ export const fetchSingleProject = async (projectId:string) => {
 export const updateProject = async (formData: FormData) => {
   'use server';
     
-  console.log('UpdateProject',formData)
     const status = formData.get('status') as string;
     const projectId = formData.get('projectId') as string;
     const comment = formData.get('comment') as string;
@@ -418,7 +417,6 @@ export const updateProject = async (formData: FormData) => {
           updatedBy:updatedBy,
         }
       })
-      console.log('Updated Project',project)
 
       revalidatePath('/Admin/Dashboard')
       revalidatePath('/Admin/Projects')
@@ -662,7 +660,6 @@ export const createUser = async (formData: FormData) => {
 
   try {
     if (!email || !firstName || !secondName || !registrationNumber || !userType || !password || !school ) {
-      console.log('Required field is missing');
       throw new Error('Required field is missing'); 
     }
 
