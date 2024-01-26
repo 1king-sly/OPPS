@@ -1,5 +1,4 @@
 'use server'
-
 import React from 'react';
 import { getServerSession } from 'next-auth';
 import {  fetchSingleProject,updateProject } from '@/app/lib/actions';
