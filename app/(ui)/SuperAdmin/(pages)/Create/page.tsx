@@ -6,6 +6,7 @@ import Button from '@/app/(ui)/Button';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
 
 
 
@@ -44,6 +45,7 @@ export default  function Page() {
       })
       if(create?.ok && create?.status===200){
         toast.success('User Created Successfully')
+        revalidatePath('/User/Dashboard');
         router.push('/SuperAdmin/Users')
      } else if(create?.status!==200 ){
         toast.error('Something went wrong')
