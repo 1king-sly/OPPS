@@ -58,16 +58,20 @@ export default  function Page() {
   useEffect(() => {
     setDisabled(loading);
   }, [loading]);
-  const handleChange = (event: React.ChangeEvent< HTMLSelectElement|HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     if (!event) {
       return;
     }
+  
     const { name, value } = event.target;
-    setFormData({
-      ...formData,
+  
+    setFormData((prevData) => ({
+      ...prevData,
       [name]: value,
-    });
+    }));
   };
+  
+  
   
   
     
@@ -110,14 +114,17 @@ export default  function Page() {
           <label>
                 <select
                   name='userType'
-                  className='bg-white outline-sky-400 px-2 py-1 rounded-md w-full '
+                  className='bg-white outline-sky-400 px-2 py-1 rounded-md w-full text-gray-800 text-sm '
                   required
                   title='userType'
                   value={formData.userType}
                 onChange={handleChange}
                 >
-                  <option value='ADMIN'>Admin</option>
+                  <option disabled value=''>
+                   Choose User Type
+                  </option> 
                   <option value='STUDENT'>Student</option>
+                  <option value='ADMIN'>Admin</option>
                   <option value='SUPERADMIN'>Super Admin</option>
                 </select>
               </label>
@@ -125,12 +132,16 @@ export default  function Page() {
               <label>
                 <select
                   name='school'
-                  className='bg-white outline-sky-400 px-2 py-1 rounded-md w-full '
+                  className='bg-white outline-sky-400 px-2 py-1 rounded-md w-full text-gray-800 text-sm '
                   required
                   title='school'
+
                   value={formData.school}
                 onChange={handleChange}
                 >
+                <option disabled value=''>
+                Choose School
+                </option>
                   <option value='SONAS'>SONAS</option>
                   <option value='SASS'>SASS</option>
                   <option value='SCI'>SCI</option>

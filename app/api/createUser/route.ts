@@ -5,11 +5,14 @@ import { getServerSession } from 'next-auth';
 import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'
+import { redirect } from 'next/navigation';
 
 
 export async function POST(request:Request) {
     try{
         const body=await request.json()
+
+        console.log(body)
 
         const{
             firstName,
@@ -48,12 +51,15 @@ export async function POST(request:Request) {
           });
 
             revalidatePath('/SuperAdmin/Users');
+
     
             return new NextResponse(JSON.stringify(newUser), {
                 headers: { 'Content-Type': 'application/json' },
-              }); 
+              });             
    } catch(error:any){
         console.log(error, "CREATING USER")
         return new NextResponse('Internal Error', {status:500})
     }
+   
+    
  }

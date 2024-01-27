@@ -3,6 +3,7 @@ import { authOptions } from '@/utils/authUptions';
 import { School } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
@@ -44,13 +45,17 @@ export async function POST(request: Request) {
       },
     });
 
-    console.log('New Api project', newProject);
+    
+
 
      revalidatePath('/User/Dashboard');
+
 
     return new NextResponse(JSON.stringify(newProject), {
       headers: { 'Content-Type': 'application/json' },
     });
+
+
   } catch (error: any) {
     console.log(error, 'CREATING PROJECT');
     return new NextResponse('Internal Error', { status: 500 });

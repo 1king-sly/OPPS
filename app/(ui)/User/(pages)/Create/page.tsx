@@ -6,7 +6,8 @@ import Button from '@/app/(ui)/Button';
 import Question from './Question';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 
 export default  function Page() {
@@ -42,6 +43,7 @@ export default  function Page() {
       if(create?.ok && create?.status===200){
         toast.success('Project Created Successfully')
         router.push('/User/Dashboard')
+
      } else if(create?.status!==200 ){
         toast.error('Something went wrong')
       }
@@ -83,7 +85,7 @@ export default  function Page() {
                 id="title"
                 title='title'
                 placeholder='Project Title'
-                className='resize-none p-2 h-10 w-4/5 flex items-center rounded-md outline-sky-200 overflow-hidden'
+                className='resize-none p-2 h-10 w-80 flex items-center rounded-md outline-sky-200 overflow-hidden'
                 maxLength={50}
                 value={formData.title}
                 onChange={handleChange}
@@ -96,13 +98,16 @@ export default  function Page() {
                 
                 <select
                   name='schoolFromFormData'
-                  className='bg-white outline-sky-400 px-2 py-1 rounded-md w-80  '
+                  className='bg-white outline-sky-400 px-2 py-1 rounded-md w-80 text-gray-800 text-sm  '
                   required
                   title='school'
                   value={formData.schoolFromFormData}
                   onChange={handleChange}
 
                 >
+                   <option disabled value=''>
+                   Choose School
+                  </option> 
                   <option value='SONAS'>SONAS</option>
                   <option value='SASS'>SASS</option>
                   <option value='SCI'>SCI</option>
