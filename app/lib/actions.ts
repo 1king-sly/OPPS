@@ -690,7 +690,6 @@ export const createUser = async (formData: FormData) => {
 export const deleteSingleUser = async (formData: FormData) => {
   'use server';
 
-  console.log('Delete FormData', formData)
 
   const userId = formData.get('userId') as string;
 

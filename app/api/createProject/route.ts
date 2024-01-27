@@ -47,6 +47,7 @@ export async function POST(request: Request) {
 
      revalidatePath('/User/Dashboard');
 
+
     return new NextResponse(JSON.stringify(newProject), {
       headers: { 'Content-Type': 'application/json' },
     });

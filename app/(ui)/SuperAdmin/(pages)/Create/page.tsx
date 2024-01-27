@@ -45,7 +45,6 @@ export default  function Page() {
       })
       if(create?.ok && create?.status===200){
         toast.success('User Created Successfully')
-        revalidatePath('/User/Dashboard');
         router.push('/SuperAdmin/Users')
      } else if(create?.status!==200 ){
         toast.error('Something went wrong')
