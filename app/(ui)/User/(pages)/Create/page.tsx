@@ -96,7 +96,7 @@ export default  function Page() {
                 
                 <select
                   name='schoolFromFormData'
-                  className='bg-white outline-sky-400 px-2 py-1 rounded-md w-4/5  '
+                  className='bg-white outline-sky-400 px-2 py-1 rounded-md w-80  '
                   required
                   title='school'
                   value={formData.schoolFromFormData}
@@ -106,8 +106,8 @@ export default  function Page() {
                   <option value='SONAS'>SONAS</option>
                   <option value='SASS'>SASS</option>
                   <option value='SCI'>SCI</option>
-                  <option value='MED'>MEDICINE</option>
-                  <option value='ENG'>ENGINEERING</option>
+                  <option value='MEDICINE'>MEDICINE</option>
+                  <option value='ENGINEERING'>ENGINEERING</option>
                   <option value='LAW'>LAW</option>
                 </select>
               </label>

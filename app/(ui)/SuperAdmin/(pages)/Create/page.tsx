@@ -134,8 +134,8 @@ export default  function Page() {
                   <option value='SONAS'>SONAS</option>
                   <option value='SASS'>SASS</option>
                   <option value='SCI'>SCI</option>
-                  <option value='MED'>MEDICINE</option>
-                  <option value='ENG'>ENGINEERING</option>
+                  <option value='MEDICINE'>MEDICINE</option>
+                  <option value='ENGINEERING'>ENGINEERING</option>
                   <option value='LAW'>LAW</option>
                 </select>
               </label>

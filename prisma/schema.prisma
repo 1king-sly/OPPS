@@ -10,11 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
- 
-
-
  model User {
    id             Int       @id @default(autoincrement())
    firstName           String
@@ -48,12 +43,12 @@ model Project {
    STUDENT
    SUPERADMIN
  }
- enum School {
+enum School {
    SONAS
    SASS
    SCI
-   MED
-   ENG
+   MEDICINE
+   ENGINEERING
    LAW
  }
 
