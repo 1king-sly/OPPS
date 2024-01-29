@@ -9,6 +9,7 @@ interface QuestionProps {
   name:string;
   value?:string,
   onChange?:((event:any)=>void)
+  disabled?:boolean
   
 }
 
@@ -21,6 +22,7 @@ export default function Question({
   value,
   onChange,
   name,
+  disabled
 }: QuestionProps) {
  
 
@@ -42,6 +44,7 @@ export default function Question({
           value={value}
           onChange={onChange}
           name={name}
+          disabled={disabled}
         ></textarea>
       </div>
 

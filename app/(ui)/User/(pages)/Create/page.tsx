@@ -93,6 +93,7 @@ export default  function Page() {
                 maxLength={50}
                 value={formData.title}
                 onChange={handleChange}
+                disabled={disabled}
 
                 
                 
@@ -107,6 +108,8 @@ export default  function Page() {
                   title='school'
                   value={formData.schoolFromFormData}
                   onChange={handleChange}
+                  disabled={disabled}
+
 
                 >
                    <option disabled value=''>
@@ -137,6 +140,8 @@ export default  function Page() {
           name='ans1'  
           value={formData.ans1}
           onChange={handleChange}
+          disabled={disabled}
+
 
 
         />
@@ -148,6 +153,8 @@ export default  function Page() {
           name='ans2'
           value={formData.ans2}
           onChange={handleChange}
+          disabled={disabled}
+
 
         />
         <Question
@@ -159,6 +166,8 @@ export default  function Page() {
           name='ans3'
           value={formData.ans3}
           onChange={handleChange}
+          disabled={disabled}
+
           
         />
         <Question
@@ -169,6 +178,8 @@ export default  function Page() {
           name='ans4'
           value={formData.ans4}
           onChange={handleChange}
+          disabled={disabled}
+
         />
       </div>
 

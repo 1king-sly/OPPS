@@ -95,24 +95,28 @@ export default  function Page() {
           <label >
           <input type="text"  className='bg-white outline-sky-400 px-2 py-1 rounded-md' placeholder='First Name' name='firstName' required 
           value={formData.firstName}
+          disabled={disabled}
           onChange={handleChange}/>
 
           </label>
           <label >
           <input type="text"  className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder='Second Name' name='secondName' required
           value={formData.secondName}
+          disabled={disabled}
           onChange={handleChange} />
 
           </label>
           <label >
           <input type="email" name='email' className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder='Email address' required 
           value={formData.email}
+          disabled={disabled}
           onChange={handleChange}/>
 
           </label>
           <label >
           <input type="text" name='registrationNumber' className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder='Registration Number' required 
           value={formData.registrationNumber}
+          disabled={disabled}
           onChange={handleChange}/>
 
           </label>
@@ -124,6 +128,7 @@ export default  function Page() {
                   title='userType'
                   value={formData.userType}
                 onChange={handleChange}
+                disabled={disabled}
                 >
                   <option disabled value=''>
                    Choose User Type
@@ -143,6 +148,7 @@ export default  function Page() {
 
                   value={formData.school}
                 onChange={handleChange}
+                disabled={disabled}
                 >
                 <option disabled value=''>
                 Choose School
@@ -158,6 +164,7 @@ export default  function Page() {
           <label >
           <input type="text" name='password' className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder='Password' required
           value={formData.password}
+          disabled={disabled}
           onChange={handleChange}/>
 
           </label>
