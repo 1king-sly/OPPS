@@ -39,18 +39,22 @@ export default  function Page() {
 
     toggleLoading();
     try{
+      toast.loading('Creating user...')
       const create = await fetch('/api/createUser',{
         method:"POST",
         body:JSON.stringify(formData)
       })
       if(create?.ok && create?.status===200){
+        toast.dismiss();
         toast.success('User Created Successfully')
         router.push('/SuperAdmin/Users')
      } else if(create?.status!==200 ){
+      toast.dismiss();
         toast.error('Something went wrong')
       }
 
     }catch(error){
+      toast.dismiss();
       toast.error('Server Side error')
     }finally {
       toggleLoading();

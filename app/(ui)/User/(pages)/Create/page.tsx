@@ -36,19 +36,23 @@ export default  function Page() {
 
     toggleLoading();
     try{
+      toast.loading('Creating project...')
       const create = await fetch('/api/createProject',{
         method:"POST",
         body:JSON.stringify(formData)
       })
       if(create?.ok && create?.status===200){
+        toast.dismiss();
         toast.success('Project Created Successfully')
         router.push('/User/Dashboard')
 
      } else if(create?.status!==200 ){
+      toast.dismiss();
         toast.error('Something went wrong')
       }
 
     }catch(error){
+      toast.dismiss();
       toast.error('Server Side error')
     }finally {
       toggleLoading();

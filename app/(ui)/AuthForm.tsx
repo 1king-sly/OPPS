@@ -70,7 +70,11 @@ export default function AuthForm() {
 
     toggleLoading();
 
+    
+
     try {
+
+      toast.loading("Authenticating user...")
       if (variant === 'REGISTER') {
         await axios.post('/api/register', formData);
         await signIn('credentials', formData);
@@ -82,13 +86,18 @@ export default function AuthForm() {
           redirect: false,
         });
 
+
+
         if (callback?.error) {
-          toast.error('Invalid Credentials');
+          toast.dismiss();
+          toast.error('Something went wrong');
         } else if (callback?.ok && !callback?.error) {
+          toast.dismiss();
           toast.success('Logged In');
         }
       }
     } catch (error) {
+      toast.dismiss();
       toast.error('Something went wrong');
     } finally {
       toggleLoading();

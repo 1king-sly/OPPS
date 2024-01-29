@@ -1,6 +1,6 @@
 'use server'
 import React, { Suspense } from 'react';
-import { fetchAllAdminProjects } from '@/app/lib/actions';
+import { fetchAllAdminProjects, fetchAllGuestProjects } from '@/app/lib/actions';
 import Link from 'next/link';
 import Search from '@/app/(ui)/User/Component/Search';
 import Projects from '@/app/(ui)/User/Skeleton/Projects';
@@ -11,7 +11,7 @@ export default async  function Page({searchParams}:{searchParams:string}) {
   const params = new URLSearchParams(searchParams);
   const q = params.get('query') || '';
 
-  const datas = await fetchAllAdminProjects(q);
+  const datas = await fetchAllGuestProjects(q);
 
   
   return (

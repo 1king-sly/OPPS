@@ -3,6 +3,8 @@ import prisma from '@/app/lib/prismadb';
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import bcrypt from 'bcrypt'
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/utils/authUptions";
 
 export const addProject = async (formData: FormData) => {
   'use server';
@@ -124,6 +126,44 @@ export const fetchUserProjects = async (userId:number | undefined, query: string
 export const fetchAllAdminProjects = async (query:string) => {
   'use server';
 
+    const user = await getServerSession(authOptions)
+
+    const dept = user?.school
+
+
+  try{
+
+    if  (typeof query === 'string' && query.trim() !== '') {
+      const projects = await prisma.project.findMany({
+        where: {
+          title: {
+            contains: query.trim(),
+          },
+          school:School[dept as keyof typeof School]
+        },
+      });
+      return projects;
+    }
+
+    const projects = await prisma.project.findMany(
+      {
+        where:{
+          school:School[dept as keyof typeof School]
+        }
+      }
+    )
+      return projects
+    
+
+  }catch(error){
+    console.error("Error fetching All Projects",error)
+  }
+
+  
+};
+export const fetchAllGuestProjects = async (query:string) => {
+  'use server';
+
 
   try{
 
@@ -153,16 +193,26 @@ export const fetchAllAdminProjects = async (query:string) => {
 export const fetchAllAdminReviewedProjects = async ( query: string) => {
   'use server';
 
+  const user = await getServerSession(authOptions)
+
+    const dept = user?.school
+    
+
+
   try {
     if  (typeof query === 'string' && query.trim() !== '') {
       const projects = await prisma.project.findMany({
         where: {
           status: {
             in: [ProjectStatus.ACCEPTED, ProjectStatus.REJECTED],
-          },
+          }
+          ,
           title: {
             contains: query.trim(),
           },
+          school:School[dept as keyof typeof School]
+
+
         },
       });
       return projects;
@@ -173,6 +223,7 @@ export const fetchAllAdminReviewedProjects = async ( query: string) => {
         status: {
           in: [ProjectStatus.ACCEPTED, ProjectStatus.REJECTED],
         },
+        school:School[dept as keyof typeof School]
       },
     });
     return projects;
@@ -184,14 +235,17 @@ export const fetchAllAdminReviewedProjects = async ( query: string) => {
 export const countAllProjects = async () => {
   'use server';
 
+  const user = await getServerSession(authOptions)
 
+  const dept = user?.school
   try{
-
-        const projects = await prisma.project.count({
-        where:{
-          status: {
-            in: [ProjectStatus.ACCEPTED, ProjectStatus.REJECTED, ProjectStatus.PENDING],
-          },
+    
+    const projects = await prisma.project.count({
+      where:{
+        status: {
+          in: [ProjectStatus.ACCEPTED, ProjectStatus.REJECTED, ProjectStatus.PENDING],
+        },
+        school:School[dept as keyof typeof School]
         }
       })
       return projects
@@ -206,15 +260,20 @@ export const countAllProjects = async () => {
 export const countReviewedProjects = async () => {
   'use server';
 
+  const user = await getServerSession(authOptions)
 
+  const dept = user?.school
+  
+  
   try{
-
-
-      const projects = await prisma.project.count({
-        where:{
-          status: {
-            in: [ProjectStatus.ACCEPTED, ProjectStatus.REJECTED],
-          },
+    
+    
+    const projects = await prisma.project.count({
+      where:{
+        status: {
+          in: [ProjectStatus.ACCEPTED, ProjectStatus.REJECTED],
+        },
+        school:School[dept as keyof typeof School]
         }
       })
       return projects
@@ -229,13 +288,18 @@ export const countReviewedProjects = async () => {
 export const countPendingProjects = async () => {
   'use server';
 
+  const user = await getServerSession(authOptions)
 
+  const dept = user?.school
+  
+  
   try{
-   
-
-      const projects = await prisma.project.count({
-        where:{
-          status:ProjectStatus.PENDING
+    
+    
+    const projects = await prisma.project.count({
+      where:{
+        status:ProjectStatus.PENDING,
+        school:School[dept as keyof typeof School]
         }
       })
       return projects
@@ -334,12 +398,15 @@ export const countUserRejectedProjects = async (userId:number | undefined) => {
 export const fetchAdminDashboardProjects = async () => {
   'use server';
 
+  const user = await getServerSession(authOptions)
 
+  const dept = user?.school
   try{
-
-      const projects = await prisma.project.findMany(
-       {where:{
-        status:ProjectStatus.PENDING
+    
+    const projects = await prisma.project.findMany(
+      {where:{
+        status:ProjectStatus.PENDING,
+        school:School[dept as keyof typeof School]
        },
         take: 5,
        }
