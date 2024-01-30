@@ -41,7 +41,9 @@ export default async   function Page() {
           </label>
           <label >
           <input type="text" disabled className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={data?.userType}/>
-
+          {data?.school !== null ?(
+            <input type="text" disabled className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={data?.school}/>
+          ) :null}
           </label>
         </div>
         <div className='mt-2 w-[236px] '>
