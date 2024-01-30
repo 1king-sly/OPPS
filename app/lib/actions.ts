@@ -72,7 +72,9 @@ export const fetchUserDashboardProjects = async (userId:number | undefined) => {
        {
         where: {
           userId: parseInt(userId as unknown as string),
-          status:ProjectStatus.PENDING
+          status: {
+            in: [ProjectStatus.ACCEPTED, ProjectStatus.REFERRED],
+          },
         },
         take: 5,
         orderBy: {
@@ -298,7 +300,9 @@ export const countPendingProjects = async () => {
     
     const projects = await prisma.project.count({
       where:{
-        status:ProjectStatus.PENDING,
+        status: {
+          in: [ProjectStatus.ACCEPTED, ProjectStatus.REFERRED],
+        },
         school:School[dept as keyof typeof School]
         }
       })
@@ -815,5 +819,173 @@ export const deleteSingleProject = async (formData: FormData) => {
   }
 
   
+};
+
+export const fetchAllAdminReferredProjects = async ( query: string) => {
+  'use server';
+
+  const user = await getServerSession(authOptions)
+
+    const dept = user?.school
+    
+
+
+  try {
+    if  (typeof query === 'string' && query.trim() !== '') {
+      const projects = await prisma.project.findMany({
+        where: {
+          status:ProjectStatus.REFERRED
+          ,
+          title: {
+            contains: query.trim(),
+          },
+          school:School[dept as keyof typeof School]
+
+
+        },
+      });
+      return projects;
+    }
+
+    const projects = await prisma.project.findMany({
+      where: {
+        status:ProjectStatus.REFERRED,
+        school:School[dept as keyof typeof School]
+      },
+    });
+    return projects;
+  } catch (error) {
+    console.error('Error fetching Admin Referred projects Projects', error);
+  }
+};
+export const fetchAllModeratorReferredProjects = async ( query: string) => {
+  'use server';
+  try {
+    if  (typeof query === 'string' && query.trim() !== '') {
+      const projects = await prisma.project.findMany({
+        where: {
+          status:ProjectStatus.REFERRED
+          ,
+          title: {
+            contains: query.trim(),
+          },
+        },
+      });
+      return projects;
+    }
+
+    const projects = await prisma.project.findMany({
+      where: {
+        status:ProjectStatus.REFERRED,
+      },
+    });
+    return projects;
+  } catch (error) {
+    console.error('Error fetching Referred Projects', error);
+  }
+};
+
+
+export const fetchModeratorProjects = async () => {
+  'use server';
+  try{ 
+    const projects = await prisma.project.findMany(
+      {where:{
+        status:ProjectStatus.REFERRED,
+       },
+        take: 5,
+       }
+      )
+      return projects
+  }catch(error){
+    console.error("Error fetching Dashboard Admin Projects",error)
+  }  
+};
+
+export const referProject = async (formData: FormData) => {
+  'use server';
+    const status = formData.get('status') as string;
+    const projectId = formData.get('projectId') as string;
+    const comment = formData.get('comment') as string;
+    const updatedBy = formData.get('updatedBy') as string;  
+    
+    const referTo = formData.get('email') as string;
+
+    const statusEnum = ProjectStatus[status as keyof typeof ProjectStatus]
+  try{
+     
+
+
+      const project = await prisma.project.update({
+        where:{
+          projectId:parseInt(projectId),
+          status:ProjectStatus.PENDING,
+
+        },
+        data:{
+          status:ProjectStatus.REFERRED,
+          comment:comment,
+          updatedBy:updatedBy,
+        }
+      })
+
+      const referred = await prisma.reference.create({
+        data:{
+          email:referTo,
+          projectId:parseInt(projectId),
+        }
+      })
+      revalidatePath('/Admin/Dashboard')
+      revalidatePath('/Admin/Projects')
+      revalidatePath('/Admin/Reviewed')
+
+  }catch(error){
+    console.error("Error Referring  Project",error)
+  }
+  finally {
+    
+    redirect('/Admin/Projects')
+  }
+
+  
+};
+
+export const moderatorUpdateProject = async (formData: FormData) => {
+  'use server';
+    
+    const status = formData.get('status') as string;
+    const projectId = formData.get('projectId') as string;
+    const comment = formData.get('comment') as string;
+    const updatedBy = formData.get('updatedBy') as string;    
+    const statusEnum = ProjectStatus[status as keyof typeof ProjectStatus]
+
+
+    
+
+  try{
+      const project = await prisma.project.update({
+        where:{
+          projectId:parseInt(projectId),
+          status:ProjectStatus.REFERRED,
+
+        },
+        data:{
+          status:statusEnum,
+          moderatorComment:comment,
+          moderatorName:updatedBy,
+        }
+      })
+
+      revalidatePath('/Admin/Dashboard')
+      revalidatePath('/Admin/Projects')
+      revalidatePath('/Admin/Reviewed')
+
+  }catch(error){
+    console.error("Error Updating Project",error)
+  }
+  finally {
+    
+    redirect('/Admin/Projects')
+  } 
 };
 

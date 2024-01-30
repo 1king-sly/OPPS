@@ -36,7 +36,7 @@ export default async function Tables() {
                   <td className='max-[425px]:w-3/5 max-[375px]:w-4/6 max-[320px]:w-3/5 w-1/3 truncate '>{data.title}  </td>
                   <td className='w-1/3 max-[425px]:hidden' >{data.createdAt.toLocaleDateString()} </td>
                   <td className='w-1/12' >
-                      {data.status === 'PENDING' ?(
+                      {data.status === 'PENDING' || data.status==='REFERRED' ?(
                         <>
                         <div className='w-full flex gap-0.5 justify-center bg-gray-300 p-2 lg:rounded-md
                         rounded-full '>

@@ -22,7 +22,7 @@ export default function Question({
   value,
   onChange,
   name,
-  disabled
+  disabled,
 }: QuestionProps) {
  
 
@@ -38,7 +38,7 @@ export default function Question({
       <div>
         <textarea
           id={id}
-          maxLength={max}
+          maxLength={max * 3}
           title={id}
           className='resize-none min-h-60 w-full px-2 py-2 outline-sky-200 mt-3 max-h-fit'
           value={value}

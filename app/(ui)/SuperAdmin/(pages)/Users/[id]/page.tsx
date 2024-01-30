@@ -22,8 +22,6 @@ export default async function Page({ params }: { params: { id: string } }) {
      return <NotFound/>
     }
 
-    
- 
   return (
     <>
        <div className='w-full h-full flex items-center justify-center '>
@@ -50,10 +48,13 @@ export default async function Page({ params }: { params: { id: string } }) {
                <label>
                 
                 <select name='userType' className='bg-white outline-sky-400 px-2 py-1 rounded-md w-full'  required title='userType'>
-                  
+                <option disabled value=''>
+                   {user?.userType}
+                  </option> 
                   <option value='ADMIN'>Admin</option>
                   <option value='STUDENT'>Student</option>
                   <option value='SUPERADMIN'>Super Admin</option>
+                  <option value='MODERATOR'>External Moderator</option>
                 </select>
               </label>
 
@@ -64,6 +65,9 @@ export default async function Page({ params }: { params: { id: string } }) {
                   required
                   title='school'
                 >
+                  <option disabled value=''>
+                   {user?.school ||  'No school record'}
+                  </option> 
                   <option value='SONAS'>SONAS</option>
                   <option value='SASS'>SASS</option>
                   <option value='SCI'>SCI</option>

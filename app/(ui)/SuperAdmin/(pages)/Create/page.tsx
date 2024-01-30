@@ -1,15 +1,8 @@
 'use client'
-import { getServerSession } from 'next-auth';
-import {  createUser } from '@/app/lib/actions';
-import {  redirect } from 'next/navigation';
 import Button from '@/app/(ui)/Button';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import { revalidatePath } from 'next/cache';
-
-
-
 
 export default  function Page() {
 
@@ -75,14 +68,7 @@ export default  function Page() {
       [name]: value,
     }));
   };
-  
-  
-  
-  
-    
-    
-    
- 
+
   return (
     <>
        <div className='w-full h-full flex items-center justify-center '>
@@ -136,6 +122,7 @@ export default  function Page() {
                   <option value='STUDENT'>Student</option>
                   <option value='ADMIN'>Admin</option>
                   <option value='SUPERADMIN'>Super Admin</option>
+                  <option value='MODERATOR'>External Moderator</option>
                 </select>
               </label>
 
@@ -151,7 +138,7 @@ export default  function Page() {
                 disabled={disabled}
                 >
                 <option disabled value=''>
-                Choose School
+                Choose School (Optional)
                 </option>
                   <option value='SONAS'>SONAS</option>
                   <option value='SASS'>SASS</option>
