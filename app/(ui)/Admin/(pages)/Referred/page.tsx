@@ -1,5 +1,4 @@
 import React from 'react';
-import { getServerSession } from 'next-auth';
 import { fetchAllAdminReferredProjects } from '@/app/lib/actions';
 import Link from 'next/link';
 import Search from '@/app/(ui)/User/Component/Search';

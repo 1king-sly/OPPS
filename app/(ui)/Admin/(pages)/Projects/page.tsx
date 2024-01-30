@@ -10,13 +10,6 @@ import { CheckCircleIcon, ClockIcon, ExclamationTriangleIcon,PaperAirplaneIcon }
 
 
 export default async  function Page({searchParams}:{searchParams:string}) {
-
-
-  const session = await getServerSession()
-  if(!session){
-    redirect('/')
-  }
-
   const params = new URLSearchParams(searchParams);
   const q = params.get('query') || '';
 

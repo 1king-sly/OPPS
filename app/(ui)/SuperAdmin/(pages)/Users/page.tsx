@@ -8,17 +8,10 @@ import {TrashIcon,EyeIcon } from '@heroicons/react/24/outline';
 
 
 export default async  function Page({searchParams}:{searchParams:string}) {
-  const session = await getServerSession()
-  if(!session){
-    redirect('/')
-  }
+ 
   const params = new URLSearchParams(searchParams);
   const q = params.get('query') || '';
   const users = await fetchUsers(q);
-  
-
-
-
   return (
     <>
    <div className=' p-10 pb-40 max-[425px]:p-3  '>

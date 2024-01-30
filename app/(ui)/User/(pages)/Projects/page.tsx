@@ -6,19 +6,12 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import Search from '../../Component/Search';
 import { CheckCircleIcon, ClockIcon, ExclamationTriangleIcon,TrashIcon,EyeIcon } from '@heroicons/react/24/outline';
+import { authOptions } from '@/utils/authUptions';
 
 
 
 export default async function Tables({searchParams}:{searchParams:string}) {
-  const session = await getServerSession()
-  if(!session){
-    redirect('/')
-  }
-  const email = session.user.email
-
-
-  const data =await fetchUser(email)
-
+   const data =await getServerSession(authOptions)
   const params = new URLSearchParams(searchParams);
   const q = params.get('query') || '';
 
