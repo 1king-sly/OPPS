@@ -23,7 +23,7 @@ export default async  function Page({searchParams}:{searchParams:string}) {
 
     <div className=' p-10 pb-40 max-[425px]:p-3 '>
     <Search placeholder="Search for a project ..."/>
-
+      
     <table className=' w-full'>
         
         <tbody className='  flex-col mt-4 gap-3 flex'>

@@ -3,7 +3,6 @@ import { getServerSession } from 'next-auth';
 import {deleteSingleUser, fetchUsers } from '@/app/lib/actions';
 import Link from 'next/link';
 import Search from '@/app/(ui)/User/Component/Search';
-import { redirect } from 'next/navigation';
 import {TrashIcon,EyeIcon } from '@heroicons/react/24/outline';
 
 
