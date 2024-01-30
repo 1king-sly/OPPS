@@ -4,22 +4,11 @@ import Image from 'next/image'
 import profile from '@/public/images/profile.png'
 import Button from '@/app/(ui)/Button'
 import { getServerSession } from 'next-auth'
-import { fetchUser } from '@/app/lib/actions'
-import { redirect } from 'next/navigation'
+import { authOptions } from '@/utils/authUptions'
 
 
 export default async function Page() {
- 
-  const session = await getServerSession()
-  if(!session){
-    redirect('/')
-  }
-  const email = session.user.email
-
-
-  const data =await fetchUser(email)
-
-
+  const data =await getServerSession(authOptions)
   return (
     <>
     <div className='w-full h-full flex items-center justify-center '>

@@ -4,24 +4,11 @@ import Image from 'next/image'
 import profile from '@/public/images/profile.png'
 import Button from '@/app/(ui)/Button'
 import { getServerSession } from 'next-auth'
-import { fetchUser } from '@/app/lib/actions'
-import { redirect } from 'next/navigation'
+import { authOptions } from '@/utils/authUptions'
 
 
 export default async   function Page() {
- 
-  const session = await getServerSession()
-  if(!session){
-    redirect('/')
-  }
-  const email = session.user.email
-
-
-  const data =await fetchUser(email)
-
-  
- 
-
+  const data =await getServerSession(authOptions)
   return (
     <>
     <div className='w-full h-full flex items-center justify-center '>
@@ -41,10 +28,12 @@ export default async   function Page() {
           </label>
           <label >
           <input type="text" disabled className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={data?.userType}/>
-          {data?.school !== null ?(
-            <input type="text" disabled className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={data?.school}/>
-          ) :null}
           </label>
+          {data?.school !== null ?(
+            <label >
+            <input type="text" disabled className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={data?.school}/>
+          </label>
+          ) :null}
         </div>
         <div className='mt-2 w-[236px] '>
         <Button type='submit' disabled fullWidth>
