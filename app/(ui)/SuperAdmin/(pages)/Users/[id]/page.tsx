@@ -8,13 +8,7 @@ import {  redirect } from 'next/navigation';
 import NotFound from './not-found';
 import Button from '@/app/(ui)/Button';
 
-export default async function Page({ params }: { params: { id: string } }) {
-
-  const session = await getServerSession()
-  if(!session){
-    redirect('/')
-  }
-  
+export default async function Page({ params }: { params: { id: string } }) {  
     const userId = params.id
     
     const user = await fetchSuperAdminUser(userId)
@@ -49,7 +43,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                 
                 <select name='userType' className='bg-white outline-sky-400 px-2 py-1 rounded-md w-full'  required title='userType'>
                 <option disabled value=''>
-                   {user?.userType}
+                  <p>{user?.userType}</p>
                   </option> 
                   <option value='ADMIN'>Admin</option>
                   <option value='STUDENT'>Student</option>
@@ -66,7 +60,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                   title='school'
                 >
                   <option disabled value=''>
-                   {user?.school ||  'No school record'}
+                    <p>{user?.school ||  'No school record'}</p> 
                   </option> 
                   <option value='SONAS'>SONAS</option>
                   <option value='SASS'>SASS</option>

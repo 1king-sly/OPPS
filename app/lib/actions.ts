@@ -75,7 +75,7 @@ export const fetchUserDashboardProjects = async (userId:number | undefined) => {
         where: {
           userId: parseInt(userId as unknown as string),
           status: {
-            in: [ProjectStatus.ACCEPTED, ProjectStatus.REFERRED],
+            in: [ProjectStatus.PENDING, ProjectStatus.REFERRED],
           },
         },
         take: 5,
@@ -312,7 +312,7 @@ export const countPendingProjects = async () => {
     const projects = await prisma.project.count({
       where:{
         status: {
-          in: [ProjectStatus.ACCEPTED, ProjectStatus.REFERRED],
+          in: [ProjectStatus.PENDING, ProjectStatus.REFERRED],
         },
         school:School[dept as keyof typeof School]
         }
