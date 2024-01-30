@@ -57,4 +57,7 @@ export async function POST(request: Request) {
     console.log(error, 'CREATING PROJECT');
     return new NextResponse('Internal Error', { status: 500 });
   }
+  finally{
+    revalidatePath('/User/Dashboard');
+  }
 }

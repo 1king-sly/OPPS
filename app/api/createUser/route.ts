@@ -59,6 +59,9 @@ export async function POST(request:Request) {
         console.log(error, "CREATING USER")
         return new NextResponse('Internal Error', {status:500})
     }
+    finally{
+        revalidatePath('/SuperAdmin/Users');
+    }
    
     
  }
