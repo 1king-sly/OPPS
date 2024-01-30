@@ -6,6 +6,8 @@ import bcrypt from 'bcrypt'
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/authUptions";
 
+const cron = require('node-cron');
+
 export const addProject = async (formData: FormData) => {
   'use server';
 
@@ -972,27 +974,34 @@ export const moderatorUpdateProject = async (formData: FormData) => {
     const updatedBy = formData.get('updatedBy') as string;    
     const statusEnum = ProjectStatus[status as keyof typeof ProjectStatus]
 
-
-    
+    const user = await getServerSession(authOptions) 
 
   try{
-      const project = await prisma.project.update({
-        where:{
-          projectId:parseInt(projectId),
-          status:ProjectStatus.REFERRED,
-
+    const project = await prisma.project.update({
+      where:{
+        projectId:parseInt(projectId),
+        status:ProjectStatus.REFERRED,
+        
+      },
+      data:{
+        status:statusEnum,
+        moderatorComment:comment,
+        moderatorName:updatedBy,
+      }
+    })
+    
+    if (project.status !== ProjectStatus.REFERRED) {
+      await prisma.reference.delete({
+        where: {
+          email_projectId: {
+            email: user?.email,
+            projectId: parseInt(projectId),
+          },
         },
-        data:{
-          status:statusEnum,
-          moderatorComment:comment,
-          moderatorName:updatedBy,
-        }
-      })
-
-      revalidatePath('/Admin/Dashboard')
-      revalidatePath('/Admin/Projects')
-      revalidatePath('/Admin/Reviewed')
-
+      });
+    }
+      revalidatePath('/Moderator/Dashboard')
+      revalidatePath('/Moderator/Projects')
   }catch(error){
     console.error("Error Updating Project",error)
   }
@@ -1001,4 +1010,60 @@ export const moderatorUpdateProject = async (formData: FormData) => {
     redirect('/Admin/Projects')
   } 
 };
+
+
+async function updateProjectsTask() {
+  try {
+    // const twoWeeksAgo = new Date();
+    // twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+
+    // Just for demo
+
+    const thirtySecondsAgo = new Date();
+    thirtySecondsAgo.setSeconds(thirtySecondsAgo.getSeconds() - 30);
+
+    const projectsToUpdate = await prisma.project.findMany({
+      where: {
+        status: 'REFERRED',
+        createdAt: {
+          // lte: twoWeeksAgo,
+          // just for demo
+          lte: thirtySecondsAgo,
+        },
+      },
+    });
+
+    for (const project of projectsToUpdate) {
+      
+      await prisma.project.update({
+        where: {
+          projectId: project.projectId,
+        },
+        data: {
+          status: 'PENDING',
+        },
+      });
+
+      await prisma.reference.deleteMany({
+        where: {
+          projectId: project.projectId,
+        },
+      });
+    }
+  } catch (error) {
+    console.error('Error updating projects:', error);
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+// cron.schedule('0 0 * * *', () => {
+//   updateProjectsTask();
+// });
+
+// just for demo
+cron.schedule('*/30 * * * * *', () => {
+  updateProjectsTask();
+});
+
+
 
