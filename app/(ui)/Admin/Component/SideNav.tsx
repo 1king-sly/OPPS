@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { HomeIcon, FolderIcon, UserIcon, ArrowRightEndOnRectangleIcon,CheckIcon } from '@heroicons/react/24/outline';
+import { HomeIcon, FolderIcon, UserIcon, ArrowRightEndOnRectangleIcon,CheckIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
 import {  signOut } from 'next-auth/react'; 
 import clsx from 'clsx';
 
@@ -14,6 +14,7 @@ export default function SideNav() {
     { name: 'Dashboard', href: '/Admin/Dashboard', icon: HomeIcon },
     { name: 'Projects', href: '/Admin/Projects', icon: FolderIcon },
     { name: 'Reviewed', href: '/Admin/Reviewed', icon: CheckIcon },
+    { name: 'Referred', href: '/Admin/Referred', icon: PaperAirplaneIcon },
     
     { name: 'Profile', href: '/Admin/Profile', icon: UserIcon },
     { name: 'Logout', href: '#', icon: ArrowRightEndOnRectangleIcon },

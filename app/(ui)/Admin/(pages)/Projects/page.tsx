@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Search from '@/app/(ui)/User/Component/Search';
 import Projects from '@/app/(ui)/User/Skeleton/Projects';
 import { redirect } from 'next/navigation';
-import { CheckCircleIcon, ClockIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon, ClockIcon, ExclamationTriangleIcon,PaperAirplaneIcon } from '@heroicons/react/24/outline';
 
 
 export default async  function Page({searchParams}:{searchParams:string}) {
@@ -50,6 +50,18 @@ export default async  function Page({searchParams}:{searchParams:string}) {
 
                         <p className='hidden lg:block text-xs'>
                           PENDING
+                          </p>
+                           </div>
+                        </>
+                      ): null}
+                      {data.status === 'REFERRED' ?(
+                        <>
+                         <div className='w-full flex gap-0.5 justify-center bg-orange-300 p-2 lg:rounded-md
+                        rounded-full '>
+                        <PaperAirplaneIcon className='w-full h-full md:w-4 md:h-4 lg:hidden'/>
+
+                        <p className='hidden lg:block text-xs'>
+                          REFERRED
                           </p>
                            </div>
                         </>

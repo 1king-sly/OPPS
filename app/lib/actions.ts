@@ -175,12 +175,21 @@ export const fetchAllGuestProjects = async (query:string) => {
           title: {
             contains: query.trim(),
           },
+          status:{
+            in:[ProjectStatus.PENDING,ProjectStatus.ACCEPTED,ProjectStatus.REJECTED]
+          }
         },
       });
       return projects;
     }
 
-    const projects = await prisma.project.findMany()
+    const projects = await prisma.project.findMany(
+      {where:{
+        status:{
+          in:[ProjectStatus.PENDING,ProjectStatus.ACCEPTED,ProjectStatus.REJECTED]
+        }
+      }}
+    )
       return projects
     
 
@@ -447,6 +456,10 @@ export const fetchSingleProject = async (projectId:string) => {
           userId:true,
           updatedBy:true,
           comment:true,
+          moderatorComment:true,
+          moderatorName:true,
+          referredTo:true,
+
         },
       })
       return project

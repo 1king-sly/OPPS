@@ -1,19 +1,9 @@
 'use server'
 import React from 'react';
-import { getServerSession } from 'next-auth';
-import {  fetchSingleProject,updateProject } from '@/app/lib/actions';
-import {  redirect } from 'next/navigation';
+import {  fetchSingleProject } from '@/app/lib/actions';
 import NotFound from './not-found';
-import { authOptions } from '@/utils/authUptions';
 
 export default async function Page({ params }: { params: { id: string } }) {
-
-  const session = await getServerSession(authOptions)
-  if(!session){
-    redirect('/')
-  }
-    const userName =session?.firstName + ' ' + session?.secondName
-
     const projectId = params.id
     
     const project = await fetchSingleProject(projectId)
@@ -73,7 +63,19 @@ export default async function Page({ params }: { params: { id: string } }) {
             </div>
               </>
             ):null}
-             {project?.moderatorComment !== null || project?.moderatorComment=='' ?(
+            {project?.referredTo !== null  && project?.referredTo.length > 0 ?(
+              <>
+               <div className='  px-4 mt-4'>
+                <div className='w-full flex   font-semibold gap-1'>Referred To: </div>
+                <ul className='list-disc list-inside px-4 bg-gray-100 py-2'>
+                {project?.referredTo.map((reference) => (
+                 <li key={reference.email}>{reference.email}</li>
+                 ))}
+                </ul>
+            </div>
+            </>
+            ):null}
+            {project?.moderatorComment !== null || project?.moderatorComment=='' ?(
               <>
                <div className='  px-4 mt-4'>
                 <div className='w-full flex   font-semibold gap-1'>Moderator Comment: <span
@@ -89,25 +91,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
           
           <div>
-            { project?.status === 'PENDING'?(
-                <>
-              <form action={updateProject}>
-                <input type="text" name='updatedBy' title='updatedBy' className='hidden' value={userName} />
-              <p>Add a comment (Optional)</p>
-              <textarea name="comment" id="comment" placeholder='Add a comment' className='w-full outline-sky-300 resize-none p-2 h-48 text-gray-900'></textarea>
-              <div className='w-full justify-around flex mt-2'>
-
             
-              <input type="text" name='projectId' title='projectId' className='hidden' value={projectId}  />
-              <button type='submit' name='status' value={'REJECTED'} className='p-3 bg-rose-500  rounded-md '>Reject</button>
-              <button type='submit' name='status' value={'ACCEPTED'} className='p-3 bg-green-500 rounded-md '>Accept</button>
-
-              </div>
-
-            </form>
-
-                </>
-            ): null}
            
 
           
@@ -115,15 +99,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
 
           </div>
-       
-          
-          
-            
-
           </div>
-
-         
-         
         </div>
        </div>
     </>
