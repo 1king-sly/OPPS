@@ -10,7 +10,8 @@ import { NextResponse } from 'next/server'
             firstName,
             secondName,
             password,
-            registrationNumber
+            registrationNumber,
+            userType
         } = body
 
 
@@ -27,7 +28,7 @@ import { NextResponse } from 'next/server'
                 secondName,
                 hashedPassword,
                 registrationNumber,
-                userType: UserType.STUDENT             },
+                userType: UserType[userType as keyof typeof UserType]         },
         });
         
 

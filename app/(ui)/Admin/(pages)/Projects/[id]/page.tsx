@@ -94,17 +94,6 @@ export default async function Page({ params }: { params: { id: string } }) {
           <div>
             { project?.status === 'PENDING'?(
                 <>
-              {/* <form >
-                <input type="text" name='updatedBy' title='updatedBy' className='hidden' value={userName} />
-              <p>Add a comment (Optional)</p>
-              <textarea name="comment" id="comment" placeholder='Add a comment' className='w-full outline-sky-300 resize-none p-2 h-48 text-gray-900'
-              ></textarea>
-              <div className='w-full justify-around flex mt-2'>
-              <input type="text" name='projectId' title='projectId' className='hidden' value={projectId}  />
-              <button type='submit' name='status' value={'REJECTED'} className='p-3 bg-rose-500  rounded-md '>Reject</button>
-              <button type='submit' name='status' value={'ACCEPTED'} className='p-3 bg-green-500 rounded-md '>Accept</button>
-              </div>
-            </form> */}
             <UpdateProject projectId={projectId} userName={userName}  />
             </>
             ): null}

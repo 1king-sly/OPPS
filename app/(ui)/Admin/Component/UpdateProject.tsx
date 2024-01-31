@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
 
 
 export default function Refer({projectId,userName}:{projectId:string,userName:string}) {
@@ -14,6 +15,8 @@ export default function Refer({projectId,userName}:{projectId:string,userName:st
         status:'',
         comment:'',
       });
+
+      const router = useRouter()
       
       const [visible,setIsvisible] = useState(false)
 
@@ -45,7 +48,7 @@ export default function Refer({projectId,userName}:{projectId:string,userName:st
         event.preventDefault()
 
 
-       await setFormData((prevFormData) => ({
+        setFormData((prevFormData) => ({
             ...prevFormData,
             status: referBtnValue,
           }));
@@ -53,6 +56,10 @@ export default function Refer({projectId,userName}:{projectId:string,userName:st
           toggleLoading();
 
           try{
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              status: referBtnValue,
+            }));
             toast.loading('Updating Project...')
             const update = await fetch ('/api/updateProject',{
               method:"PUT",
@@ -62,6 +69,9 @@ export default function Refer({projectId,userName}:{projectId:string,userName:st
             if(update?.ok && update?.status===200){
               toast.dismiss()
               toast.success('Project updated successfully')
+              router.reload()
+              router.push('/Admin/Projects')
+
             }else if(update?.status !== 200){
               toast.dismiss()
               toast.error('Something went wrong')

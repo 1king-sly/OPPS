@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { HomeIcon, UserIcon, ArrowRightEndOnRectangleIcon, PlusCircleIcon,  UsersIcon } from '@heroicons/react/24/outline';
+import { HomeIcon, UserIcon, ArrowRightEndOnRectangleIcon, PlusCircleIcon,  UsersIcon,UserGroupIcon } from '@heroicons/react/24/outline';
 import {  signOut } from 'next-auth/react'; 
 import clsx from 'clsx';
 
@@ -13,6 +13,7 @@ export default function SideNav() {
   const links = [
     { name: 'Dashboard', href: '/SuperAdmin/Dashboard', icon: HomeIcon },
     { name: 'Users', href: '/SuperAdmin/Users', icon: UsersIcon },
+    { name: 'Pending', href: '/SuperAdmin/Pending', icon: UserGroupIcon },
     { name: 'Add User', href: '/SuperAdmin/Create', icon: PlusCircleIcon },
     
     { name: 'Profile', href: '/SuperAdmin/Profile', icon: UserIcon },

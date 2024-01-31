@@ -10,8 +10,6 @@ const cron = require('node-cron');
 
 export const addProject = async (formData: FormData) => {
   'use server';
-
-
   try {
     const schoolFromFormData = formData.get('schoolFromFormData');
     const title = formData.get('title') as string;
@@ -1009,6 +1007,54 @@ export const moderatorUpdateProject = async (formData: FormData) => {
     
     redirect('/Admin/Projects')
   } 
+};
+
+export const fetchPreusers = async (query: string) => {
+  try {
+    if (typeof query === 'string' && query.trim()) {
+      const users = await prisma.preuser.findMany({
+        where: {
+          userType: {
+            in: [UserType.STUDENT,UserType.ADMIN,UserType.MODERATOR],
+          }, 
+          OR: [
+            {
+              registrationNumber: {
+                contains: query.trim(),
+              },
+            },
+            {
+              firstName: {
+                contains: query.trim(),
+              },
+            },
+            {
+              email: {
+                contains: query.trim(),
+              },
+            },
+          ],
+        },
+      });
+      return users;
+    }
+
+    const users = await prisma.preuser.findMany(
+      {
+        where:{
+          userType: {
+            in: [UserType.STUDENT,UserType.ADMIN,UserType.MODERATOR],
+          }
+        }
+      }
+    );
+    return users;
+  } catch (error) {
+    console.log('Error fetching All Pending Users ', error);
+    throw error; 
+  } finally {
+    await prisma.$disconnect();
+  }
 };
 
 
