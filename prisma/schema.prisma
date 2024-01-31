@@ -75,3 +75,15 @@ enum ProjectStatus {
   REJECTED
   REFERRED
 }
+
+model Preuser {
+  id                 Int       @id @default(autoincrement())
+  firstName          String
+  secondName         String
+  hashedPassword     String
+  email              String    @unique
+  registrationNumber String    @unique
+  userType           UserType
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @default(now())
+}

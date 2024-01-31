@@ -6,9 +6,6 @@ import Button from '@/app/(ui)/Button';
 import Question from './Question';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
-
 
 export default  function Page() {
   const [loading, setisLoading] = useState(false);
