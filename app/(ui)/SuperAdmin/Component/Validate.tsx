@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import clsx from 'clsx';
-import { useRouter } from 'next/router';
 
 export default function Validate({email,registrationNumber,firstName,secondName,hashedPassword,userType}:{email:string,registrationNumber:string,firstName:string,secondName:string,hashedPassword:string,userType:string}) {
     const [loading, setisLoading] = useState(false);
@@ -16,7 +15,6 @@ export default function Validate({email,registrationNumber,firstName,secondName,
         registrationNumber: registrationNumber,
         status:'',
       });
-      const router = useRouter()
       const toggleLoading = () => {
         setisLoading((prevLoading) => !prevLoading);
       };
@@ -50,7 +48,6 @@ export default function Validate({email,registrationNumber,firstName,secondName,
             if(update?.ok && update?.status===200){
               toast.dismiss()
               toast.success('Updated')
-              router.reload()
             }else if(update?.status !== 200){
               toast.dismiss()
               toast.error('Something went wrong')

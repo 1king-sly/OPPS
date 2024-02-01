@@ -1,3 +1,4 @@
+import { createPreuser } from '@/app/lib/actions';
 import prisma from '@/app/lib/prismadb';
 import { authOptions } from '@/utils/authUptions';
 import { ProjectStatus, School, UserType } from '@prisma/client';
@@ -21,6 +22,22 @@ export async function PUT(request:Request) {
             if(!email || email===''){
                 throw error('Email missing')
             }
+            const existingUser = await prisma.user.findFirst({
+                where: {
+                  email:email
+                },
+              });
+
+              const existingPreuser = await prisma.preuser.findFirst({
+                where: {
+                  email:email
+                },
+              });
+          
+              if (!existingUser && !existingPreuser) {
+                const moderator =await createPreuser(email)
+              }
+            
             const referredProject = await prisma.reference.create({
                 data:{
                     email:email,
@@ -33,10 +50,7 @@ export async function PUT(request:Request) {
                 revalidatePath('/Admin/Dashboard')
                 revalidatePath('/Admin/Projects')
 
-                const moderator = await fetch('/api/createPreuser',{
-                    method:'POST',
-                    body:JSON.stringify(email)
-                })
+               
             }
             else{
                 return new NextResponse('Something went wrong', { status: 400 });            }

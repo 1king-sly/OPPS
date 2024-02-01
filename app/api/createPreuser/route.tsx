@@ -5,7 +5,6 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 
 export async function POST(request: Request) {
-  'use server'
   try {
     const body = await request.json();
     let {
@@ -16,13 +15,13 @@ export async function POST(request: Request) {
       email,
       userType,
     } = body;
-    if(email && !firstName && !secondName && !password && !registrationNumber && !userType){
-      firstName='New'
-      secondName='User'
-      password=email
-      registrationNumber=email
-      email=email
-      userType='MODERATOR'
+
+    if (email && !firstName && !secondName && !password && !registrationNumber && !userType) {
+      firstName = 'New';
+      secondName = 'User';
+      password = email;
+      registrationNumber = email;
+      userType = 'MODERATOR';
     }
 
     if (!firstName || !secondName || !password || !email || !userType) {
@@ -45,10 +44,7 @@ export async function POST(request: Request) {
     });
 
     if (existingUser) {
-      console.log('User Existing: ',existingUser)
-
-      return new NextResponse('User with credentials already exists', { status: 400 });
-
+      return new NextResponse('User with credentials already exists', { status: 402 });
     }
 
     const newPreuser = await prisma.preuser.create({
@@ -70,7 +66,5 @@ export async function POST(request: Request) {
   } catch (error: any) {
     console.error(error, 'CREATING PRE-USER');
     return new NextResponse('Internal Error', { status: 500 });
-  } finally {
-    revalidatePath('/SuperAdmin/Users');
   }
 }

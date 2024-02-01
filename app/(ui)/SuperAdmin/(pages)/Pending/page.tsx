@@ -12,7 +12,7 @@ export default async   function Page({searchParams}:{searchParams:string}) {
   const users =await fetchPreusers(q)
   return (
     <>
-    <div className='w-full h-full flex items-center justify-around gap-3 flex-wrap '>
+    <div className='w-full min-h-screen flex items-center justify-around gap-3 flex-wrap pb-40 pt-4 '>
         {users?.map((user)=>(
             <div className='shadow-lg rounded-md flex flex-col w-96 h-96  items-center justify-center' key={user.id}>
             <div className=' h-24 flex items-center justify-center  gap-4 px-2'>

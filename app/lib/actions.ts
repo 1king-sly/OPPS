@@ -310,7 +310,7 @@ export const countPendingProjects = async () => {
     const projects = await prisma.project.count({
       where:{
         status: {
-          in: [ProjectStatus.PENDING, ProjectStatus.REFERRED],
+          in: [ProjectStatus.PENDING],
         },
         school:School[dept as keyof typeof School]
         }
@@ -1107,9 +1107,44 @@ async function updateProjectsTask() {
 // });
 
 // just for demo
-cron.schedule('*/30 * * * * *', () => {
+cron.schedule('*/5 * * * *', () => {
   updateProjectsTask();
 });
+
+export const createPreuser = async (email:string ) => {
+  'use server';
+  
+  if(!email){
+    throw new Error('Required field is missing');
+  }
+
+  try {
+    const firstName='Any'
+    const secondName='Unknown'
+    const password=email
+    const userType = 'MODERATOR'
+    const registrationNumber=email
+
+     const hashedPassword = await bcrypt.hash(password, 12);
+
+    const newUser = await prisma.preuser.create({
+      data: {
+        firstName:firstName,
+        secondName:secondName,
+        email:email,
+        registrationNumber:registrationNumber,
+        userType:userType,
+        hashedPassword:hashedPassword,
+    },
+    });
+
+    revalidatePath('/Admin/Dashboard');
+
+    return newUser;
+  } catch (error) {
+    console.log('Error Creating User', error);
+  } 
+};
 
 
 

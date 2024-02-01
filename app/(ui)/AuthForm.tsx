@@ -84,8 +84,13 @@ export default function AuthForm() {
         if(preUser?.ok && preUser?.status===200){
           toast.dismiss()
           toast.success('Request sent to admin successfully')
-        } else if(!preUser?.ok && preUser?.status!==200){
+        } else if(!preUser?.ok && preUser?.status===400){
+          toast.dismiss()
           toast.error('Something went wrong')
+        }
+        else if(preUser?.status===402){
+          toast.dismiss()
+          toast.error('User with credentials already exists')
         }
       }
 
