@@ -675,7 +675,7 @@ export const fetchUsers = async (query: string) => {
       const users = await prisma.user.findMany({
         where: {
           userType: {
-            in: [UserType.STUDENT,UserType.ADMIN],
+            in: [UserType.STUDENT,UserType.ADMIN,UserType.MODERATOR],
           }, 
           OR: [
             {
