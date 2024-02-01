@@ -698,7 +698,7 @@ export const fetchUsers = async (query: string) => {
       {
         where:{
           userType: {
-            in: [UserType.STUDENT,UserType.ADMIN],
+            in: [UserType.STUDENT,UserType.ADMIN,UserType.MODERATOR],
           }
         }
       }
