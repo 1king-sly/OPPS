@@ -649,6 +649,23 @@ export const countAdmin = async () => {
   
 };
 
+export const countPendingUsers = async () => {
+  'use server';
+
+
+  try{
+   
+
+    const users = await prisma.preuser.count()
+    return users
+   
+
+  }catch(error){
+    console.error("Error counting Pre users",error)
+  }
+
+  
+};
 
 
 
@@ -1119,8 +1136,8 @@ export const createPreuser = async (email:string ) => {
   }
 
   try {
-    const firstName='Any'
-    const secondName='Unknown'
+    const firstName=email
+    const secondName='Moderator'
     const password=email
     const userType = 'MODERATOR'
     const registrationNumber=email

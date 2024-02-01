@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import clsx from 'clsx';
 
@@ -15,50 +15,50 @@ export default function Validate({email,registrationNumber,firstName,secondName,
         registrationNumber: registrationNumber,
         status:'',
       });
-      const toggleLoading = () => {
+      const toggleLoading = useCallback(() => {
         setisLoading((prevLoading) => !prevLoading);
-      };
-      const handleSubmit= async (referBtnValue: string)=>{
-        const event = window.event
-        if(!event){
-            return;
+      }, []); 
+     
+  const handleSubmit = useCallback(
+    async (referBtnValue: string) => {
+      toggleLoading();
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        status: referBtnValue,
+      }));
+    },
+    [toggleLoading]
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        toast.loading('Updating User...');
+
+        const update = await fetch('/api/validate', {
+          method: 'POST',
+          body: JSON.stringify(formData),
+        });
+
+        if (update?.ok && update?.status === 200) {
+          toast.dismiss();
+          toast.success('Updated successfully');
+        } else if (update?.status !== 200) {
+          toast.dismiss();
+          toast.error('Something went wrong');
         }
-        event.preventDefault()
-
-
-       setFormData((prevFormData) => ({
-          ...prevFormData,
-          status: referBtnValue,
-        }));
-
-          toggleLoading();
-
-          try{
-
-            setFormData((prevFormData) => ({
-              ...prevFormData,
-              status: referBtnValue,
-            }));
-            toast.loading('Validating user...')
-            const update = await fetch ('/api/validate',{
-              method:"POST",
-              body:JSON.stringify(formData)
-            })
-  
-            if(update?.ok && update?.status===200){
-              toast.dismiss()
-              toast.success('Updated')
-            }else if(update?.status !== 200){
-              toast.dismiss()
-              toast.error('Something went wrong')
-            }
-          }catch(error){
-            toast.dismiss()
-            toast.error('Something went wrong')
-          }finally{
-            toggleLoading();
-          }    
+      } catch (error) {
+        toast.dismiss();
+        toast.error('Something went wrong');
+      } finally {
+        toggleLoading();
       }
+    };
+
+    if (formData.status) {
+      fetchData();
+    }
+  }, [formData, toggleLoading]);
 
       useEffect(() => {
         setDisabled(loading);
