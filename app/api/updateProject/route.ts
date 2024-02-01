@@ -1,6 +1,7 @@
+import { createPreuser } from '@/app/lib/actions';
 import prisma from '@/app/lib/prismadb';
 import { authOptions } from '@/utils/authUptions';
-import { ProjectStatus, School } from '@prisma/client';
+import { ProjectStatus, School, UserType } from '@prisma/client';
 import { error } from 'console';
 import { getServerSession } from 'next-auth';
 import { revalidatePath } from 'next/cache';
@@ -21,6 +22,22 @@ export async function PUT(request:Request) {
             if(!email || email===''){
                 throw error('Email missing')
             }
+            const existingUser = await prisma.user.findFirst({
+                where: {
+                  email:email
+                },
+              });
+
+              const existingPreuser = await prisma.preuser.findFirst({
+                where: {
+                  email:email
+                },
+              });
+          
+              if (!existingUser && !existingPreuser) {
+                const moderator =await createPreuser(email)
+              }
+            
             const referredProject = await prisma.reference.create({
                 data:{
                     email:email,
@@ -29,14 +46,14 @@ export async function PUT(request:Request) {
             }) 
 
             if(referredProject){
-                console.log('Referred Project created successfully', referredProject)
                 revalidatePath('/Admin/Referred')
                 revalidatePath('/Admin/Dashboard')
                 revalidatePath('/Admin/Projects')
+
+               
             }
             else{
-                throw  error('something went wrong')
-            }
+                return new NextResponse('Something went wrong', { status: 400 });            }
           }
     
         const project = await prisma.project.update({
@@ -50,7 +67,6 @@ export async function PUT(request:Request) {
           });
 
           
-            console.log('New Updated Api Project',project)
 
             revalidatePath('/Admin/Dashboard')
             revalidatePath('/Admin/Projects')
@@ -62,5 +78,9 @@ export async function PUT(request:Request) {
     catch(error:any){
         console.log(error, "UPDATING PROJECT")
         return new NextResponse('Internal Error', {status:500})
+    }
+    finally{
+        revalidatePath('/Admin/Dashboard')
+        revalidatePath('/Admin/Projects')
     }
  }

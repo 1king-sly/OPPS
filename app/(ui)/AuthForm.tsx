@@ -22,6 +22,7 @@ export default function AuthForm() {
     email: '',
     password: '',
     registrationNumber: '',
+    userType:'STUDENT'
   });
 
   const toggleLoading = () => {
@@ -70,17 +71,33 @@ export default function AuthForm() {
 
     toggleLoading();
 
-    
-
     try {
 
-      toast.loading("Authenticating user...")
       if (variant === 'REGISTER') {
-        await axios.post('/api/register', formData);
-        await signIn('credentials', formData);
+        toast.loading("Sending request...")
+
+        const preUser = await fetch ('/api/createPreuser',{
+          method:'POST',
+          body:JSON.stringify(formData)
+        })
+        toast.dismiss()
+        if(preUser?.ok && preUser?.status===200){
+          toast.dismiss()
+          toast.success('Request sent to admin successfully')
+        } else if(!preUser?.ok && preUser?.status===400){
+          toast.dismiss()
+          toast.error('Something went wrong')
+        }
+        else if(preUser?.status===402){
+          toast.dismiss()
+          toast.error('User with credentials already exists')
+        }
       }
 
+
       if (variant === 'LOGIN') {
+        toast.loading("Authenticating user...")
+
         const callback = await signIn('credentials', {
           ...formData,
           redirect: false,

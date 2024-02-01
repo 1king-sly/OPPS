@@ -1,17 +1,9 @@
 import React from 'react'
 import Card from './Card'
-import { countAllProjects, countAdmin, countUsers } from '@/app/lib/actions'
-import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
+import { countPendingUsers, countAdmin, countUsers } from '@/app/lib/actions'
 
-
-export default async function Cards() {
-  const session = await getServerSession()
-  if(!session){
-    redirect('/')
-  }
-  
-  const total = await countAllProjects()
+export default async function Cards() {  
+  const total = await countPendingUsers()
   const admins = await countAdmin()
   const users = await countUsers()
 
@@ -21,7 +13,7 @@ export default async function Cards() {
     <div className='w-full h-48 flex gap-3 justify-around items-center'>
         <Card title='Students' number={users || 0}></Card>
         <Card title='Admins' number={admins || 0}></Card>
-        <Card title='Projects' number={total || 0}></Card>
+        <Card title='Pending' number={total || 0}></Card>
     </div>
     </>
   )
