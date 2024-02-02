@@ -73,6 +73,18 @@ export default async function Page({ params }: { params: { id: string } }) {
               </>
             ):null}
 
+{project?.moderatorComment !== null || project?.moderatorComment=='' ?(
+              <>
+               <div className='  px-4 mt-4'>
+                <div className='w-full flex   font-semibold gap-1'>Moderator Comment: <span
+                className=''>{project?.moderatorName} </span></div>
+            </div>
+            <div className='mt-2  px-4 bg-gray-100 py-2 '>
+              <p className=' text-md'>{project?.moderatorComment} </p>
+            </div>
+              </>
+            ):null}
+
             </div>
 
 

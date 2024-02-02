@@ -890,23 +890,24 @@ export const fetchAllAdminReferredProjects = async ( query: string) => {
 };
 export const fetchAllModeratorReferredProjects = async ( query: string) => {
   'use server';
+
+  const user = await getServerSession(authOptions)
   try {
-    if  (typeof query === 'string' && query.trim() !== '') {
-      const projects = await prisma.project.findMany({
-        where: {
-          status:ProjectStatus.REFERRED
-          ,
-          title: {
-            contains: query.trim(),
+    
+    const projects = await prisma.reference.findMany({
+      where: {
+        email:user?.email
+      },
+      include: {
+        project: {
+          select: {
+            projectId: true,
+            title: true, 
+            createdAt:true,
+            school:true,
+
           },
         },
-      });
-      return projects;
-    }
-
-    const projects = await prisma.project.findMany({
-      where: {
-        status:ProjectStatus.REFERRED,
       },
     });
     return projects;
@@ -918,19 +919,34 @@ export const fetchAllModeratorReferredProjects = async ( query: string) => {
 
 export const fetchModeratorProjects = async () => {
   'use server';
-  try{ 
-    const projects = await prisma.project.findMany(
-      {where:{
-        status:ProjectStatus.REFERRED,
-       },
-        take: 5,
-       }
-      )
-      return projects
-  }catch(error){
-    console.error("Error fetching Dashboard Admin Projects",error)
-  }  
+
+  const user = await getServerSession(authOptions);
+
+  try {
+    const projects = await prisma.reference.findMany({
+      where: {
+        email: user?.email,
+      },
+      take: 5,
+      include: {
+        project: {
+          select: {
+            projectId: true,
+            title: true, 
+            createdAt:true,
+            school:true,
+
+          },
+        },
+      },
+    });
+
+    return projects;
+  } catch (error) {
+    console.error("Error fetching Dashboard Moderator Projects", error);
+  }
 };
+
 
 export const referProject = async (formData: FormData) => {
   'use server';
@@ -1022,7 +1038,7 @@ export const moderatorUpdateProject = async (formData: FormData) => {
   }
   finally {
     
-    redirect('/Admin/Projects')
+    redirect('/Moderator/Projects')
   } 
 };
 
@@ -1082,8 +1098,11 @@ async function updateProjectsTask() {
 
     // Just for demo
 
-    const thirtySecondsAgo = new Date();
-    thirtySecondsAgo.setSeconds(thirtySecondsAgo.getSeconds() - 30);
+    const oneHourAgo = new Date();
+    oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+
+    // const thirtySecondsAgo = new Date();
+    // thirtySecondsAgo.setSeconds(thirtySecondsAgo.getSeconds() - 30);
 
     const projectsToUpdate = await prisma.project.findMany({
       where: {
@@ -1091,7 +1110,7 @@ async function updateProjectsTask() {
         createdAt: {
           // lte: twoWeeksAgo,
           // just for demo
-          lte: thirtySecondsAgo,
+          lte: oneHourAgo,
         },
       },
     });
@@ -1124,7 +1143,7 @@ async function updateProjectsTask() {
 // });
 
 // just for demo
-cron.schedule('*/5 * * * *', () => {
+cron.schedule('0 * * * *', () => {
   updateProjectsTask();
 });
 
