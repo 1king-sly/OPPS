@@ -55,5 +55,6 @@ export async function PUT(request:Request) {
     finally{
         revalidatePath('/Moderator/Dashboard')
         revalidatePath('/Moderator/Projects')
+
     }
  }

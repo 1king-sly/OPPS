@@ -45,8 +45,8 @@ export async function PUT(request:Request) {
             }) 
 
             if(referredProject){
+              revalidatePath('/Admin/Dashboard')
                 revalidatePath('/Admin/Referred')
-                revalidatePath('/Admin/Dashboard')
                 revalidatePath('/Admin/Projects')
                 
 
@@ -82,5 +82,6 @@ export async function PUT(request:Request) {
     finally{
         revalidatePath('/Admin/Dashboard')
         revalidatePath('/Admin/Projects')
+        revalidatePath('/Admin/Referred')
     }
  }
