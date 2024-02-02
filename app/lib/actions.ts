@@ -888,33 +888,61 @@ export const fetchAllAdminReferredProjects = async ( query: string) => {
     console.error('Error fetching Admin Referred projects Projects', error);
   }
 };
-export const fetchAllModeratorReferredProjects = async ( query: string) => {
+export const fetchAllModeratorReferredProjects = async (query: string) => {
   'use server';
 
-  const user = await getServerSession(authOptions)
-  try {
-    
-    const projects = await prisma.reference.findMany({
-      where: {
-        email:user?.email
-      },
-      include: {
-        project: {
-          select: {
-            projectId: true,
-            title: true, 
-            createdAt:true,
-            school:true,
+  const user = await getServerSession(authOptions);
 
+  try {
+    let projects;
+
+    if (typeof query === 'string' && query.trim() !== '') {
+      
+      projects = await prisma.reference.findMany({
+        where: {
+          email: user?.email,
+          project: {
+            title: {
+              contains: query,
+            },
           },
         },
-      },
-    });
+        include: {
+          project: {
+            select: {
+              projectId: true,
+              title: true,
+              createdAt: true,
+              school: true,
+            },
+          },
+        },
+      });
+    } else {
+     
+      projects = await prisma.reference.findMany({
+        where: {
+          email: user?.email,
+        },
+        include: {
+          project: {
+            select: {
+              projectId: true,
+              title: true,
+              createdAt: true,
+              school: true,
+            },
+          },
+        },
+      });
+    }
+
     return projects;
   } catch (error) {
     console.error('Error fetching Referred Projects', error);
   }
 };
+
 
 
 export const fetchModeratorProjects = async () => {
