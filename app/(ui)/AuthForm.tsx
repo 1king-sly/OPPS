@@ -4,9 +4,10 @@ import Input from './Input';
 import Button from './Button';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import toast from 'react-hot-toast';
 import clsx from 'clsx'
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/utils/authUptions';
 
 
 type Variant = 'REGISTER' | 'LOGIN';
@@ -43,6 +44,9 @@ export default function AuthForm() {
         router.push('/Admin/Dashboard');
       } else if(session.data.userType === 'STUDENT') {
         router.push('/User/Dashboard');
+      }
+       else if(session.data.userType === 'MODERATOR') {
+        router.push('/Moderator/Dashboard');
       }else{
         router.push('/SuperAdmin/Dashboard')
       }

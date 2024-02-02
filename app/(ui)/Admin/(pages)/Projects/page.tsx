@@ -1,11 +1,9 @@
 'use server'
 import React, { Suspense } from 'react';
-import { getServerSession } from 'next-auth';
 import { fetchAllAdminProjects } from '@/app/lib/actions';
 import Link from 'next/link';
 import Search from '@/app/(ui)/User/Component/Search';
 import Projects from '@/app/(ui)/User/Skeleton/Projects';
-import { redirect } from 'next/navigation';
 import { CheckCircleIcon, ClockIcon, ExclamationTriangleIcon,PaperAirplaneIcon } from '@heroicons/react/24/outline';
 
 
@@ -86,14 +84,7 @@ export default async  function Page({searchParams}:{searchParams:string}) {
                 </tr>
             </Link>
 
-          ))}
-          
-          
-            
-         
-          
-            
-         
+          ))} 
         </tbody>
       </table>
     </div>

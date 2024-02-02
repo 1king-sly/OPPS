@@ -1,7 +1,7 @@
 'use server'
 import React from 'react';
 import { getServerSession } from 'next-auth';
-import {  fetchSingleProject } from '@/app/lib/actions';
+import {  fetchSingleProject,updateProject } from '@/app/lib/actions';
 import {  redirect } from 'next/navigation';
 import NotFound from './not-found';
 import { authOptions } from '@/utils/authUptions';
@@ -18,8 +18,6 @@ export default async function Page({ params }: { params: { id: string } }) {
     const projectId = params.id
     
     const project = await fetchSingleProject(projectId)
-
-  
 
     if(!project){
      return <NotFound/>

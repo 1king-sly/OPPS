@@ -33,6 +33,10 @@ export default async function RootLayout({
     
     redirect('/Admin/Dashboard')
   }
+  if(userType === 'MODERATOR'){
+    
+    redirect('/Moderator/Dashboard')
+  }
 
   return (
     <>

@@ -10,17 +10,14 @@ export default function Refer({ projectId, userName }: { projectId: string; user
   const [formData, setFormData] = useState({
     email: '',
     projectId: projectId,
-    updatedBy: userName,
+    moderatedBy: userName,
     status: '',
-    comment: '',
+    moderatorComment: '',
   });
-  const [visible, setVisible] = useState(false);
 
   const router = useRouter();
 
-  const toggleVisibility = () => {
-    setVisible((prevVisible) => !prevVisible);
-  };
+ 
 
   const toggleLoading = useCallback(() => {
     setLoading((prevLoading) => !prevLoading);
@@ -51,7 +48,7 @@ export default function Refer({ projectId, userName }: { projectId: string; user
       try {
         toast.loading('Updating Project...');
 
-        const update = await fetch('/api/updateProject', {
+        const update = await fetch('/api/moderatorUpdate', {
           method: 'PUT',
           body: JSON.stringify(formData),
         });
@@ -59,7 +56,7 @@ export default function Refer({ projectId, userName }: { projectId: string; user
         if (update?.ok && update?.status === 200) {
           toast.dismiss();
           toast.success('Project updated successfully');
-          router.push('/Admin/Dashboard');
+          router.push('/Moderator/Dashboard');
         } else if (update?.status !== 200) {
           toast.dismiss();
           toast.error('Something went wrong');
@@ -85,57 +82,28 @@ export default function Refer({ projectId, userName }: { projectId: string; user
     <div className="w-full h-full ">
       <p>Add a comment (Optional)</p>
       <textarea
-        name="comment"
-        id="comment"
+        name="moderatorComment"
+        id="moderatorComment"
         placeholder="Add a comment"
         className="w-full outline-sky-300 resize-none p-2 h-48 text-gray-900"
         onChange={handleChange}
         disabled={disabled}
       ></textarea>
-      <div className="w-full justify-around flex mt-2">
+      <div className="w-full justify-around flex mt-2">         
         <button
-          className={clsx(`bg-orange-300 p-3 rounded-md`, visible && `hidden`)}
-          onClick={toggleVisibility}
-          disabled={disabled}
-        >
-          External Moderator
-        </button>
-        <button
-          className={clsx(`p-3 bg-green-500 rounded-md`, visible && `hidden`)}
+          className={clsx(`p-3 bg-green-500 rounded-md`, disabled && `opacity-50`)}
           onClick={() => handleSubmit('ACCEPTED')}
           disabled={disabled}
         >
           ACCEPT
         </button>
         <button
-          className={clsx(`p-3 bg-rose-500  rounded-md`, visible && `hidden`)}
+          className={clsx(`p-3 bg-rose-500  rounded-md`, disabled && `opacity-50`)}
           onClick={() => handleSubmit('REJECTED')}
           disabled={disabled}
         >
           REJECT
         </button>
-      </div>
-
-      <div className={clsx(`w-full flex flex-col `, !visible && `hidden`)}>
-        <input
-          type="email"
-          name="email"
-          title="refer email"
-          onChange={handleChange}
-          disabled={disabled}
-          className="p-3 outline-sky-300"
-        />
-
-        <div className="w-full flex justify-end mt-3">
-          <button
-            className="bg-orange-300 p-3 rounded-md"
-            name="status"
-            disabled={disabled}
-            onClick={() => handleSubmit('REFERRED')}
-          >
-            REFER
-          </button>
-        </div>
       </div>
     </div>
   );

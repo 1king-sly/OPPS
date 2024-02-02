@@ -13,7 +13,6 @@ export async function PUT(request:Request) {
         const formData=await request.json()
 
         const { status,projectId,comment,updatedBy,email}= formData
-        console.log(formData)
         if(!status || status===''){
             throw error ('Status required')
         }
@@ -49,6 +48,7 @@ export async function PUT(request:Request) {
                 revalidatePath('/Admin/Referred')
                 revalidatePath('/Admin/Dashboard')
                 revalidatePath('/Admin/Projects')
+                
 
                
             }
@@ -67,7 +67,7 @@ export async function PUT(request:Request) {
           });
 
           
-
+          revalidatePath(`/Admin/Projects/${projectId}`)
             revalidatePath('/Admin/Dashboard')
             revalidatePath('/Admin/Projects')
     

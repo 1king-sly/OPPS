@@ -2,7 +2,6 @@ import React from 'react';
 import { fetchAllAdminReferredProjects } from '@/app/lib/actions';
 import Link from 'next/link';
 import Search from '@/app/(ui)/User/Component/Search';
-import { redirect } from 'next/navigation';
 
 export default async  function Page({searchParams}:{searchParams:string}) {  
   const params = new URLSearchParams(searchParams);

@@ -29,9 +29,9 @@ export default async function RootLayout({
     
     redirect('/SuperAdmin/Dashboard')
   }
-  if(userType === 'MODERATOR'){
+  if(userType === 'ADMIN'){
     
-    redirect('/Moderator/Dashboard')
+    redirect('/Admin/Dashboard')
   }
   return (
     <>

@@ -66,7 +66,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             {project?.referredTo !== null  && project?.referredTo.length > 0 ?(
               <>
                <div className='  px-4 mt-4'>
-                <div className='w-full flex   font-semibold gap-1'>Referred To: </div>
+                <div className='w-full flex   font-semibold gap-1'>Referred To:  </div>
                 <ul className='list-disc list-inside px-4 bg-gray-100 py-2'>
                 {project?.referredTo.map((reference) => (
                  <li key={reference.email}>{reference.email}</li>

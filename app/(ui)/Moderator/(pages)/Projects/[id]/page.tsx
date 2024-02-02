@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   if(!session){
     redirect('/')
   }
-    const userName =session?.firstName + ' ' + session?.secondName
+    const userName =session?.firstName 
 
     const projectId = params.id
     
@@ -68,7 +68,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             {project?.updatedBy !== null || project?.updatedBy==='' ?(
               <>
                <div className='  px-4 mt-4'>
-                <div className='w-full flex   font-semibold gap-1'>Reviewed By: <span
+                <div className='w-full flex   font-semibold gap-1'>Referred By: <span
                 className=''>{project?.updatedBy} </span></div>
             </div>
             {project?.comment!==null || project?.comment === ''?(
@@ -94,7 +94,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             ):null}
             </div>
           <div>
-            { project?.status === 'PENDING'?(
+            { project?.status === 'REFERRED'?(
                 <>
             <UpdateProject projectId={projectId} userName={userName}  />
             </>

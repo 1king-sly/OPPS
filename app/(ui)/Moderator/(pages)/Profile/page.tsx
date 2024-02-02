@@ -28,11 +28,15 @@ export default async   function Page() {
           </label>
           <label >
           <input type="text" disabled className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={data?.userType}/>
-
           </label>
+          {data?.school !== null ?(
+            <label >
+            <input type="text" disabled className='bg-white outline-sky-400 px-2 py-1 rounded-md ' placeholder={data?.school}/>
+          </label>
+          ) :null}
         </div>
         <div className='mt-2 w-[236px] '>
-        <Button type='submit' fullWidth >
+        <Button type='submit' disabled fullWidth>
           SAVE
         </Button>
         </div>
