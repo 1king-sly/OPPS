@@ -1,6 +1,5 @@
 'use server'
 import React, { Suspense } from 'react';
-import { getServerSession } from 'next-auth';
 import { fetchAllModeratorReferredProjects } from '@/app/lib/actions';
 import Link from 'next/link';
 import Search from '@/app/(ui)/User/Component/Search';
@@ -21,7 +20,7 @@ export default async  function Page({searchParams}:{searchParams:string}) {
     <Suspense fallback={<Projects/>}>
 
     <div className=' p-10 pb-40 max-[425px]:p-3 '>
-    {/* <Search placeholder="Search for a project ..."/> */}
+    <Search placeholder="Search for a project ..."/>
       
     {datas && datas.length > 0 ? (
          <table className='w-full'>

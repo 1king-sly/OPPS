@@ -15,9 +15,6 @@ export default async  function Page({searchParams}:{searchParams:string}) {
   const params = new URLSearchParams(searchParams);
   const q = params.get('query') || '';
   const datas = await fetchAllAdminReviewedProjects( q);
-  
-
-
 
   return (
     <>
@@ -84,14 +81,7 @@ export default async  function Page({searchParams}:{searchParams:string}) {
                 </tr>
             </Link>
 
-          ))}
-          
-          
-            
-         
-          
-            
-         
+          ))} 
         </tbody>
       </table>
     </div>

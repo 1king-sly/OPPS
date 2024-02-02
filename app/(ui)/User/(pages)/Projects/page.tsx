@@ -109,13 +109,7 @@ export default async function Tables({searchParams}:{searchParams:string}) {
                 </tr>
 
           ))}
-          
-          
-            
-         
-          
-            
-         
+   
         </tbody>
       </table>
     </div>

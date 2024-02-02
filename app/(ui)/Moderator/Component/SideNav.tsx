@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { HomeIcon, FolderIcon, UserIcon, ArrowRightEndOnRectangleIcon,CheckIcon, PaperAirplaneIcon } from '@heroicons/react/24/outline';
+import { HomeIcon, FolderIcon, UserIcon, ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/outline';
 import {  signOut } from 'next-auth/react'; 
 import clsx from 'clsx';
 

@@ -4,7 +4,6 @@ import Image from 'next/image'
 import profile from '@/public/images/profile.png'
 import Button from '@/app/(ui)/Button'
 import { getServerSession } from 'next-auth'
-import { redirect } from 'next/navigation'
 import { authOptions } from '@/utils/authUptions'
 
 

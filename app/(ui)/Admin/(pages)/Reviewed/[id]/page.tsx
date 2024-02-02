@@ -19,8 +19,6 @@ export default async function Page({ params }: { params: { id: string } }) {
     
     const project = await fetchSingleProject(projectId)
 
-  
-
     if(!project){
      return <NotFound/>
     }
