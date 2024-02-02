@@ -59,7 +59,7 @@ export default function Refer({ projectId, userName }: { projectId: string; user
         if (update?.ok && update?.status === 200) {
           toast.dismiss();
           toast.success('Project updated successfully');
-          router.push('/Admin/Projects');
+          router.push('/Admin/Dashboard');
         } else if (update?.status !== 200) {
           toast.dismiss();
           toast.error('Something went wrong');

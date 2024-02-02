@@ -10,7 +10,7 @@ export default function Refer({ projectId, userName }: { projectId: string; user
   const [formData, setFormData] = useState({
     email: '',
     projectId: projectId,
-    moderateBy: userName,
+    moderatedBy: userName,
     status: '',
     moderatorComment: '',
   });
@@ -56,7 +56,7 @@ export default function Refer({ projectId, userName }: { projectId: string; user
         if (update?.ok && update?.status === 200) {
           toast.dismiss();
           toast.success('Project updated successfully');
-          router.push('/Moderator/Projects');
+          router.push('/Moderator/Dashboard');
         } else if (update?.status !== 200) {
           toast.dismiss();
           toast.error('Something went wrong');
