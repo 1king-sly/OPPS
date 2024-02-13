@@ -16,7 +16,7 @@ export default   function Header() {
       <div className='flex-1 flex justify-center   md:text-lg lg:text-xl text-sky-400 text-xs'>
         ONLINE PROJECT PROPOSAL SYSTEM
       </div>
-      <div className='w-1/4 flex justify-end max-[420px]:hidden md:text-lg lg:text-xl text-xs'><span className='text-sky-400'> {session.data?.firstName  } </span> </div>
+      <div className='w-1/4 flex justify-end max-[420px]:hidden md:text-lg lg:text-xl text-xs'><span className='text-sky-400'> {session.data?.firstName || 'Super Admin'  } </span> </div>
     </div>
   )
 }

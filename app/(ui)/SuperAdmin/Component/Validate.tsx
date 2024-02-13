@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import clsx from 'clsx';
+import { validate } from '@/app/lib/actions';
 
 export default function Validate({email,registrationNumber,firstName,secondName,hashedPassword,userType}:{email:string,registrationNumber:string,firstName:string,secondName:string,hashedPassword:string,userType:string}) {
     const [loading, setisLoading] = useState(false);
@@ -35,15 +36,12 @@ export default function Validate({email,registrationNumber,firstName,secondName,
       try {
         toast.loading('Updating User...');
 
-        const update = await fetch('/api/validate', {
-          method: 'POST',
-          body: JSON.stringify(formData),
-        });
+        const update = await validate(formData)
 
-        if (update?.ok && update?.status === 200) {
+        if (update) {
           toast.dismiss();
           toast.success('Updated successfully');
-        } else if (update?.status !== 200) {
+        } else {
           toast.dismiss();
           toast.error('Something went wrong');
         }

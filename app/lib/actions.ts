@@ -775,16 +775,16 @@ export const fetchSuperAdminUser = async (userId:string) => {
   
 };
 
-export const createUser = async (formData: FormData) => {
+export const createUser = async (formData: any) => {
   'use server';
   
-  const firstName = formData.get('firstName') as string;
-  const secondName = formData.get('secondName') as string;
-  const email = formData.get('email') as string ;
-  const registrationNumber = formData.get('registrationNumber') as string;
-  const userType = formData.get('userType') as UserType;
-  const password = formData.get('password') as string;
-  const school = formData.get('school') as  string;
+  const firstName = formData.firstName
+  const secondName = formData.secondName
+  const email = formData.email;
+  const registrationNumber = formData.registrationNumber;
+  const userType = formData.userType;
+  const password = formData.password;
+  const school = formData.school;
 
   
 
@@ -801,7 +801,7 @@ export const createUser = async (formData: FormData) => {
         secondName:secondName,
         email:email,
         registrationNumber:registrationNumber,
-        userType:userType,
+        userType:UserType[userType as keyof typeof UserType],
         hashedPassword:hashedPassword,
         school:School[school as keyof typeof School],
     },
@@ -816,6 +816,72 @@ export const createUser = async (formData: FormData) => {
     redirect('/SuperAdmin/Users');
   }
 };
+export const validate = async (formData: any) => {
+  
+  const firstName = formData.firstName
+  const secondName = formData.secondName
+  const email = formData.email;
+  const registrationNumber = formData.registrationNumber;
+  const userType = formData.userType;
+  const hashedPassword = formData.hashedPassword;
+  const status = formData.status;
+
+  
+
+  try {
+    if (!email || !firstName || !secondName || !registrationNumber || !userType || !hashedPassword || !status ) {
+      throw new Error('Required field is missing'); 
+    }
+
+    if (status === 'APPROVE') {
+      const newUser = await prisma.user.create({
+        data: {
+          firstName: firstName,
+          secondName: secondName,
+          hashedPassword: hashedPassword,
+          email: email,
+          userType: UserType[userType as keyof typeof UserType],
+          registrationNumber: registrationNumber,
+        },
+      });
+
+
+      if (newUser) {
+        const deletedUser = await prisma.preuser.delete({
+          where: {
+            email: email,
+          },
+        });
+
+
+        if (deletedUser) {
+          revalidatePath('/SuperAdmin/Users');
+          revalidatePath('/SuperAdmin/Pending');
+
+          
+        } else {
+          throw new Error('Error deleting preuser');
+        }
+      } else {
+        throw new Error('Error Creating user');
+
+      }
+    } else {
+      const deletedUser = await prisma.preuser.delete({
+        where: {
+          email: email,
+        },
+      });
+
+    revalidatePath('/SuperAdmin/Pending');
+
+    return deletedUser;
+  }
+} catch (error) {
+    console.log('Error Creating User', error);
+  } 
+};
+
 
 export const deleteSingleUser = async (formData: FormData) => {
   'use server';
