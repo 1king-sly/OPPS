@@ -6,6 +6,7 @@ import Button from '@/app/(ui)/Button';
 import Question from './Question';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { addProject } from '@/app/lib/actions';
 
 export default  function Page() {
   const [loading, setisLoading] = useState(false);
@@ -34,16 +35,12 @@ export default  function Page() {
     toggleLoading();
     try{
       toast.loading('Creating project...')
-      const create = await fetch('/api/createProject',{
-        method:"POST",
-        body:JSON.stringify(formData)
-      })
-      if(create?.ok && create?.status===200){
+      const create = await addProject(formData)
+      if(create){
         toast.dismiss();
         toast.success('Project Created Successfully')
         router.push('/User/Dashboard')
-
-     } else if(create?.status!==200 ){
+     } else{
       toast.dismiss();
         toast.error('Something went wrong')
       }

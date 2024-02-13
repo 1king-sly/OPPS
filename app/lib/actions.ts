@@ -1,3 +1,4 @@
+'use server';
 import {  ProjectStatus, School, UserType } from "@prisma/client";
 import prisma from '@/app/lib/prismadb';
 import { revalidatePath } from "next/cache";
@@ -8,35 +9,26 @@ import { authOptions } from "@/utils/authUptions";
 
 const cron = require('node-cron');
 
-export const addProject = async (formData: FormData) => {
-  'use server';
+export const addProject = async (formData: any) => {
   try {
-    const schoolFromFormData = formData.get('schoolFromFormData');
-    const title = formData.get('title') as string;
-    const email = formData.get('email') as string;
-    const ans1 = formData.get('ans1') as string;
-    const ans2 = formData.get('ans2') as string;
-    const ans3 = formData.get('ans3') as string;
-    const ans4 = formData.get('ans4') as string;
+    const schoolFromFormData = formData.schoolFromFormData
+    const title = formData.title;
+    const ans1 = formData.ans1;
+    const ans2 = formData.ans2;
+    const ans3 = formData.ans3;
+    const ans4 = formData.ans4;
 
     
-    if (!email || !title || !ans1 || !ans2 || !ans3 || !ans4) {
+    if (!title || !ans1 || !ans2 || !ans3 || !ans4) {
       throw new Error('Required field is missing'); 
     }
 
     const schoolEnum = School[schoolFromFormData as keyof typeof School];
 
-    const user = await prisma.user.findUnique({
-      where: {
-        email: email,
-      },
-      select: {
-        id: true,
-      },
-    });
+    const user = await getServerSession(authOptions)
 
     if (user) {
-      const userId = user.id;
+      const userId = parseInt(user.id);
       const newProject = await prisma.project.create({
         data: {
           title,
@@ -50,14 +42,15 @@ export const addProject = async (formData: FormData) => {
       });
       revalidatePath('/User/Dashboard');
 
-      
+      return newProject
+  
     }
   } catch (error) {
     console.error(error, 'Failed to create project');
     
   } finally {
     
-    redirect('/User/Dashboard');
+    revalidatePath('/User/Dashboard');
   }
 };
 
@@ -472,13 +465,12 @@ export const fetchSingleProject = async (projectId:string) => {
   
 };
 
-export const updateProject = async (formData: FormData) => {
-  'use server';
-    
-    const status = formData.get('status') as string;
-    const projectId = formData.get('projectId') as string;
-    const comment = formData.get('comment') as string;
-    const updatedBy = formData.get('updatedBy') as string;    
+export const updateProject = async (formData: any) => {
+    const status = formData.status;
+    const projectId = formData.projectId;
+    const comment = formData.comment;
+    const updatedBy = formData.updatedBy
+    const email = formData.email
 
     const statusEnum = ProjectStatus[status as keyof typeof ProjectStatus]
 
@@ -486,6 +478,46 @@ export const updateProject = async (formData: FormData) => {
     
 
   try{
+
+    if(status === 'REFERRED'){
+      if(!email || email===''){
+          throw new Error('Email missing')
+      }
+      const existingUser = await prisma.user.findFirst({
+          where: {
+            email:email
+          },
+        });
+
+        const existingPreuser = await prisma.preuser.findFirst({
+          where: {
+            email:email
+          },
+        });
+    
+        if (!existingUser && !existingPreuser) {
+          const moderator =await createPreuser(email)
+        }
+      
+      const referredProject = await prisma.reference.create({
+          data:{
+              email:email,
+              projectId:parseInt(projectId)
+          }
+      }) 
+
+      if(referredProject){
+        revalidatePath('/Admin/Dashboard')
+          revalidatePath('/Admin/Referred')
+          revalidatePath(`/Admin/Projects/${projectId}`)
+
+  
+      }
+      else{
+          return new Error('Something went wrong'); 
+        
+        }
+    }
      
 
 
@@ -502,19 +534,16 @@ export const updateProject = async (formData: FormData) => {
         }
       })
 
-      revalidatePath('/Admin/Dashboard')
-      revalidatePath('/Admin/Projects')
-      revalidatePath('/Admin/Reviewed')
+      revalidatePath(`/Admin/Projects/${projectId}`)
+       revalidatePath('/Admin/Dashboard')
+       revalidatePath('/Admin/Projects')
+
+       return project
 
   }catch(error){
     console.error("Error Updating Project",error)
   }
-  finally {
-    
-    redirect('/Admin/Projects')
-  }
-
-  
+ 
 };
 
 export const updateUser = async (formData: FormData) => {
@@ -1126,11 +1155,11 @@ async function updateProjectsTask() {
 
     // Just for demo
 
-    const oneHourAgo = new Date();
-    oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+    // const oneHourAgo = new Date();
+    // oneHourAgo.setHours(oneHourAgo.getHours() - 1);
 
-    // const thirtySecondsAgo = new Date();
-    // thirtySecondsAgo.setSeconds(thirtySecondsAgo.getSeconds() - 30);
+    const thirtySecondsAgo = new Date();
+    thirtySecondsAgo.setSeconds(thirtySecondsAgo.getSeconds() - 30);
 
     const projectsToUpdate = await prisma.project.findMany({
       where: {
@@ -1138,7 +1167,7 @@ async function updateProjectsTask() {
         createdAt: {
           // lte: twoWeeksAgo,
           // just for demo
-          lte: oneHourAgo,
+          lte: thirtySecondsAgo,
         },
       },
     });
@@ -1171,12 +1200,11 @@ async function updateProjectsTask() {
 // });
 
 // just for demo
-cron.schedule('0 * * * *', () => {
+cron.schedule('*/30 * * * * *', () => {
   updateProjectsTask();
 });
 
 export const createPreuser = async (email:string ) => {
-  'use server';
   
   if(!email){
     throw new Error('Required field is missing');

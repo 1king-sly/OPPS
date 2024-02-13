@@ -1,4 +1,3 @@
-import { createPreuser } from '@/app/lib/actions';
 import prisma from '@/app/lib/prismadb';
 import { authOptions } from '@/utils/authUptions';
 import { ProjectStatus } from '@prisma/client';

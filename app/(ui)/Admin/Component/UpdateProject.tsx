@@ -3,6 +3,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import clsx from 'clsx'
+import { updateProject } from '@/app/lib/actions';
 
 export default function Refer({ projectId, userName }: { projectId: string; userName: string }) {
   const [loading, setLoading] = useState(false);
@@ -51,16 +52,13 @@ export default function Refer({ projectId, userName }: { projectId: string; user
       try {
         toast.loading('Updating Project...');
 
-        const update = await fetch('/api/updateProject', {
-          method: 'PUT',
-          body: JSON.stringify(formData),
-        });
+        const update = await updateProject(formData)
 
-        if (update?.ok && update?.status === 200) {
+        if (update) {
           toast.dismiss();
           toast.success('Project updated successfully');
-          router.push('/Admin/Dashboard');
-        } else if (update?.status !== 200) {
+          // router.push('/Admin/Dashboard');
+        } else  {
           toast.dismiss();
           toast.error('Something went wrong');
         }
