@@ -776,7 +776,6 @@ export const fetchSuperAdminUser = async (userId:string) => {
 };
 
 export const createUser = async (formData: any) => {
-  'use server';
   
   const firstName = formData.firstName
   const secondName = formData.secondName
@@ -812,9 +811,7 @@ export const createUser = async (formData: any) => {
     return newUser;
   } catch (error) {
     console.log('Error Creating User', error);
-  } finally {
-    redirect('/SuperAdmin/Users');
-  }
+  } 
 };
 export const validate = async (formData: any) => {
   
@@ -1119,14 +1116,13 @@ export const referProject = async (formData: FormData) => {
   
 };
 
-export const moderatorUpdateProject = async (formData: FormData) => {
+export const moderatorUpdateProject = async (formData: any) => {
   'use server';
     
-    const status = formData.get('status') as string;
-    const projectId = formData.get('projectId') as string;
-    const comment = formData.get('comment') as string;
-    const updatedBy = formData.get('updatedBy') as string;    
-    const statusEnum = ProjectStatus[status as keyof typeof ProjectStatus]
+    const status = formData.status;
+    const projectId = formData.projectId;
+    const moderatorComment = formData.moderatorComment;
+    const moderatedBy = formData.moderatedBy;    
 
     const user = await getServerSession(authOptions) 
 
@@ -1138,31 +1134,32 @@ export const moderatorUpdateProject = async (formData: FormData) => {
         
       },
       data:{
-        status:statusEnum,
-        moderatorComment:comment,
-        moderatorName:updatedBy,
+        status:ProjectStatus[status as keyof typeof ProjectStatus],
+        moderatorComment:moderatorComment,
+        moderatorName:moderatedBy,
       }
     })
     
-    if (project.status !== ProjectStatus.REFERRED) {
-      await prisma.reference.delete({
-        where: {
-          email_projectId: {
-            email: user?.email,
-            projectId: parseInt(projectId),
+    if(project){
+      const deleteProject =  await prisma.reference.delete({
+          where: {
+            email_projectId: {
+              email: user?.email,
+              projectId: parseInt(projectId),
+            },
           },
-        },
-      });
-    }
-      revalidatePath('/Moderator/Dashboard')
-      revalidatePath('/Moderator/Projects')
+        });
+    
+        revalidatePath(`/Moderator/Projects/${projectId}`)
+        revalidatePath('/Moderator/Dashboard')
+        revalidatePath('/Moderator/Projects')
+
+        return project
+      }
   }catch(error){
     console.error("Error Updating Project",error)
   }
-  finally {
-    
-    redirect('/Moderator/Projects')
-  } 
+  
 };
 
 export const fetchPreusers = async (query: string) => {

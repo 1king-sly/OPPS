@@ -3,6 +3,7 @@ import Button from '@/app/(ui)/Button';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { createUser } from '@/app/lib/actions';
 
 export default  function Page() {
 
@@ -33,15 +34,12 @@ export default  function Page() {
     toggleLoading();
     try{
       toast.loading('Creating user...')
-      const create = await fetch('/api/createUser',{
-        method:"POST",
-        body:JSON.stringify(formData)
-      })
-      if(create?.ok && create?.status===200){
+      const create = await createUser(formData)
+      if(create){
         toast.dismiss();
         toast.success('User Created Successfully')
         router.push('/SuperAdmin/Users')
-     } else if(create?.status!==200 ){
+     } else {
       toast.dismiss();
         toast.error('Something went wrong')
       }
