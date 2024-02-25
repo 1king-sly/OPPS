@@ -83,11 +83,12 @@ export default  function Page() {
                 id="title"
                 title='title'
                 placeholder='Project Title'
-                className='resize-none p-2 h-10 w-80 flex items-center rounded-md outline-sky-200 overflow-hidden'
+                className='resize-none p-2 h-10 w-80 flex items-center rounded-md outline-sky-200 overflow-hidden  '
                 maxLength={50}
                 value={formData.title}
                 onChange={handleChange}
                 disabled={disabled}
+                required={true}
 
                 
                 
