@@ -54,6 +54,51 @@ export const addProject = async (formData: any) => {
   }
 };
 
+export const addDraft = async (formData: any) => {
+  try {
+    const schoolFromFormData = formData.schoolFromFormData
+    const title = formData.title;
+    const ans1 = formData.ans1;
+    const ans2 = formData.ans2;
+    const ans3 = formData.ans3;
+    const ans4 = formData.ans4;
+
+    
+    if (!title || !ans1 || !ans2 || !ans3 || !ans4) {
+      throw new Error('Required field is missing'); 
+    }
+
+    const schoolEnum = School[schoolFromFormData as keyof typeof School];
+
+    const user = await getServerSession(authOptions)
+
+    if (user) {
+      const userId = parseInt(user.id);
+      const newProject = await prisma.project.create({
+        data: {
+          title,
+          ans1,
+          ans2,
+          ans3,
+          ans4,
+          userId,
+          school: schoolEnum,
+        },
+      });
+      revalidatePath('/User/Dashboard');
+
+      return newProject
+  
+    }
+  } catch (error) {
+    console.error(error, 'Failed to create project');
+    
+  } finally {
+    
+    revalidatePath('/User/Dashboard');
+  }
+};
+
 
 export const fetchUserDashboardProjects = async (userId:number | undefined) => {
   'use server';
@@ -430,7 +475,6 @@ export const fetchAdminDashboardProjects = async () => {
 
 export const fetchSingleProject = async (projectId:string) => {
 
-  console.log('projectId: ', projectId)
 
   try{
 
@@ -457,7 +501,6 @@ export const fetchSingleProject = async (projectId:string) => {
         },
       })
 
-      console.log('Project: ',project)
       return project
    
 
