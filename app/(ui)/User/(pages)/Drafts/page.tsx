@@ -73,7 +73,7 @@ export default async function Tables({searchParams}:{searchParams:string}) {
                         </>
                       ): null}
                       </td>
-                  <Link href={`/User/Projects/${data.projectId}`} key={data.projectId}>
+                  <Link href={`/User/Drafts/${data.projectId}`} key={data.projectId}>
                   <td className='w-1/12' >
                   <button className='bg-sky-300 p-2 text-white text-sm lg:rounded-md rounded-full '>
                     <div>

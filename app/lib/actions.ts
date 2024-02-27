@@ -429,7 +429,8 @@ export const fetchAdminDashboardProjects = async () => {
 
 
 export const fetchSingleProject = async (projectId:string) => {
-  'use server';
+
+  console.log('projectId: ', projectId)
 
   try{
 
@@ -455,6 +456,8 @@ export const fetchSingleProject = async (projectId:string) => {
 
         },
       })
+
+      console.log('Project: ',project)
       return project
    
 
