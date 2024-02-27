@@ -7,6 +7,8 @@ export default function Draft({project}:{project:any}) {
     const [loading, setisLoading] = useState(false);
     const [disabled, setDisabled] = useState(false);
     const [editedAnswers, setEditedAnswers] = useState({
+        title:project.title,
+        school:project.school,
         ans1:project.ans1 || '',
         ans2:project.ans2 || '',
         ans3:project.ans3 || '',
@@ -28,7 +30,6 @@ export default function Draft({project}:{project:any}) {
     
         toggleLoading();
 
-        console.log(editedAnswers)
         try{
         //   toast.loading('Creating project...')
         //   const create = await addProject(formData)
