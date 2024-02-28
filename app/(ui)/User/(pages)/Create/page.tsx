@@ -32,6 +32,11 @@ export default  function Page() {
     }
     event.preventDefault();
 
+    if(formData.title === ''|| formData.title===null || formData.schoolFromFormData === ''|| formData.schoolFromFormData===null || formData.ans1 === ''|| formData.ans1===null || formData.ans2 === ''|| formData.ans2===null || formData.ans3 === ''|| formData.ans3===null || formData.ans4 === ''|| formData.ans4===null ){
+      toast.error('Please fill all the fields')
+      throw new Error('Missing fields')
+    }
+
     toggleLoading();
     try{
       toast.loading('Creating project...')

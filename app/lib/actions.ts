@@ -54,8 +54,9 @@ export const addProject = async (formData: any) => {
   }
 };
 
-export const addDraft = async (formData: any) => {
+export const convertDraftToProject = async (formData: any) => {
   try {
+    const id =parseInt(formData.id)
     const schoolFromFormData = formData.schoolFromFormData
     const title = formData.title;
     const ans1 = formData.ans1;
@@ -64,7 +65,7 @@ export const addDraft = async (formData: any) => {
     const ans4 = formData.ans4;
 
     
-    if (!title || !ans1 || !ans2 || !ans3 || !ans4) {
+    if (!title || !ans1 || !ans2 || !ans3 || !ans4 || !id) {
       throw new Error('Required field is missing'); 
     }
 
@@ -74,6 +75,7 @@ export const addDraft = async (formData: any) => {
 
     if (user) {
       const userId = parseInt(user.id);
+ 
       const newProject = await prisma.project.create({
         data: {
           title,
@@ -85,6 +87,14 @@ export const addDraft = async (formData: any) => {
           school: schoolEnum,
         },
       });
+
+      if(newProject){
+        const draft = await prisma.draft.delete({
+          where:{
+            projectId:id
+          }
+        })
+      }
       revalidatePath('/User/Dashboard');
 
       return newProject
@@ -97,6 +107,50 @@ export const addDraft = async (formData: any) => {
     
     revalidatePath('/User/Dashboard');
   }
+};
+
+export const addDraft = async (formData: any) => {
+  try {
+   
+    const title = formData.title;
+    const school = formData.school;
+    const ans1 = formData.ans1;
+    const ans2 = formData.ans2;
+    const ans3 = formData.ans3;
+    const ans4 = formData.ans4;
+
+    
+    if (!title || !ans1 || !ans2 || !ans3 || !ans4 || !school) {
+      throw new Error('Required field is missing'); 
+    }
+
+    const schoolEnum = School[school as keyof typeof School];
+
+    const user = await getServerSession(authOptions)
+
+    if (user) {
+      const userId = parseInt(user.id);
+      const newDraft = await prisma.draft.create({
+        data: {
+          title,
+          ans1,
+          ans2,
+          ans3,
+          ans4,
+          userId,
+          school: schoolEnum,
+        },
+      });
+      revalidatePath('/User/Dashboard');
+      revalidatePath('/User/Drafts');
+
+      return newDraft
+  
+    }
+  } catch (error) {
+    console.error(error, 'Failed to draft project');
+    
+  } 
 };
 
 
@@ -158,6 +212,38 @@ export const fetchUserProjects = async (userId:number | undefined, query: string
 
   }catch(error){
     console.log("Error fetching All User Projects",error)
+  }
+
+  
+};
+export const fetchUserDrafts = async (userId:number | undefined, query: string) => {
+  'use server';
+
+
+  try{
+    if  (typeof query === 'string' && query.trim() !== '') {
+      const projects = await prisma.draft.findMany({
+        where: {
+          userId:parseInt(userId as unknown as string),
+          title: {
+            contains: query.trim(),
+          },
+        },
+      });
+      return projects;
+    }
+      const projects = await prisma.draft.findMany(
+       {
+        where: {
+          userId:parseInt(userId as unknown as string),
+        },
+       }
+      )
+      return projects
+    
+
+  }catch(error){
+    console.log("Error fetching All User Draft Projects",error)
   }
 
   
@@ -498,6 +584,39 @@ export const fetchSingleProject = async (projectId:string) => {
           moderatorName:true,
           referredTo:true,
 
+        },
+      })
+
+      console.log(project)
+
+      return project
+   
+
+  }catch(error){
+    console.error("Error fetching Single Project",error)
+  }
+
+  
+};
+
+export const fetchSingleDraft = async (projectId:string) => {
+
+
+  try{
+
+      const project = await prisma.draft.findUnique({
+        where:{
+          projectId:parseInt(projectId)
+        },
+         select: {
+          projectId: true,
+          title:true,
+          ans1:true,
+          ans2:true,
+          ans3:true,
+          ans4:true,
+          school:true,
+          userId:true,
         },
       })
 
