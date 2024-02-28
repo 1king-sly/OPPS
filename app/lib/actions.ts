@@ -110,6 +110,7 @@ export const convertDraftToProject = async (formData: any) => {
 };
 
 export const addDraft = async (formData: any) => {
+
   try {
    
     const title = formData.title;
@@ -120,7 +121,7 @@ export const addDraft = async (formData: any) => {
     const ans4 = formData.ans4;
 
     
-    if (!title || !ans1 || !ans2 || !ans3 || !ans4 || !school) {
+    if (!title || !school) {
       throw new Error('Required field is missing'); 
     }
 
@@ -695,6 +696,47 @@ export const updateProject = async (formData: any) => {
           status:statusEnum,
           comment:comment,
           updatedBy:updatedBy,
+        }
+      })
+
+      revalidatePath(`/Admin/Projects/${projectId}`)
+       revalidatePath('/Admin/Dashboard')
+       revalidatePath('/Admin/Projects')
+
+       return project
+
+  }catch(error){
+    console.error("Error Updating Project",error)
+  }
+ 
+};
+export const updateDraft = async (formData: any) => {
+    const projectId = formData.id;
+    const title = formData.title
+    const ans1 = formData.ans1
+    const ans2 = formData.ans2
+    const ans3 = formData.ans3
+    const ans4 = formData.ans4
+    const school = formData.schoolFromFormData
+
+   
+
+    
+
+  try{
+
+      const project = await prisma.draft.update({
+        where:{
+          projectId:parseInt(projectId),
+
+        },
+        data:{
+          school:School[school as keyof typeof School],
+          title:title,
+          ans1:ans1,
+          ans2:ans2,
+          ans3:ans3,
+          ans4:ans4,
         }
       })
 

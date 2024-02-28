@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import toast from 'react-hot-toast'
-import {convertDraftToProject,addDraft} from '@/app/lib/actions'
+import {convertDraftToProject,updateDraft} from '@/app/lib/actions'
 import { useRouter } from 'next/navigation'
 
 export default function Draft({project}:{project:any}) {
@@ -67,7 +67,7 @@ export default function Draft({project}:{project:any}) {
 
           try{
               toast.loading('Saving to draft...')
-              const create = await addDraft(editedAnswers)
+              const create = await updateDraft(editedAnswers)
               if(create){
                 toast.dismiss();
                 toast.success('Drafted successfully')
@@ -93,6 +93,28 @@ export default function Draft({project}:{project:any}) {
       useEffect(() => {
         setDisabled(loading);
       }, [loading]);
+
+
+      useEffect(() => {
+        const handleVisibilityChange = () => {
+          if (document.visibilityState === 'hidden') {
+           
+            updateDraft(editedAnswers);
+          }
+        };
+    
+        const idleTimer = setTimeout(() => {
+          updateDraft(editedAnswers);
+        }, 60000);
+    
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+        return () => {
+          clearTimeout(idleTimer);
+          document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+      }, [editedAnswers]);
+    
 
       
 
@@ -131,7 +153,8 @@ export default function Draft({project}:{project:any}) {
                 title='Question 1'
                   value={editedAnswers.ans1}
                   onChange={(e) => handleAnswerChange(e, 'ans1')}
-                  className="w-full min-h-60 p-2 resize-none outline-sky-200 mt-3 max-h-fit  "
+                  className="w-full min-h-60 p-2 resize-none outline-sky-200 mt-3 max-h-fit "   placeholder='Type here'
+
                 />
               </div>
             </div>
@@ -145,7 +168,8 @@ export default function Draft({project}:{project:any}) {
                    autoFocus
                   value={editedAnswers.ans2}
                   onChange={(e) => handleAnswerChange(e, 'ans2')}
-                  className="w-full min-h-60 p-2 resize-none outline-sky-200 mt-3 max-h-fit"
+                  className="w-full min-h-60 p-2 resize-none outline-sky-200 mt-3 max-h-fit"  placeholder='Type here'
+
                 />
               </div>
             </div>
@@ -163,7 +187,7 @@ export default function Draft({project}:{project:any}) {
                   autoFocus
                   value={editedAnswers.ans3}
                   onChange={(e) => handleAnswerChange(e, 'ans3')}
-                  className="w-full min-h-60 p-2 resize-none outline-sky-200 mt-3 max-h-fit"
+                  className="w-full min-h-60 p-2 resize-none outline-sky-200 mt-3 max-h-fit" placeholder='Type here'
                 />
               </div>
             </div>
@@ -177,7 +201,7 @@ export default function Draft({project}:{project:any}) {
                 autoFocus
                   value={editedAnswers.ans4}
                   onChange={(e) => handleAnswerChange(e, 'ans4')}
-                  className="w-full min-h-60 p-2 resize-none outline-sky-200 mt-3 max-h-fit"
+                  className="w-full min-h-60 p-2 resize-none outline-sky-200 mt-3 max-h-fit" placeholder='Type here'
                 />
               </div>
             </div>

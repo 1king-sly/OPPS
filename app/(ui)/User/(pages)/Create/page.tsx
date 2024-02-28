@@ -33,14 +33,16 @@ export default  function Page() {
     }
     event.preventDefault();
 
-    if(formData.title === ''|| formData.title===null || formData.schoolFromFormData === ''|| formData.schoolFromFormData===null || formData.ans1 === ''|| formData.ans1===null || formData.ans2 === ''|| formData.ans2===null || formData.ans3 === ''|| formData.ans3===null || formData.ans4 === ''|| formData.ans4===null ){
-      toast.error('Please fill all the fields')
-      throw new Error('Missing fields')
-    }
+  
 
     toggleLoading();
 
     if(action === 'CREATE'){ 
+
+      if(formData.title === ''|| formData.title===null || formData.schoolFromFormData === ''|| formData.schoolFromFormData===null || formData.ans1 === ''|| formData.ans1===null || formData.ans2 === ''|| formData.ans2===null || formData.ans3 === ''|| formData.ans3===null || formData.ans4 === ''|| formData.ans4===null ){
+        toast.error('Please fill all the fields')
+        throw new Error('Missing fields')
+      }
           try{
               toast.loading('Creating project...')
               const create = await addProject(formData)
@@ -61,6 +63,11 @@ export default  function Page() {
               toggleLoading();
             }
         } else{
+
+          if(formData.title === ''|| formData.title===null ){
+            toast.error('Please provide  title first ')
+            throw new Error('Missing fields')
+          }
 
           try{
               toast.loading('Saving to draft...')
@@ -89,6 +96,31 @@ export default  function Page() {
   useEffect(() => {
     setDisabled(loading);
   }, [loading]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+
+      if(!formData.title || !formData.schoolFromFormData){
+        return
+      }
+      if (document.visibilityState === 'hidden') {
+
+       
+        addDraft(formData);
+      }
+    };
+
+    const idleTimer = setTimeout(() => {
+      addDraft(formData);
+    }, 60000);
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      clearTimeout(idleTimer);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [formData]);
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLSelectElement>) => {
     if (!event) {
       return;

@@ -93,10 +93,10 @@ model Draft {
   projectId  Int             @id @default(autoincrement())
   title      String
   createdAt  DateTime        @default(now())
-  ans1       String
-  ans2       String
-  ans3       String
-  ans4       String
+  ans1       String?
+  ans2       String?
+  ans3       String?
+  ans4       String?
   school     School
   userId     Int
   user       User            @relation(fields: [userId], references: [id])

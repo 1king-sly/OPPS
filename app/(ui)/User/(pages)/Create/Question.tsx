@@ -47,6 +47,8 @@ export default function Question({
           name={name}
           disabled={disabled}
           required={true}
+          autoFocus
+          placeholder='Type here'
         ></textarea>
       </div>
 
