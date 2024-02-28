@@ -7,17 +7,19 @@ import { useRouter } from 'next/navigation'
 
 export default function Draft({project}:{project:any}) {
 
+  console.log(project)
 
     const [loading, setisLoading] = useState(false);
     const [disabled, setDisabled] = useState(false);
     const [editedAnswers, setEditedAnswers] = useState({
         title:project.title,
-        school:project.school,
+        schoolFromFormData:project.school,
         ans1:project.ans1 || '',
         ans2:project.ans2 || '',
         ans3:project.ans3 || '',
         ans4:project.ans4 || '',
-        id:project.id || '',
+        id:project.projectId
+        || '',
       });
 
       const router = useRouter()
@@ -34,11 +36,12 @@ export default function Draft({project}:{project:any}) {
         }
         event.preventDefault();
 
-        if(editedAnswers.title === ''|| editedAnswers.title===null || editedAnswers.school === ''|| editedAnswers.school===null || editedAnswers.ans1 === ''|| editedAnswers.ans1===null || editedAnswers.ans2 === ''|| editedAnswers.ans2===null || editedAnswers.ans3 === ''|| editedAnswers.ans3===null || editedAnswers.ans4 === ''|| editedAnswers.ans4===null || editedAnswers.id === ''|| editedAnswers.id===null ){
-          toast.error('Please fill all the fields')
-          throw new Error('Missing fields')
+        const { ans1, ans2, ans3, ans4 } = editedAnswers;
+        if (!ans1 || !ans2 || !ans3 || !ans4) {
+          toast.error('Please fill in all fields.');
+          return;
         }
-    
+
         toggleLoading();
         if(action === 'CREATE'){ 
           try{
@@ -91,6 +94,8 @@ export default function Draft({project}:{project:any}) {
         setDisabled(loading);
       }, [loading]);
 
+      
+
       const handleAnswerChange = (event: React.ChangeEvent<HTMLTextAreaElement>, fieldName: string) => {
         const { value } = event.target;
         setEditedAnswers((prevAnswers) => ({
@@ -104,7 +109,7 @@ export default function Draft({project}:{project:any}) {
    
    <div className="w-full min-h-screen flex flex-col items-center justify-center pb-40 mt-4">
         <div className="flex flex-col items-center">
-          <div className="w-5/6 mx-auto flex flex-col text-black gap-10">
+          <div className="w-[80vw] mx-auto flex flex-col text-black gap-10">
             <div>
               <h1 className="w-full flex justify-center md:text-lg gap-1">
                 Title: <span className="underline">{project?.title}</span>{' '}

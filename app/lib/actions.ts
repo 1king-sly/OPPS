@@ -113,7 +113,7 @@ export const addDraft = async (formData: any) => {
   try {
    
     const title = formData.title;
-    const school = formData.school;
+    const school = formData.schoolFromFormData;
     const ans1 = formData.ans1;
     const ans2 = formData.ans2;
     const ans3 = formData.ans3;
@@ -178,7 +178,7 @@ export const fetchUserDashboardProjects = async (userId:number | undefined) => {
     
 
   }catch(error){
-    console.log("Error fetching Dashboard User Projects",error)
+    console.error("Error fetching Dashboard User Projects",error)
   }
 
   
@@ -211,7 +211,7 @@ export const fetchUserProjects = async (userId:number | undefined, query: string
     
 
   }catch(error){
-    console.log("Error fetching All User Projects",error)
+    console.error("Error fetching All User Projects",error)
   }
 
   
@@ -243,7 +243,7 @@ export const fetchUserDrafts = async (userId:number | undefined, query: string) 
     
 
   }catch(error){
-    console.log("Error fetching All User Draft Projects",error)
+    console.error("Error fetching All User Draft Projects",error)
   }
 
   
@@ -587,7 +587,6 @@ export const fetchSingleProject = async (projectId:string) => {
         },
       })
 
-      console.log(project)
 
       return project
    
@@ -758,7 +757,7 @@ export const updateUser = async (formData: FormData) => {
 
     return updatedUser;
   } catch (error) {
-    console.log('Error Updating User', error);
+    console.error('Error Updating User', error);
   } finally {
     redirect('/SuperAdmin/Users');
   }
@@ -792,7 +791,7 @@ export const fetchUser = async (email:string) => {
     return user;
 
   }catch(error){
-    console.log("Error Fetching User",error)
+    console.error("Error Fetching User",error)
   }
 
   
@@ -899,7 +898,7 @@ export const fetchUsers = async (query: string) => {
     );
     return users;
   } catch (error) {
-    console.log('Error fetching All Users ', error);
+    console.error('Error fetching All Users ', error);
     throw error; 
   } finally {
     await prisma.$disconnect();
@@ -934,7 +933,7 @@ export const fetchSuperAdminUser = async (userId:string) => {
     return user;
 
   }catch(error){
-    console.log("Error Fetching Super Admin Single User",error)
+    console.error("Error Fetching Super Admin Single User",error)
   }
 
   
@@ -975,7 +974,7 @@ export const createUser = async (formData: any) => {
 
     return newUser;
   } catch (error) {
-    console.log('Error Creating User', error);
+    console.error('Error Creating User', error);
   } 
 };
 export const validate = async (formData: any) => {
@@ -1040,7 +1039,7 @@ export const validate = async (formData: any) => {
     return deletedUser;
   }
 } catch (error) {
-    console.log('Error Creating User', error);
+    console.error('Error Creating User', error);
   } 
 };
 
@@ -1098,11 +1097,34 @@ export const deleteSingleProject = async (formData: FormData) => {
 
 
       revalidatePath('/Users/Projects')
-      revalidatePath('/Users/Projects')
    
 
   }catch(error){
-    console.error("Error Deleting Single User",error)
+    console.error("Error Deleting Single Project",error)
+  }
+
+  
+};
+export const deleteSingleDraft = async (formData: FormData) => {
+  'use server';
+
+
+  const projectId = formData.get('projectId') as string;
+
+  try{
+
+      const deletedProject=await prisma.draft.delete({
+        where:{
+          projectId:parseInt(projectId),
+        }
+      })
+
+
+      revalidatePath('/Users/Drafts')
+   
+
+  }catch(error){
+    console.error("Error Deleting Single Draft",error)
   }
 
   
@@ -1368,7 +1390,7 @@ export const fetchPreusers = async (query: string) => {
     );
     return users;
   } catch (error) {
-    console.log('Error fetching All Pending Users ', error);
+    console.error('Error fetching All Pending Users ', error);
     throw error; 
   } finally {
     await prisma.$disconnect();
@@ -1462,7 +1484,7 @@ export const createPreuser = async (email:string ) => {
 
     return newUser;
   } catch (error) {
-    console.log('Error Creating User', error);
+    console.error('Error Creating User', error);
   } 
 };
 

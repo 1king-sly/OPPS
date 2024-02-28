@@ -6,7 +6,8 @@ import Button from '@/app/(ui)/Button';
 import Question from './Question';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import { addProject } from '@/app/lib/actions';
+import { addProject,addDraft } from '@/app/lib/actions';
+import clsx from 'clsx'
 
 export default  function Page() {
   const [loading, setisLoading] = useState(false);
@@ -25,7 +26,7 @@ export default  function Page() {
   };
 
   const router = useRouter()
-  const handleSubmit = async ()=>{
+  const handleSubmit = async (action:string)=>{
     const event = window.event;
     if (!event) {
       return;
@@ -38,24 +39,52 @@ export default  function Page() {
     }
 
     toggleLoading();
-    try{
-      toast.loading('Creating project...')
-      const create = await addProject(formData)
-      if(create){
-        toast.dismiss();
-        toast.success('Project Created Successfully')
-        router.push('/User/Dashboard')
-     } else{
-      toast.dismiss();
-        toast.error('Something went wrong')
-      }
 
-    }catch(error){
-      toast.dismiss();
-      toast.error('Server Side error')
-    }finally {
-      toggleLoading();
-    }
+    if(action === 'CREATE'){ 
+          try{
+              toast.loading('Creating project...')
+              const create = await addProject(formData)
+              if(create){
+                toast.dismiss();
+                toast.success('Project Created Successfully')
+                router.push('/User/Dashboard')
+             } else{
+              toast.dismiss();
+                toast.error('Something went wrong')
+              }
+        
+            }catch(error){
+             console.log(error)
+              toast.dismiss();
+              toast.error('Server Side error')
+            }finally {
+              toggleLoading();
+            }
+        } else{
+
+          try{
+              toast.loading('Saving to draft...')
+              const create = await addDraft(formData)
+              if(create){
+                toast.dismiss();
+                toast.success('Drafted successfully')
+                router.push('/User/Dashboard')
+             } else{
+              toast.dismiss();
+                toast.error('Something went wrong')
+              }
+        
+            }catch(error){
+             console.log(error)
+              toast.dismiss();
+              toast.error('Server Side error')
+            }finally {
+              toggleLoading();
+            }
+
+          
+        }
+
   }
   useEffect(() => {
     setDisabled(loading);
@@ -183,11 +212,17 @@ export default  function Page() {
         />
       </div>
 
-            <div className='w-full flex justify-end'>
-              <Button type='submit'              onClick={handleSubmit}
+            <div className='w-full flex justify-end gap-20'>
+            <button type='submit' onClick={() => handleSubmit('DRAFT')}
               disabled={disabled}
+              className={clsx(`flex justify-center rounded-md px-3 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 bg-sky-500 hover:bg-sky-600 focus-visible:outline-sky-600`,disabled&&'opacity-50 cursor-not-allowed')}
+               >Save as Draft</button>
 
-               >Submit</Button>
+
+              <button type='submit' onClick={() => handleSubmit('CREATE')}
+              disabled={disabled}
+              className={clsx(`flex justify-center rounded-md px-3 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 bg-sky-500 hover:bg-sky-600 focus-visible:outline-sky-600`,disabled&&'opacity-50 cursor-not-allowed')}
+               >Submit</button>
             </div>
           </form>
         </div>

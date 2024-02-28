@@ -1,7 +1,7 @@
 'use server'
 import React from 'react';
 import { getServerSession } from 'next-auth';
-import { deleteSingleProject, fetchUser, fetchUserDrafts } from '@/app/lib/actions';
+import { deleteSingleDraft, fetchUserDrafts } from '@/app/lib/actions';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import Search from '../../Component/Search';
@@ -56,7 +56,7 @@ export default async function Tables({searchParams}:{searchParams:string}) {
                   <td className='w-1/12' >
                     
                   <>
-                  <form action={deleteSingleProject} className='bg-rose-500 p-2 text-white text-sm rounded-md w-full flex items-center justify-center'>
+                  <form action={deleteSingleDraft} className='bg-rose-500 p-2 text-white text-sm rounded-md w-full flex items-center justify-center'>
                       <input type="text" hidden value={data.projectId} name='projectId' />
                       <button>
                       <div>
