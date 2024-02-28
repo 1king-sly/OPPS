@@ -6,7 +6,8 @@ import Button from '@/app/(ui)/Button';
 import Question from './Question';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import { addProject } from '@/app/lib/actions';
+import { addProject,addDraft } from '@/app/lib/actions';
+import clsx from 'clsx'
 
 export default  function Page() {
   const [loading, setisLoading] = useState(false);
@@ -25,36 +26,101 @@ export default  function Page() {
   };
 
   const router = useRouter()
-  const handleSubmit = async ()=>{
+  const handleSubmit = async (action:string)=>{
     const event = window.event;
     if (!event) {
       return;
     }
     event.preventDefault();
 
-    toggleLoading();
-    try{
-      toast.loading('Creating project...')
-      const create = await addProject(formData)
-      if(create){
-        toast.dismiss();
-        toast.success('Project Created Successfully')
-        router.push('/User/Dashboard')
-     } else{
-      toast.dismiss();
-        toast.error('Something went wrong')
-      }
+  
 
-    }catch(error){
-      toast.dismiss();
-      toast.error('Server Side error')
-    }finally {
-      toggleLoading();
-    }
+    toggleLoading();
+
+    if(action === 'CREATE'){ 
+
+      if(formData.title === ''|| formData.title===null || formData.schoolFromFormData === ''|| formData.schoolFromFormData===null || formData.ans1 === ''|| formData.ans1===null || formData.ans2 === ''|| formData.ans2===null || formData.ans3 === ''|| formData.ans3===null || formData.ans4 === ''|| formData.ans4===null ){
+        toast.error('Please fill all the fields')
+        throw new Error('Missing fields')
+      }
+          try{
+              toast.loading('Creating project...')
+              const create = await addProject(formData)
+              if(create){
+                toast.dismiss();
+                toast.success('Project Created Successfully')
+                router.push('/User/Dashboard')
+             } else{
+              toast.dismiss();
+                toast.error('Something went wrong')
+              }
+        
+            }catch(error){
+             console.log(error)
+              toast.dismiss();
+              toast.error('Server Side error')
+            }finally {
+              toggleLoading();
+            }
+        } else{
+
+          if(formData.title === ''|| formData.title===null ){
+            toast.error('Please provide  title first ')
+            throw new Error('Missing fields')
+          }
+
+          try{
+              toast.loading('Saving to draft...')
+              const create = await addDraft(formData)
+              if(create){
+                toast.dismiss();
+                toast.success('Drafted successfully')
+                router.push('/User/Dashboard')
+             } else{
+              toast.dismiss();
+                toast.error('Something went wrong')
+              }
+        
+            }catch(error){
+             console.log(error)
+              toast.dismiss();
+              toast.error('Server Side error')
+            }finally {
+              toggleLoading();
+            }
+
+          
+        }
+
   }
   useEffect(() => {
     setDisabled(loading);
   }, [loading]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+
+      if(!formData.title || !formData.schoolFromFormData){
+        return
+      }
+      if (document.visibilityState === 'hidden') {
+
+       
+        addDraft(formData);
+      }
+    };
+
+    const idleTimer = setTimeout(() => {
+      addDraft(formData);
+    }, 60000);
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      clearTimeout(idleTimer);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [formData]);
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLSelectElement>) => {
     if (!event) {
       return;
@@ -83,11 +149,12 @@ export default  function Page() {
                 id="title"
                 title='title'
                 placeholder='Project Title'
-                className='resize-none p-2 h-10 w-80 flex items-center rounded-md outline-sky-200 overflow-hidden'
+                className='resize-none p-2 h-10 w-80 flex items-center rounded-md outline-sky-200 overflow-hidden  '
                 maxLength={50}
                 value={formData.title}
                 onChange={handleChange}
                 disabled={disabled}
+                required={true}
 
                 
                 
@@ -177,11 +244,17 @@ export default  function Page() {
         />
       </div>
 
-            <div className='w-full flex justify-end'>
-              <Button type='submit'              onClick={handleSubmit}
+            <div className='w-full flex justify-end gap-20'>
+            <button type='submit' onClick={() => handleSubmit('DRAFT')}
               disabled={disabled}
+              className={clsx(`flex justify-center rounded-md px-3 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 bg-sky-500 hover:bg-sky-600 focus-visible:outline-sky-600`,disabled&&'opacity-50 cursor-not-allowed')}
+               >Save as Draft</button>
 
-               >Submit</Button>
+
+              <button type='submit' onClick={() => handleSubmit('CREATE')}
+              disabled={disabled}
+              className={clsx(`flex justify-center rounded-md px-3 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 bg-sky-500 hover:bg-sky-600 focus-visible:outline-sky-600`,disabled&&'opacity-50 cursor-not-allowed')}
+               >Submit</button>
             </div>
           </form>
         </div>

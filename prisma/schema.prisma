@@ -22,6 +22,7 @@ model User {
   updatedAt          DateTime  @default(now())
   school             School?
   projects           Project[]
+  drafts             Draft[]
 }
 
 model Project {
@@ -86,4 +87,18 @@ model Preuser {
   userType           UserType
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @default(now())
+}
+
+model Draft {
+  projectId  Int             @id @default(autoincrement())
+  title      String
+  createdAt  DateTime        @default(now())
+  ans1       String?
+  ans2       String?
+  ans3       String?
+  ans4       String?
+  school     School
+  userId     Int
+  user       User            @relation(fields: [userId], references: [id])
+
 }

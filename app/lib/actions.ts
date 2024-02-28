@@ -54,6 +54,106 @@ export const addProject = async (formData: any) => {
   }
 };
 
+export const convertDraftToProject = async (formData: any) => {
+  try {
+    const id =parseInt(formData.id)
+    const schoolFromFormData = formData.schoolFromFormData
+    const title = formData.title;
+    const ans1 = formData.ans1;
+    const ans2 = formData.ans2;
+    const ans3 = formData.ans3;
+    const ans4 = formData.ans4;
+
+    
+    if (!title || !ans1 || !ans2 || !ans3 || !ans4 || !id) {
+      throw new Error('Required field is missing'); 
+    }
+
+    const schoolEnum = School[schoolFromFormData as keyof typeof School];
+
+    const user = await getServerSession(authOptions)
+
+    if (user) {
+      const userId = parseInt(user.id);
+ 
+      const newProject = await prisma.project.create({
+        data: {
+          title,
+          ans1,
+          ans2,
+          ans3,
+          ans4,
+          userId,
+          school: schoolEnum,
+        },
+      });
+
+      if(newProject){
+        const draft = await prisma.draft.delete({
+          where:{
+            projectId:id
+          }
+        })
+      }
+      revalidatePath('/User/Dashboard');
+
+      return newProject
+  
+    }
+  } catch (error) {
+    console.error(error, 'Failed to create project');
+    
+  } finally {
+    
+    revalidatePath('/User/Dashboard');
+  }
+};
+
+export const addDraft = async (formData: any) => {
+
+  try {
+   
+    const title = formData.title;
+    const school = formData.schoolFromFormData;
+    const ans1 = formData.ans1;
+    const ans2 = formData.ans2;
+    const ans3 = formData.ans3;
+    const ans4 = formData.ans4;
+
+    
+    if (!title || !school) {
+      throw new Error('Required field is missing'); 
+    }
+
+    const schoolEnum = School[school as keyof typeof School];
+
+    const user = await getServerSession(authOptions)
+
+    if (user) {
+      const userId = parseInt(user.id);
+      const newDraft = await prisma.draft.create({
+        data: {
+          title,
+          ans1,
+          ans2,
+          ans3,
+          ans4,
+          userId,
+          school: schoolEnum,
+        },
+      });
+      revalidatePath('/User/Dashboard');
+      revalidatePath('/User/Drafts');
+
+      return newDraft
+  
+    }
+  } catch (error) {
+    console.error(error, 'Failed to draft project');
+    
+  } 
+};
+
 
 export const fetchUserDashboardProjects = async (userId:number | undefined) => {
   'use server';
@@ -79,7 +179,7 @@ export const fetchUserDashboardProjects = async (userId:number | undefined) => {
     
 
   }catch(error){
-    console.log("Error fetching Dashboard User Projects",error)
+    console.error("Error fetching Dashboard User Projects",error)
   }
 
   
@@ -112,7 +212,39 @@ export const fetchUserProjects = async (userId:number | undefined, query: string
     
 
   }catch(error){
-    console.log("Error fetching All User Projects",error)
+    console.error("Error fetching All User Projects",error)
+  }
+
+  
+};
+export const fetchUserDrafts = async (userId:number | undefined, query: string) => {
+  'use server';
+
+
+  try{
+    if  (typeof query === 'string' && query.trim() !== '') {
+      const projects = await prisma.draft.findMany({
+        where: {
+          userId:parseInt(userId as unknown as string),
+          title: {
+            contains: query.trim(),
+          },
+        },
+      });
+      return projects;
+    }
+      const projects = await prisma.draft.findMany(
+       {
+        where: {
+          userId:parseInt(userId as unknown as string),
+        },
+       }
+      )
+      return projects
+    
+
+  }catch(error){
+    console.error("Error fetching All User Draft Projects",error)
   }
 
   
@@ -429,7 +561,7 @@ export const fetchAdminDashboardProjects = async () => {
 
 
 export const fetchSingleProject = async (projectId:string) => {
-  'use server';
+
 
   try{
 
@@ -455,6 +587,39 @@ export const fetchSingleProject = async (projectId:string) => {
 
         },
       })
+
+
+      return project
+   
+
+  }catch(error){
+    console.error("Error fetching Single Project",error)
+  }
+
+  
+};
+
+export const fetchSingleDraft = async (projectId:string) => {
+
+
+  try{
+
+      const project = await prisma.draft.findUnique({
+        where:{
+          projectId:parseInt(projectId)
+        },
+         select: {
+          projectId: true,
+          title:true,
+          ans1:true,
+          ans2:true,
+          ans3:true,
+          ans4:true,
+          school:true,
+          userId:true,
+        },
+      })
+
       return project
    
 
@@ -545,6 +710,47 @@ export const updateProject = async (formData: any) => {
   }
  
 };
+export const updateDraft = async (formData: any) => {
+    const projectId = formData.id;
+    const title = formData.title
+    const ans1 = formData.ans1
+    const ans2 = formData.ans2
+    const ans3 = formData.ans3
+    const ans4 = formData.ans4
+    const school = formData.schoolFromFormData
+
+   
+
+    
+
+  try{
+
+      const project = await prisma.draft.update({
+        where:{
+          projectId:parseInt(projectId),
+
+        },
+        data:{
+          school:School[school as keyof typeof School],
+          title:title,
+          ans1:ans1,
+          ans2:ans2,
+          ans3:ans3,
+          ans4:ans4,
+        }
+      })
+
+      revalidatePath(`/Admin/Projects/${projectId}`)
+       revalidatePath('/Admin/Dashboard')
+       revalidatePath('/Admin/Projects')
+
+       return project
+
+  }catch(error){
+    console.error("Error Updating Project",error)
+  }
+ 
+};
 
 export const updateUser = async (formData: FormData) => {
   'use server';
@@ -593,7 +799,7 @@ export const updateUser = async (formData: FormData) => {
 
     return updatedUser;
   } catch (error) {
-    console.log('Error Updating User', error);
+    console.error('Error Updating User', error);
   } finally {
     redirect('/SuperAdmin/Users');
   }
@@ -627,7 +833,7 @@ export const fetchUser = async (email:string) => {
     return user;
 
   }catch(error){
-    console.log("Error Fetching User",error)
+    console.error("Error Fetching User",error)
   }
 
   
@@ -734,7 +940,7 @@ export const fetchUsers = async (query: string) => {
     );
     return users;
   } catch (error) {
-    console.log('Error fetching All Users ', error);
+    console.error('Error fetching All Users ', error);
     throw error; 
   } finally {
     await prisma.$disconnect();
@@ -769,7 +975,7 @@ export const fetchSuperAdminUser = async (userId:string) => {
     return user;
 
   }catch(error){
-    console.log("Error Fetching Super Admin Single User",error)
+    console.error("Error Fetching Super Admin Single User",error)
   }
 
   
@@ -810,7 +1016,7 @@ export const createUser = async (formData: any) => {
 
     return newUser;
   } catch (error) {
-    console.log('Error Creating User', error);
+    console.error('Error Creating User', error);
   } 
 };
 export const validate = async (formData: any) => {
@@ -875,7 +1081,7 @@ export const validate = async (formData: any) => {
     return deletedUser;
   }
 } catch (error) {
-    console.log('Error Creating User', error);
+    console.error('Error Creating User', error);
   } 
 };
 
@@ -933,11 +1139,34 @@ export const deleteSingleProject = async (formData: FormData) => {
 
 
       revalidatePath('/Users/Projects')
-      revalidatePath('/Users/Projects')
    
 
   }catch(error){
-    console.error("Error Deleting Single User",error)
+    console.error("Error Deleting Single Project",error)
+  }
+
+  
+};
+export const deleteSingleDraft = async (formData: FormData) => {
+  'use server';
+
+
+  const projectId = formData.get('projectId') as string;
+
+  try{
+
+      const deletedProject=await prisma.draft.delete({
+        where:{
+          projectId:parseInt(projectId),
+        }
+      })
+
+
+      revalidatePath('/Users/Drafts')
+   
+
+  }catch(error){
+    console.error("Error Deleting Single Draft",error)
   }
 
   
@@ -1203,7 +1432,7 @@ export const fetchPreusers = async (query: string) => {
     );
     return users;
   } catch (error) {
-    console.log('Error fetching All Pending Users ', error);
+    console.error('Error fetching All Pending Users ', error);
     throw error; 
   } finally {
     await prisma.$disconnect();
@@ -1297,7 +1526,7 @@ export const createPreuser = async (email:string ) => {
 
     return newUser;
   } catch (error) {
-    console.log('Error Creating User', error);
+    console.error('Error Creating User', error);
   } 
 };
 
