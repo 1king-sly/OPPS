@@ -84,7 +84,7 @@ export async function POST(request: Request) {
         to: email, 
         subject: "Online Project Proposal System Request", 
         text:` Hello ${firstName}, your request has been recieved successfully and is being reviewed`,
-        html: "<b>You will bw notified when your application has been reviewed</b>", 
+        html: `<b> Hello ${firstName}, your request has been recieved successfully and is being reviewed</b>`, 
       });
     
       console.log("Message sent: %s", info.messageId);

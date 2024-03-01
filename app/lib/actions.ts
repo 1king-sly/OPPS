@@ -9,6 +9,9 @@ import { authOptions } from "@/utils/authUptions";
 
 const cron = require('node-cron');
 
+const nodemailer = require('nodemailer');
+
+
 export const addProject = async (formData: any) => {
   try {
     const schoolFromFormData = formData.schoolFromFormData
@@ -1054,6 +1057,31 @@ export const validate = async (formData: any) => {
         },
       });
 
+      const transporter:any = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        tls: {
+          ciphers: "SSLv3",
+          rejectUnauthorized: false,
+      },
+        secure: false, 
+        auth: {
+          user: process.env.NEXT_PUBLIC_PERSONAL_EMAIL,
+          pass: process.env.NEXT_PUBLIC_EMAIL_PASSWORD,
+        },
+      });
+
+      const info = await transporter.sendMail({
+        from: {
+          name:'Byrone Kinsly',
+          address:process.env.NEXT_PUBLIC_PERSONAL_EMAIL
+        }, 
+        to: email, 
+        subject: "Online Project Proposal System Request", 
+        text:` Hello }, your request your request to access MMUST Online Project Proposal System has been approved successfully `,
+        html: `<b> Hello , your request your request to access MMUST Online Project Proposal System has been approved </b>`, 
+      });
+    
 
       if (newUser) {
         const deletedUser = await prisma.preuser.delete({
@@ -1081,6 +1109,34 @@ export const validate = async (formData: any) => {
           email: email,
         },
       });
+
+
+      const transporter:any = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        tls: {
+          ciphers: "SSLv3",
+          rejectUnauthorized: false,
+      },
+        secure: false, 
+        auth: {
+          user: process.env.NEXT_PUBLIC_PERSONAL_EMAIL,
+          pass: process.env.NEXT_PUBLIC_EMAIL_PASSWORD,
+        },
+      });
+
+      const info = await transporter.sendMail({
+        from: {
+          name:'Byrone Kinsly',
+          address:process.env.NEXT_PUBLIC_PERSONAL_EMAIL
+        }, 
+        to: email, 
+        subject: "Online Project Proposal System Request", 
+        text:` Hello , your request to access MMUST Online Project Proposal System has been denied  `,
+        html: `<b> Hello , your request to access MMUST Online Project Proposal System has been denied  </b>`, 
+      });
+
+      
 
     revalidatePath('/SuperAdmin/Pending');
 
