@@ -230,6 +230,9 @@ export const fetchUserDrafts = async (userId:number | undefined, query: string) 
             contains: query.trim(),
           },
         },
+        orderBy:{
+          createdAt:'desc'
+        }
       });
       return projects;
     }
@@ -238,6 +241,9 @@ export const fetchUserDrafts = async (userId:number | undefined, query: string) 
         where: {
           userId:parseInt(userId as unknown as string),
         },
+        orderBy:{
+          createdAt:'desc'
+        }
        }
       )
       return projects
