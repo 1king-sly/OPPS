@@ -744,7 +744,7 @@ export const updateProject = async (formData: any) => {
             html: `<b>Hello ${firstName}, your project has been accepted, checkout the system for more details</b>`, 
           });
         
-          console.log("Message sent, project Accepted: %s", info.messageId);
+         
          
         }else if(status ==='REJECTED'){
 
@@ -773,7 +773,7 @@ export const updateProject = async (formData: any) => {
             html: `<b>Hello ${firstName}, your project has been declined, checkout the system for more details</b>`, 
           });
         
-          console.log("Message sent, project Rejected: %s", info.messageId);
+          
 
         }else{
 
@@ -802,7 +802,7 @@ export const updateProject = async (formData: any) => {
             html: `<b>Hello ${firstName}, your project has been sent to external moderator,feedback will be back within 14 days, checkout the system for more details</b>`, 
           });
         
-          console.log("Message sent, project sent to moderator: %s", info.messageId);
+         
           
         }
         }
@@ -1214,7 +1214,7 @@ export const validate = async (formData: any) => {
         html: `<b> Hello ${firstName} , your request  to access MMUST Online Project Proposal System has been approved </b>`, 
       });
     
-      console.log("Message sent,user accepted: %s", info.messageId);
+     
 
       if (newUser) {
         const deletedUser = await prisma.preuser.delete({
@@ -1276,7 +1276,7 @@ export const validate = async (formData: any) => {
         html: `<b> Hello , your request to access MMUST Online Project Proposal System has been denied  </b>`, 
       });
 
-      console.log("Message sent,user declined: %s", info.messageId);
+      
 
       
 
@@ -1606,7 +1606,7 @@ export const moderatorUpdateProject = async (formData: any) => {
           html: `<b>Hello ${firstName}, your project has been accepted, checkout the system for more details</b>`, 
         });
       
-        console.log("Message sent, project Accepted: %s", info.messageId);
+       
        
       }else{
 
@@ -1635,7 +1635,7 @@ export const moderatorUpdateProject = async (formData: any) => {
           html: `<b>Hello ${firstName}, your project has been declined, checkout the system for more details</b>`, 
         });
       
-        console.log("Message sent, project Rejected: %s", info.messageId);
+        
 
       }
       const deleteProject =  await prisma.reference.delete({

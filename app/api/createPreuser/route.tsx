@@ -87,7 +87,6 @@ export async function POST(request: Request) {
         html: `<b> Hello ${firstName}, your request has been recieved successfully and is being reviewed</b>`, 
       });
     
-      console.log("Message sent: %s", info.messageId);
      
     }
 
