@@ -1078,10 +1078,11 @@ export const validate = async (formData: any) => {
         }, 
         to: email, 
         subject: "Online Project Proposal System Request", 
-        text:` Hello }, your request your request to access MMUST Online Project Proposal System has been approved successfully `,
-        html: `<b> Hello , your request your request to access MMUST Online Project Proposal System has been approved </b>`, 
+        text:` Hello  ${firstName} , your request your request to access MMUST Online Project Proposal System has been approved successfully `,
+        html: `<b> Hello ${firstName} , your request  to access MMUST Online Project Proposal System has been approved </b>`, 
       });
     
+      console.log("Message sent,user accepted: %s", info.messageId);
 
       if (newUser) {
         const deletedUser = await prisma.preuser.delete({
@@ -1099,10 +1100,17 @@ export const validate = async (formData: any) => {
         } else {
           throw new Error('Error deleting preuser');
         }
-      } else {
+      } 
+      
+      
+      else {
         throw new Error('Error Creating user');
 
+
       }
+
+      return newUser
+
     } else {
       const deletedUser = await prisma.preuser.delete({
         where: {
@@ -1132,9 +1140,11 @@ export const validate = async (formData: any) => {
         }, 
         to: email, 
         subject: "Online Project Proposal System Request", 
-        text:` Hello , your request to access MMUST Online Project Proposal System has been denied  `,
+        text:` Hello ${firstName} , your request to access MMUST Online Project Proposal System has been denied  `,
         html: `<b> Hello , your request to access MMUST Online Project Proposal System has been denied  </b>`, 
       });
+
+      console.log("Message sent,user declined: %s", info.messageId);
 
       
 
