@@ -137,14 +137,14 @@ export default function Draft({project}:{project:any}) {
                 Title: <span className="underline">{project?.title}</span>{' '}
               </h1>
               <div className="px-4">
-                <div className="w-full flex justify-center ">
+                <div className="w-full flex justify-start ">
                   Problem identification and background/Needs assessment
                 </div>
                 <div className="text-sm">
                   What issue/challenge/gap does the project aim to address? The objectives should be clear, measurable,
                   realistic and achievable within the duration of the project. For each objective, define appropriate
                   indicators for measuring achievement (including a unit of measurement, baseline value and target
-                  value)
+                  value)(max:1000)
                 </div>
               </div>
               <div className="mt-2">
@@ -152,6 +152,7 @@ export default function Draft({project}:{project:any}) {
                 autoFocus
                 title='Question 1'
                   value={editedAnswers.ans1}
+                  maxLength={3000}
                   onChange={(e) => handleAnswerChange(e, 'ans1')}
                   className="w-full min-h-60 p-2 resize-none outline-sky-200 mt-3 max-h-fit "   placeholder='Type here'
 
@@ -160,12 +161,13 @@ export default function Draft({project}:{project:any}) {
             </div>
             <div>
               <div className="px-4">
-                <div className="w-full flex justify-center ">Research Purpose and anticipated results</div>
+                <div className="w-full flex justify-start ">Research Purpose and anticipated results (max:800)</div>
               </div>
               <div className="mt-2 ">
                 <textarea
                    title='Question 2'
                    autoFocus
+                   maxLength={2400}
                   value={editedAnswers.ans2}
                   onChange={(e) => handleAnswerChange(e, 'ans2')}
                   className="w-full min-h-60 p-2 resize-none outline-sky-200 mt-3 max-h-fit"  placeholder='Type here'
@@ -175,16 +177,17 @@ export default function Draft({project}:{project:any}) {
             </div>
             <div>
               <div className="px-4">
-                <div className="w-full flex justify-center ">Project Design and Methodology</div>
+                <div className="w-full flex justify-start ">Project Design and Methodology</div>
                 <div className="text-sm">
                   Outline the approach and methodology behind the project. Explain why they are the most suitable for
-                  achieving the project’s objectives.
+                  achieving the project’s objectives.(max:1000)
                 </div>
               </div>
               <div className="mt-2 ">
                 <textarea
                   title='Question 3'
                   autoFocus
+                  maxLength={3000}
                   value={editedAnswers.ans3}
                   onChange={(e) => handleAnswerChange(e, 'ans3')}
                   className="w-full min-h-60 p-2 resize-none outline-sky-200 mt-3 max-h-fit" placeholder='Type here'
@@ -193,12 +196,13 @@ export default function Draft({project}:{project:any}) {
             </div>
             <div>
               <div className="px-4">
-                <div className="w-full flex justify-center ">Gender Equality, Equity, and Inclusion considerations</div>
+                <div className="w-full flex justify-center ">Gender Equality, Equity, and Inclusion considerations (max:1000)</div>
               </div>
               <div className="mt-2">
                 <textarea
                 title='Question 4'
-                autoFocus
+                autoFocus  
+                maxLength={3000}
                   value={editedAnswers.ans4}
                   onChange={(e) => handleAnswerChange(e, 'ans4')}
                   className="w-full min-h-60 p-2 resize-none outline-sky-200 mt-3 max-h-fit" placeholder='Type here'
