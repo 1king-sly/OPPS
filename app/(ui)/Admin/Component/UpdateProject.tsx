@@ -5,10 +5,11 @@ import { useRouter } from 'next/navigation';
 import clsx from 'clsx'
 import { updateProject } from '@/app/lib/actions';
 
-export default function Refer({ projectId, userName }: { projectId: string; userName: string }) {
+export default function Refer({ projectId, userName,userId }: { projectId: string; userName: string,userId:any }) {
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [formData, setFormData] = useState({
+    userId:userId,
     email: '',
     projectId: projectId,
     updatedBy: userName,
@@ -57,7 +58,7 @@ export default function Refer({ projectId, userName }: { projectId: string; user
         if (update) {
           toast.dismiss();
           toast.success('Project updated successfully');
-          // router.push('/Admin/Dashboard');
+          router.push('/Admin/Dashboard');
         } else  {
           toast.dismiss();
           toast.error('Something went wrong');

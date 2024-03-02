@@ -19,7 +19,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     
     const project = await fetchSingleProject(projectId)
 
-  
+    const userId = project?.userId
 
     if(!project){
      return <NotFound/>
@@ -96,7 +96,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           <div>
             { project?.status === 'PENDING'?(
                 <>
-            <UpdateProject projectId={projectId} userName={userName}  />
+            <UpdateProject userId={userId} projectId={projectId} userName={userName}  />
             </>
             ): null}
           </div>

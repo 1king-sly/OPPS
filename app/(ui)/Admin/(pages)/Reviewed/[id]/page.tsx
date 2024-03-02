@@ -91,13 +91,6 @@ export default async function Page({ params }: { params: { id: string } }) {
               </>
             ):null}
             </div>
-          <div>
-            { project?.status === 'PENDING'?(
-                <>
-            <UpdateProject projectId={projectId} userName={userName}  />
-            </>
-            ): null}
-          </div>
           </div>
         </div>
        </div>

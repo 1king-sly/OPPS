@@ -4,6 +4,8 @@ import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 
+const nodemailer = require('nodemailer');
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -58,7 +60,37 @@ export async function POST(request: Request) {
       },
     });
 
-    revalidatePath('/SuperAdmin/Users');
+    if(newPreuser){
+
+      const transporter:any = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        tls: {
+          ciphers: "SSLv3",
+          rejectUnauthorized: false,
+      },
+        secure: false, 
+        auth: {
+          user: process.env.NEXT_PUBLIC_PERSONAL_EMAIL,
+          pass: process.env.NEXT_PUBLIC_EMAIL_PASSWORD,
+        },
+      });
+
+      const info = await transporter.sendMail({
+        from: {
+          name:'Byrone Kinsly',
+          address:process.env.NEXT_PUBLIC_PERSONAL_EMAIL
+        }, 
+        to: email, 
+        subject: "Online Project Proposal System Request", 
+        text:` Hello ${firstName}, your request has been recieved successfully and is being reviewed`,
+        html: `<b> Hello ${firstName}, your request has been recieved successfully and is being reviewed</b>`, 
+      });
+    
+     
+    }
+
+    revalidatePath('/SuperAdmin/Pending');
 
     return new NextResponse(JSON.stringify(newPreuser), {
       headers: { 'Content-Type': 'application/json' },
