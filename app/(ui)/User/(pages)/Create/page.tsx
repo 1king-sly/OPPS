@@ -202,6 +202,7 @@ export default  function Page() {
           value={formData.ans1}
           onChange={handleChange}
           disabled={disabled}
+          attach={true}
 
 
 
@@ -228,6 +229,8 @@ export default  function Page() {
           value={formData.ans3}
           onChange={handleChange}
           disabled={disabled}
+          attach={true}
+
 
           
         />

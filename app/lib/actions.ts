@@ -148,15 +148,18 @@ export const addDraft = async (formData: any) => {
       revalidatePath('/User/Dashboard');
       revalidatePath('/User/Drafts');
 
+      if(newDraft){
+        redirect('/User/Drafts')
+
+      }
+
       return newDraft
   
     }
   } catch (error) {
     console.error(error, 'Failed to draft project');
     
-  } finally{
-    redirect('/User/Drafts')
-  }
+  } 
 };
 
 
