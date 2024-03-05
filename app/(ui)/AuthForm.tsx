@@ -109,9 +109,9 @@ export default function AuthForm() {
 
 
 
-        if (callback?.error) {
+        if (callback?.status === 401) {
           toast.dismiss();
-          toast.error('Something went wrong');
+          toast.error('Unauthorized');
         } else if (callback?.ok && !callback?.error) {
           toast.dismiss();
           toast.success('Logged In');

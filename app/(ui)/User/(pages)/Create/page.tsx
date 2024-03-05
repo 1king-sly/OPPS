@@ -41,6 +41,7 @@ export default  function Page() {
 
       if(formData.title === ''|| formData.title===null || formData.schoolFromFormData === ''|| formData.schoolFromFormData===null || formData.ans1 === ''|| formData.ans1===null || formData.ans2 === ''|| formData.ans2===null || formData.ans3 === ''|| formData.ans3===null || formData.ans4 === ''|| formData.ans4===null ){
         toast.error('Please fill all the fields')
+        toggleLoading();
         throw new Error('Missing fields')
       }
           try{
@@ -106,12 +107,12 @@ export default  function Page() {
       if (document.visibilityState === 'hidden') {
 
        
-        addDraft(formData);
+        // addDraft(formData);
       }
     };
 
     const idleTimer = setTimeout(() => {
-      addDraft(formData);
+      // addDraft(formData);
     }, 60000);
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -121,7 +122,7 @@ export default  function Page() {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [formData]);
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLSelectElement| HTMLInputElement>) => {
     if (!event) {
       return;
     }
@@ -203,6 +204,7 @@ export default  function Page() {
           onChange={handleChange}
           disabled={disabled}
           attach={true}
+          identifier='ans1'
 
 
 
@@ -230,6 +232,7 @@ export default  function Page() {
           onChange={handleChange}
           disabled={disabled}
           attach={true}
+          identifier='ans3'
 
 
           

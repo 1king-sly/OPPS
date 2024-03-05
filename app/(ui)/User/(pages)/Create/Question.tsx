@@ -10,7 +10,8 @@ interface QuestionProps {
   value?:string,
   onChange?:((event:any)=>void);
   disabled?:boolean;
-  attach?:boolean
+  attach?:boolean,
+  identifier?: string;
   
 }
 
@@ -24,8 +25,17 @@ export default function Question({
   onChange,
   name,
   disabled,
-  attach
+  attach,
+  identifier
 }: QuestionProps) {
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Here you can associate the file with the identifier
+      console.log('File uploaded for question:', identifier, file);
+    }
+  };
  
 
   return (
@@ -56,7 +66,7 @@ export default function Question({
         {attach?(
           <>
           <div className=' absolute bottom-0 right-0 '>
-              <input type="file" accept='.pdf' className=' text-xs '  title='file_upload'/>
+              <input type="file" accept='.pdf' className=' text-xs '  title='file_upload' onChange={handleFileUpload}/>
           </div>
           
           </>

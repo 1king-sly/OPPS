@@ -102,3 +102,38 @@ model Draft {
   user       User            @relation(fields: [userId], references: [id])
 
 }
+
+// Potential databas model change
+
+// model Project {
+//   projectId       Int             @id @default(autoincrement())
+//   title           String
+//   createdAt       DateTime        @default(now())
+//   ans1            Answer
+//   ans2            Answer
+//   ans3            Answer
+//   ans4            Answer
+//   school          School
+//   status          ProjectStatus   @default(PENDING)
+//   userId          Int
+//   user            User            @relation(fields: [userId], references: [id])
+//   updatedBy       String?
+//   moderatorName   String?
+//   comment         String?
+//   moderatorComment String?
+//   referredTo      Reference[]
+// }
+
+// model Answer {
+//   id            Int       @id @default(autoincrement())
+//   content       String
+//   attachments   Attachment[]  // New field for attachments
+// }
+
+// model Attachment {
+//   id            Int        @id @default(autoincrement())
+//   answerId      Int
+//   answer        Answer     @relation(fields: [answerId], references: [id])
+//   fileUrl       String     // This could be the URL where the file is stored
+//   createdAt     DateTime   @default(now())
+// }
