@@ -2,6 +2,8 @@ import Image from 'next/image'
 import students from '@/public/images/student1.png'
 import logo from '@/public/images/Mmust logo.png'
 import AuthForm from '@/app/(ui)/AuthForm'
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 
 
 export default function Home() {

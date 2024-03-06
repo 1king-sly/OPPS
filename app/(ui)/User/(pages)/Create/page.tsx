@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { addProject,addDraft } from '@/app/lib/actions';
 import clsx from 'clsx'
+import PdfViewer from '@/app/(ui)/Component/PdfViewer';
 
 export default  function Page() {
   const [loading, setisLoading] = useState(false);
@@ -304,6 +305,8 @@ export default  function Page() {
           </form>
         </div>
       </div>
+
+     
     </>
   );
 }
