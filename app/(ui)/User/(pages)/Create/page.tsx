@@ -138,33 +138,34 @@ export default  function Page() {
     const file = event.target.files?.[0];
     if (file) {
       try {
+        const preset = process.env.CLOUDINARY_UPLOAD_PRESET
+        const name = process.env.CLOUDINARY_UPLOAD_NAME
         const formData = new FormData();
         formData.append('file', file);
-        // formData.append('upload_preset', 'your_cloudinary_upload_preset');
+        formData.append('upload_preset', 'psy5tipf');
 
-        // const response = await fetch('https://api.cloudinary.com/v1_1/your_cloud_name/upload', {
-        //   method: 'POST',
-        //   body: formData
-        // });
+        const response = await fetch('https://api.cloudinary.com/v1_1/dwav3nker/upload', {
+          method: 'POST',
+          body: formData
+        });
 
-        // if (!response.ok) {
-        //   throw new Error('Failed to upload file to Cloudinary');
-        // }
+        if (!response.ok) {
+          throw new Error('Failed to upload file to Cloudinary');
+        }
 
-        // const data = await response.json();
-        // const fileUrl = data.secure_url;
+        const data = await response.json();
+        const fileUrl = data.secure_url;
 
         setFormData((prevFormData) => ({
           ...prevFormData,
           fileUrls: {
             ...prevFormData.fileUrls,
-            [identifier]: file.name
+            [identifier]: fileUrl
           }
         }));
 
       } catch (error) {
         console.error('Error uploading file:', error);
-        // Handle error
       }
     }
   };
