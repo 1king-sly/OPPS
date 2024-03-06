@@ -14,7 +14,7 @@ const nodemailer = require('nodemailer');
 
 export const addProject = async (formData: any) => {
 
-  console.log(formData)
+  console.log(formData.fileUrls.ans1)
 
   if(formData){
     throw new Error('Intentional')
@@ -25,14 +25,37 @@ export const addProject = async (formData: any) => {
     const schoolFromFormData = formData.schoolFromFormData
     const title = formData.title;
     const ans1 = formData.ans1;
+    const ans1File = formData.fileUrls.ans1
     const ans2 = formData.ans2;
+    const ans2File = formData.fileUrls.ans2
     const ans3 = formData.ans3;
+    const ans3File = formData.fileUrls.ans3
     const ans4 = formData.ans4;
+    const ans4File = formData.fileUrls.ans4
+    let file1 =''
+    let file2 =''
+    let file3 =''
+    let file4 =''
+
 
     
     if (!title || !ans1 || !ans2 || !ans3 || !ans4) {
       throw new Error('Required field is missing'); 
     }
+
+    if(ans1File !== null && ans1File !==''){
+      file1 = ans1File
+    }
+    if(ans2File !== null && ans2File !==''){
+      file2 = ans2File
+    }
+    if(ans3File !== null && ans3File !==''){
+      file3 = ans3File 
+    }
+    if(ans4File !== null && ans4File !==''){
+      file4 = ans4File
+    }
+    
 
     const schoolEnum = School[schoolFromFormData as keyof typeof School];
 

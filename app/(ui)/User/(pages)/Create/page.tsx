@@ -20,6 +20,7 @@ export default  function Page() {
     ans3: '',
     ans4:'',
     schoolFromFormData:'',
+    fileUrls: {}
   });
   const toggleLoading = () => {
     setisLoading((prevLoading) => !prevLoading);
@@ -132,6 +133,41 @@ export default  function Page() {
       [name]: value,
     });
   };
+
+  const handleFileUpload = (identifier: string) => async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        // formData.append('upload_preset', 'your_cloudinary_upload_preset');
+
+        // const response = await fetch('https://api.cloudinary.com/v1_1/your_cloud_name/upload', {
+        //   method: 'POST',
+        //   body: formData
+        // });
+
+        // if (!response.ok) {
+        //   throw new Error('Failed to upload file to Cloudinary');
+        // }
+
+        // const data = await response.json();
+        // const fileUrl = data.secure_url;
+
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          fileUrls: {
+            ...prevFormData.fileUrls,
+            [identifier]: file.name
+          }
+        }));
+
+      } catch (error) {
+        console.error('Error uploading file:', error);
+        // Handle error
+      }
+    }
+  };
   
 
   return (
@@ -205,6 +241,7 @@ export default  function Page() {
           disabled={disabled}
           attach={true}
           identifier='ans1'
+          handleFileUpload={handleFileUpload('ans1')}
 
 
 
@@ -233,6 +270,7 @@ export default  function Page() {
           disabled={disabled}
           attach={true}
           identifier='ans3'
+          handleFileUpload={handleFileUpload('ans3')}
 
 
           

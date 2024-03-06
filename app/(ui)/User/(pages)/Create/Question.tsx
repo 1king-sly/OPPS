@@ -12,6 +12,7 @@ interface QuestionProps {
   disabled?:boolean;
   attach?:boolean,
   identifier?: string;
+  handleFileUpload?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   
 }
 
@@ -26,16 +27,11 @@ export default function Question({
   name,
   disabled,
   attach,
-  identifier
+  identifier,
+  handleFileUpload,
 }: QuestionProps) {
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      // Here you can associate the file with the identifier
-      console.log('File uploaded for question:', identifier, file);
-    }
-  };
+  
  
 
   return (
