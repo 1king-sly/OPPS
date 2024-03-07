@@ -14,7 +14,6 @@ const nodemailer = require('nodemailer');
 
 export const addProject = async (formData: any) => {
 
-  console.log('New project Input: ',formData)
 
   try {
     const schoolFromFormData = formData.schoolFromFormData
@@ -40,21 +39,17 @@ export const addProject = async (formData: any) => {
 
     if(ans1File !== null && ans1File !==''){
       file1 = ans1File
-      console.log('Ans 1 file',file1)
     }
     if(ans2File !== null && ans2File !==''){
       file2 = ans2File
-      console.log('Ans 2 file',file2)
 
     }
     if(ans3File !== null && ans3File !==''){
       file3 = ans3File 
-      console.log('Ans 3 file',file3)
 
     }
     if(ans4File !== null && ans4File !==''){
       file4 = ans4File
-      console.log('Ans 4 file',file4)
 
     }
 
@@ -123,21 +118,17 @@ export const convertDraftToProject = async (formData: any) => {
 
     if(ans1File !== null && ans1File !==''){
       file1 = ans1File
-      console.log('Ans 1 file',file1)
     }
     if(ans2File !== null && ans2File !==''){
       file2 = ans2File
-      console.log('Ans 2 file',file2)
 
     }
     if(ans3File !== null && ans3File !==''){
       file3 = ans3File 
-      console.log('Ans 3 file',file3)
 
     }
     if(ans4File !== null && ans4File !==''){
       file4 = ans4File
-      console.log('Ans 4 file',file4)
 
     }
 
@@ -187,6 +178,7 @@ export const convertDraftToProject = async (formData: any) => {
 
 export const addDraft = async (formData: any) => {
 
+
   try {
    
     const title = formData.title;
@@ -211,21 +203,17 @@ export const addDraft = async (formData: any) => {
 
     if(ans1File !== null && ans1File !==''){
       file1 = ans1File
-      console.log('Ans 1 file',file1)
     }
     if(ans2File !== null && ans2File !==''){
       file2 = ans2File
-      console.log('Ans 2 file',file2)
 
     }
     if(ans3File !== null && ans3File !==''){
       file3 = ans3File 
-      console.log('Ans 3 file',file3)
 
     }
     if(ans4File !== null && ans4File !==''){
       file4 = ans4File
-      console.log('Ans 4 file',file4)
 
     }
 
@@ -257,6 +245,7 @@ export const addDraft = async (formData: any) => {
         redirect('/User/Drafts')
 
       }
+      console.log(newDraft)
 
       return newDraft
   
@@ -747,7 +736,6 @@ export const fetchSingleDraft = async (projectId:string) => {
         },
       })
 
-      console.log('Single Project: ',project)
 
       return project
    
