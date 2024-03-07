@@ -2,7 +2,7 @@
 import {  ProjectStatus, School, UserType } from "@prisma/client";
 import prisma from '@/app/lib/prismadb';
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import bcrypt from 'bcrypt'
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/utils/authUptions";
@@ -238,9 +238,7 @@ export const addDraft = async (formData: any) => {
         },
       });
       revalidatePath('/User/Dashboard');
-      revalidatePath('/User/Drafts');
-
-      
+      revalidatePath('/User/Drafts');     
 
       return newDraft
   

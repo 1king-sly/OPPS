@@ -7,7 +7,6 @@ import NotFound from './not-found';
 import { authOptions } from '@/utils/authUptions';
 import UpdateProject from '../../../Component/UpdateProject';
 import View from '../../../Component/View';
-
 export default async function Page({ params }: { params: { id: string } }) {
 
 
