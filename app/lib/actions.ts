@@ -13,18 +13,48 @@ const nodemailer = require('nodemailer');
 
 
 export const addProject = async (formData: any) => {
+
+
   try {
     const schoolFromFormData = formData.schoolFromFormData
     const title = formData.title;
     const ans1 = formData.ans1;
+    const ans1File = formData.fileUrls.ans1
     const ans2 = formData.ans2;
+    const ans2File = formData.fileUrls.ans2
     const ans3 = formData.ans3;
+    const ans3File = formData.fileUrls.ans3
     const ans4 = formData.ans4;
+    const ans4File = formData.fileUrls.ans4
+    let file1 =''
+    let file2 =''
+    let file3 =''
+    let file4 =''
+
 
     
     if (!title || !ans1 || !ans2 || !ans3 || !ans4) {
       throw new Error('Required field is missing'); 
     }
+
+    if(ans1File !== null && ans1File !==''){
+      file1 = ans1File
+    }
+    if(ans2File !== null && ans2File !==''){
+      file2 = ans2File
+
+    }
+    if(ans3File !== null && ans3File !==''){
+      file3 = ans3File 
+
+    }
+    if(ans4File !== null && ans4File !==''){
+      file4 = ans4File
+
+    }
+
+    
+    
 
     const schoolEnum = School[schoolFromFormData as keyof typeof School];
 
@@ -36,14 +66,20 @@ export const addProject = async (formData: any) => {
         data: {
           title,
           ans1,
+          file1,
           ans2,
+          file2,
           ans3,
+          file3,
           ans4,
+          file4,
           userId,
           school: schoolEnum,
         },
       });
       revalidatePath('/User/Dashboard');
+
+      console.log('Created Project: ',newProject)
 
       return newProject
   
@@ -58,18 +94,43 @@ export const addProject = async (formData: any) => {
 };
 
 export const convertDraftToProject = async (formData: any) => {
+
   try {
     const id =parseInt(formData.id)
     const schoolFromFormData = formData.schoolFromFormData
     const title = formData.title;
     const ans1 = formData.ans1;
+    const ans1File = formData.file1
     const ans2 = formData.ans2;
+    const ans2File = formData.file2
     const ans3 = formData.ans3;
+    const ans3File = formData.file3
     const ans4 = formData.ans4;
+    const ans4File = formData.file4
+    let file1 =''
+    let file2 =''
+    let file3 =''
+    let file4 =''
 
     
     if (!title || !ans1 || !ans2 || !ans3 || !ans4 || !id) {
       throw new Error('Required field is missing'); 
+    }
+
+    if(ans1File !== null && ans1File !==''){
+      file1 = ans1File
+    }
+    if(ans2File !== null && ans2File !==''){
+      file2 = ans2File
+
+    }
+    if(ans3File !== null && ans3File !==''){
+      file3 = ans3File 
+
+    }
+    if(ans4File !== null && ans4File !==''){
+      file4 = ans4File
+
     }
 
     const schoolEnum = School[schoolFromFormData as keyof typeof School];
@@ -83,9 +144,13 @@ export const convertDraftToProject = async (formData: any) => {
         data: {
           title,
           ans1,
+          file1,
           ans2,
+          file2,
           ans3,
+          file3,
           ans4,
+          file4,
           userId,
           school: schoolEnum,
         },
@@ -99,7 +164,6 @@ export const convertDraftToProject = async (formData: any) => {
         })
       }
       revalidatePath('/User/Dashboard');
-
       return newProject
   
     }
@@ -108,7 +172,7 @@ export const convertDraftToProject = async (formData: any) => {
     
   } finally {
     
-    revalidatePath('/User/Dashboard');
+    revalidatePath('/User/Draft');
   }
 };
 
@@ -119,13 +183,37 @@ export const addDraft = async (formData: any) => {
     const title = formData.title;
     const school = formData.schoolFromFormData;
     const ans1 = formData.ans1;
+    const ans1File = formData.fileUrls.ans1
     const ans2 = formData.ans2;
+    const ans2File = formData.fileUrls.ans2
     const ans3 = formData.ans3;
+    const ans3File = formData.fileUrls.ans3
     const ans4 = formData.ans4;
+    const ans4File = formData.fileUrls.ans4
+    let file1 =''
+    let file2 =''
+    let file3 =''
+    let file4 =''
 
     
     if (!title || !school) {
       throw new Error('Required field is missing'); 
+    }
+
+    if(ans1File !== null && ans1File !==''){
+      file1 = ans1File
+    }
+    if(ans2File !== null && ans2File !==''){
+      file2 = ans2File
+
+    }
+    if(ans3File !== null && ans3File !==''){
+      file3 = ans3File 
+
+    }
+    if(ans4File !== null && ans4File !==''){
+      file4 = ans4File
+
     }
 
     const schoolEnum = School[school as keyof typeof School];
@@ -138,9 +226,13 @@ export const addDraft = async (formData: any) => {
         data: {
           title,
           ans1,
+          file1,
           ans2,
+          file2,
           ans3,
+          file3,
           ans4,
+          file4,
           userId,
           school: schoolEnum,
         },
@@ -148,15 +240,15 @@ export const addDraft = async (formData: any) => {
       revalidatePath('/User/Dashboard');
       revalidatePath('/User/Drafts');
 
+      
+
       return newDraft
   
     }
   } catch (error) {
     console.error(error, 'Failed to draft project');
     
-  } finally{
-    redirect('/User/Drafts')
-  }
+  } 
 };
 
 
@@ -584,9 +676,13 @@ export const fetchSingleProject = async (projectId:string) => {
           projectId: true,
           title:true,
           ans1:true,
+          file1:true,
           ans2:true,
+          file2:true,
           ans3:true,
+          file3:true,
           ans4:true,
+          file4:true,
           status:true,
           school:true,
           userId:true,
@@ -623,13 +719,18 @@ export const fetchSingleDraft = async (projectId:string) => {
           projectId: true,
           title:true,
           ans1:true,
+          file1:true,
           ans2:true,
+          file2:true,
           ans3:true,
+          file3:true,
           ans4:true,
+          file4:true,
           school:true,
           userId:true,
         },
       })
+
 
       return project
    

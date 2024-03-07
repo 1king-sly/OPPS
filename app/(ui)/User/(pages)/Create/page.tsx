@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { addProject,addDraft } from '@/app/lib/actions';
 import clsx from 'clsx'
+import PdfViewer from '@/app/(ui)/Component/PdfViewer';
 
 export default  function Page() {
   const [loading, setisLoading] = useState(false);
@@ -20,6 +21,7 @@ export default  function Page() {
     ans3: '',
     ans4:'',
     schoolFromFormData:'',
+    fileUrls: {}
   });
   const toggleLoading = () => {
     setisLoading((prevLoading) => !prevLoading);
@@ -41,6 +43,7 @@ export default  function Page() {
 
       if(formData.title === ''|| formData.title===null || formData.schoolFromFormData === ''|| formData.schoolFromFormData===null || formData.ans1 === ''|| formData.ans1===null || formData.ans2 === ''|| formData.ans2===null || formData.ans3 === ''|| formData.ans3===null || formData.ans4 === ''|| formData.ans4===null ){
         toast.error('Please fill all the fields')
+        toggleLoading();
         throw new Error('Missing fields')
       }
           try{
@@ -106,12 +109,12 @@ export default  function Page() {
       if (document.visibilityState === 'hidden') {
 
        
-        addDraft(formData);
+        // addDraft(formData);
       }
     };
 
     const idleTimer = setTimeout(() => {
-      addDraft(formData);
+      // addDraft(formData);
     }, 60000);
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -121,7 +124,7 @@ export default  function Page() {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [formData]);
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLSelectElement| HTMLInputElement>) => {
     if (!event) {
       return;
     }
@@ -130,6 +133,40 @@ export default  function Page() {
       ...formData,
       [name]: value,
     });
+  };
+
+  const handleFileUpload = (identifier: string) => async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'psy5tipf');
+
+        const response = await fetch('https://api.cloudinary.com/v1_1/dwav3nker/upload', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to upload file to Cloudinary');
+        }
+
+        const data = await response.json();
+        const fileUrl = data.secure_url;
+
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          fileUrls: {
+            ...prevFormData.fileUrls,
+            [identifier]: fileUrl
+          }
+        }));
+
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+    }
   };
   
 
@@ -202,6 +239,9 @@ export default  function Page() {
           value={formData.ans1}
           onChange={handleChange}
           disabled={disabled}
+          attach={true}
+          identifier='ans1'
+          handleFileUpload={handleFileUpload('ans1')}
 
 
 
@@ -228,6 +268,10 @@ export default  function Page() {
           value={formData.ans3}
           onChange={handleChange}
           disabled={disabled}
+          attach={true}
+          identifier='ans3'
+          handleFileUpload={handleFileUpload('ans3')}
+
 
           
         />
@@ -259,6 +303,8 @@ export default  function Page() {
           </form>
         </div>
       </div>
+
+     
     </>
   );
 }

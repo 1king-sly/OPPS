@@ -20,6 +20,10 @@ export default function Draft({project}:{project:any}) {
         ans4:project.ans4 || '',
         id:project.projectId
         || '',
+        file1:project.file1,
+        file2:project.file2,
+        file3:project.file3,
+        file4:project.file4,
       });
 
       const router = useRouter()
@@ -154,7 +158,7 @@ export default function Draft({project}:{project:any}) {
                   value={editedAnswers.ans1}
                   maxLength={3000}
                   onChange={(e) => handleAnswerChange(e, 'ans1')}
-                  className="w-full min-h-60 p-2 resize-none outline-sky-200 mt-3 max-h-fit "   placeholder='Type here'
+                  className="w-full min-h-60 p-2 resize-none outline-sky-200 mt-3 max-h-fit "placeholder='Type here'
 
                 />
               </div>
