@@ -14,15 +14,6 @@ const nodemailer = require('nodemailer');
 
 export const addProject = async (formData: any) => {
 
-  console.log(formData)
-
-  if(formData){
-    throw new Error('Intentional')
-
-  }
-
- 
-
   try {
     const schoolFromFormData = formData.schoolFromFormData
     const title = formData.title;
