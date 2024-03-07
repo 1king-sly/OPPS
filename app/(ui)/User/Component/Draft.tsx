@@ -20,6 +20,10 @@ export default function Draft({project}:{project:any}) {
         ans4:project.ans4 || '',
         id:project.projectId
         || '',
+        file1:project.file1,
+        file2:project.file2,
+        file3:project.file3,
+        file4:project.file4,
       });
 
       const router = useRouter()

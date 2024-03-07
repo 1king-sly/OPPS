@@ -94,18 +94,19 @@ export const addProject = async (formData: any) => {
 };
 
 export const convertDraftToProject = async (formData: any) => {
+
   try {
     const id =parseInt(formData.id)
     const schoolFromFormData = formData.schoolFromFormData
     const title = formData.title;
     const ans1 = formData.ans1;
-    const ans1File = formData.fileUrls.ans1
+    const ans1File = formData.file1
     const ans2 = formData.ans2;
-    const ans2File = formData.fileUrls.ans2
+    const ans2File = formData.file2
     const ans3 = formData.ans3;
-    const ans3File = formData.fileUrls.ans3
+    const ans3File = formData.file3
     const ans4 = formData.ans4;
-    const ans4File = formData.fileUrls.ans4
+    const ans4File = formData.file4
     let file1 =''
     let file2 =''
     let file3 =''
@@ -163,7 +164,6 @@ export const convertDraftToProject = async (formData: any) => {
         })
       }
       revalidatePath('/User/Dashboard');
-
       return newProject
   
     }
@@ -177,7 +177,6 @@ export const convertDraftToProject = async (formData: any) => {
 };
 
 export const addDraft = async (formData: any) => {
-
 
   try {
    
@@ -241,11 +240,7 @@ export const addDraft = async (formData: any) => {
       revalidatePath('/User/Dashboard');
       revalidatePath('/User/Drafts');
 
-      if(newDraft){
-        redirect('/User/Drafts')
-
-      }
-      console.log(newDraft)
+      
 
       return newDraft
   

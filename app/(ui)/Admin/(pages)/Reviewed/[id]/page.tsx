@@ -38,8 +38,8 @@ export default async function Page({ params }: { params: { id: string } }) {
               <p className=' text-md'>{project?.ans1} </p>
               {project?.file1 !== null && project?.file1 !== '' ?(
                 <>
-                <div className='absolute bottom-0 left-0'>
-                    <button className='w-fit h-fit p-1 bg-sky-300 rounded-md'>View File</button>
+                <div className='absolute bottom-0 right-0 mt-2'>
+                    <button className='w-fit h-fit p-1 bg-sky-300 rounded-md text-xs'>View File</button>
                 </div>
                 </>
               ):null}
@@ -54,8 +54,8 @@ export default async function Page({ params }: { params: { id: string } }) {
               <p className=' text-md  '>{project?.ans2} </p>
               {project?.file2 !== null && project?.file2 !== '' ?(
                 <>
-                <div className='absolute bottom-0 left-0'>
-                    <button className='w-fit h-fit p-1 bg-sky-300 rounded-md'>View File</button>
+                <div className='absolute bottom-0 right-0 mt-2'>
+                    <button className='w-fit h-fit p-1 bg-sky-300 rounded-md text-xs'>View File</button>
                 </div>
                 </>
               ):null}
@@ -70,8 +70,8 @@ export default async function Page({ params }: { params: { id: string } }) {
               <p className=' text-md  '>{project?.ans3} </p>
               {project?.file3 !== null && project?.file3 !== '' ?(
                 <>
-                <div className='absolute bottom-0 left-0'>
-                    <button className='w-fit h-fit p-1 bg-sky-300 rounded-md'>View File</button>
+                <div className='absolute bottom-0 right-0 mt-2'>
+                    <button className='w-fit h-fit p-1 bg-sky-300 rounded-md text-xs'>View File</button>
                 </div>
                 </>
               ):null}
@@ -85,8 +85,8 @@ export default async function Page({ params }: { params: { id: string } }) {
               <p className=' text-md  '>{project?.ans4} </p>
               {project?.file4 !== null && project?.file4 !== '' ?(
                 <>
-                <div className='absolute bottom-0 left-0'>
-                    <button className='w-fit h-fit p-1 bg-sky-300 rounded-md'>View File</button>
+                <div className='absolute bottom-0 right-0 mt-2'>
+                    <button className='w-fit h-fit p-1 bg-sky-300 rounded-md text-xs'>View File</button>
                 </div>
                 </>
               ):null}
