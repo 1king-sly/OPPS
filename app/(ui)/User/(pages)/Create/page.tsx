@@ -139,8 +139,6 @@ export default  function Page() {
     const file = event.target.files?.[0];
     if (file) {
       try {
-        const preset = process.env.CLOUDINARY_UPLOAD_PRESET
-        const name = process.env.CLOUDINARY_UPLOAD_NAME
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', 'psy5tipf');
