@@ -1,5 +1,5 @@
 'use server'
-import React from 'react';
+import React, { Suspense } from 'react';
 import { getServerSession } from 'next-auth';
 import { deleteSingleProject, fetchUser, fetchUserProjects } from '@/app/lib/actions';
 import Link from 'next/link';
@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation';
 import Search from '../../Component/Search';
 import { CheckCircleIcon, ClockIcon, ExclamationTriangleIcon,TrashIcon,EyeIcon } from '@heroicons/react/24/outline';
 import { authOptions } from '@/utils/authUptions';
+import Loading from '@/app/loading';
 
 
 
@@ -19,7 +20,8 @@ export default async function Tables({searchParams}:{searchParams:string}) {
 
   return (
     <>
- <div className=' p-10  pb-40 max-[425px]:p-2 '>
+  <Suspense fallback={<Loading/>} >
+      <div className=' p-10  pb-40 max-[425px]:p-2 '>
 
  <Search placeholder="Search for a project ..."/>
  <table className=' w-full'>
@@ -113,6 +115,9 @@ export default async function Tables({searchParams}:{searchParams:string}) {
         </tbody>
       </table>
     </div>
+  </Suspense>
+
+ 
       
     </>
   );
