@@ -4,6 +4,7 @@ import clsx from 'clsx'
 import toast from 'react-hot-toast'
 import {convertDraftToProject,updateDraft} from '@/app/lib/actions'
 import { useRouter } from 'next/navigation'
+import PdfViewer from '../../Component/PdfViewer'
 
 export default function Draft({project}:{project:any}) {
 
@@ -24,6 +25,8 @@ export default function Draft({project}:{project:any}) {
         file2:project.file2,
         file3:project.file3,
         file4:project.file4,
+        fileUrls: {}
+
       });
 
       const router = useRouter()
@@ -75,7 +78,7 @@ export default function Draft({project}:{project:any}) {
               if(create){
                 toast.dismiss();
                 toast.success('Drafted successfully')
-                router.push('/User/Dashboard')
+                // router.push('/User/Dashboard')
              } else{
               toast.dismiss();
                 toast.error('Something went wrong')
@@ -103,12 +106,12 @@ export default function Draft({project}:{project:any}) {
         const handleVisibilityChange = () => {
           if (document.visibilityState === 'hidden') {
            
-            updateDraft(editedAnswers);
+            // updateDraft(editedAnswers);
           }
         };
     
         const idleTimer = setTimeout(() => {
-          updateDraft(editedAnswers);
+          // updateDraft(editedAnswers);
         }, 60000);
     
         document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -129,6 +132,54 @@ export default function Draft({project}:{project:any}) {
           [fieldName]: value,
         }));
       };
+
+      const handleFileUpload = (identifier: string) => async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+          try {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', 'psy5tipf');
+    
+            const response = await fetch('https://api.cloudinary.com/v1_1/dwav3nker/upload', {
+              method: 'POST',
+              body: formData
+            });
+    
+            if (!response.ok) {
+              throw new Error('Failed to upload file to Cloudinary');
+            }
+    
+            const data = await response.json();
+            const fileUrl = data.secure_url;
+    
+            setEditedAnswers((prevAnswers) => ({
+              ...prevAnswers,
+              fileUrls: {
+                ...prevAnswers.fileUrls,
+                [identifier]: fileUrl
+              }
+            }));
+    
+          } catch (error) {
+            console.error('Error uploading file:', error);
+          }
+        }
+      };
+
+      const [visiblePdfViewer, setVisiblePdfViewer] = useState<number | null>(null);
+
+      const togglePdfViewer = (index: number) => {
+        if (visiblePdfViewer === index) {
+          setVisiblePdfViewer(null);
+        } else {
+          setVisiblePdfViewer(index);
+        }
+      };
+  
+      const getButtonText = (index: number) => {
+          return visiblePdfViewer === index ? 'Close File' : 'View File';
+        };
     
   return (
    <>
@@ -151,16 +202,34 @@ export default function Draft({project}:{project:any}) {
                   value)(max:1000)
                 </div>
               </div>
-              <div className="mt-2">
+              <div className="mt-2 relative pb-10">
                 <textarea
                 autoFocus
                 title='Question 1'
                   value={editedAnswers.ans1}
                   maxLength={3000}
                   onChange={(e) => handleAnswerChange(e, 'ans1')}
-                  className="w-full min-h-60 p-2 resize-none outline-sky-200 mt-3 max-h-fit "placeholder='Type here'
+                  className="w-full min-h-60 p-2 resize-none outline-sky-200 mt-3 max-h-fit  "placeholder='Type here'
 
                 />
+                <div className='absolute bottom-0 flex justify-between'>
+                <input type="file" accept='.pdf' className=' text-xs '  title='file_upload' onChange={handleFileUpload('ans1')}/>
+                </div>
+
+                    {editedAnswers.file1 !== null && editedAnswers.file1 !== ''?(
+                         <>
+                         <div className='absolute bottom-0 right-0 mt-2'>
+                             <button className='w-fit h-fit p-1 bg-sky-300 rounded-md text-xs '
+                             onClick={() => togglePdfViewer(1)}>{getButtonText(1)}</button>
+                         </div>
+                         {visiblePdfViewer === 1 && (
+                         <div className='pdf-viewer'> 
+                                 <PdfViewer pdfUrl={project.file1}/>
+                             </div>
+                   )}
+                         </>
+                    ):null}
+
               </div>
             </div>
             <div>
@@ -187,7 +256,7 @@ export default function Draft({project}:{project:any}) {
                   achieving the project’s objectives.(max:1000)
                 </div>
               </div>
-              <div className="mt-2 ">
+              <div className="mt-2 relative pb-10 ">
                 <textarea
                   title='Question 3'
                   autoFocus
@@ -196,6 +265,23 @@ export default function Draft({project}:{project:any}) {
                   onChange={(e) => handleAnswerChange(e, 'ans3')}
                   className="w-full min-h-60 p-2 resize-none outline-sky-200 mt-3 max-h-fit" placeholder='Type here'
                 />
+                     <div className='absolute bottom-0 flex justify-between'>
+                <input type="file" accept='.pdf' className=' text-xs '  title='file_upload' onChange={handleFileUpload('ans3')}/>
+                </div>
+
+                    {editedAnswers.file3 !== null && editedAnswers.file3 !== ''?(
+                         <>
+                         <div className='absolute bottom-0 right-0 mt-2'>
+                             <button className='w-fit h-fit p-1 bg-sky-300 rounded-md text-xs '
+                             onClick={() => togglePdfViewer(3)}>{getButtonText(3)}</button>
+                         </div>
+                         {visiblePdfViewer === 3 && (
+                         <div className='pdf-viewer'> 
+                                 <PdfViewer pdfUrl={project.file3}/>
+                             </div>
+                   )}
+                         </>
+                    ):null}
               </div>
             </div>
             <div>

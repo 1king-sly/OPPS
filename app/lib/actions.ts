@@ -240,6 +240,8 @@ export const addDraft = async (formData: any) => {
       revalidatePath('/User/Dashboard');
       revalidatePath('/User/Drafts');     
 
+     
+
       return newDraft
   
     }
@@ -918,6 +920,7 @@ export const updateProject = async (formData: any) => {
  
 };
 export const updateDraft = async (formData: any) => {
+
     const projectId = formData.id;
     const title = formData.title
     const ans1 = formData.ans1
@@ -925,6 +928,28 @@ export const updateDraft = async (formData: any) => {
     const ans3 = formData.ans3
     const ans4 = formData.ans4
     const school = formData.schoolFromFormData
+    const file1 = formData.fileUrls.ans1
+    const file2 = formData.fileUrls.ans2
+    const file3 = formData.fileUrls.ans3
+    const file4 = formData.fileUrls.ans4
+    let ansFile1 = ''
+    let ansFile2 = ''
+    let ansFile3 = ''
+    let ansFile4 = ''
+
+    if(file1 !== null && file1 !== ''){
+      ansFile1 = file1
+    }
+    if(file2 !== null && file2 !== ''){
+      ansFile2 = file2
+    }
+    if(file3 !== null && file3 !== ''){
+      ansFile3 = file3
+    }
+    if(file4 !== null && file4 !== ''){
+      ansFile4 = file4
+    }
+    
 
    
 
@@ -944,17 +969,20 @@ export const updateDraft = async (formData: any) => {
           ans2:ans2,
           ans3:ans3,
           ans4:ans4,
+          file1:ansFile1,
+          file2:ansFile2,
+          file3:ansFile3,
+          file4:ansFile4,
         }
       })
 
-      revalidatePath(`/Admin/Projects/${projectId}`)
-       revalidatePath('/Admin/Dashboard')
-       revalidatePath('/Admin/Projects')
+      revalidatePath(`/User/Drafts/${projectId}`)
+       revalidatePath('/Admin/Drafts')
 
        return project
 
   }catch(error){
-    console.error("Error Updating Project",error)
+    console.error("Error Updating Draft",error)
   }
  
 };
