@@ -8,7 +8,6 @@ import PdfViewer from '../../Component/PdfViewer'
 
 export default function Draft({project}:{project:any}) {
 
-  console.log(project)
 
     const [loading, setisLoading] = useState(false);
     const [disabled, setDisabled] = useState(false);
@@ -106,12 +105,12 @@ export default function Draft({project}:{project:any}) {
         const handleVisibilityChange = () => {
           if (document.visibilityState === 'hidden') {
            
-            // updateDraft(editedAnswers);
+            updateDraft(editedAnswers);
           }
         };
     
         const idleTimer = setTimeout(() => {
-          // updateDraft(editedAnswers);
+          updateDraft(editedAnswers);
         }, 60000);
     
         document.addEventListener('visibilitychange', handleVisibilityChange);

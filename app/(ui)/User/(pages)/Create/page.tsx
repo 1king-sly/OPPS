@@ -100,8 +100,11 @@ export default  function Page() {
     setDisabled(loading);
   }, [loading]);
 
+
+
   useEffect(() => {
-    const handleVisibilityChange = () => {
+    const HandleVisibilityChange = async () => {
+
 
       if(!formData.title || !formData.schoolFromFormData){
         return
@@ -109,20 +112,29 @@ export default  function Page() {
       if (document.visibilityState === 'hidden') {
 
        
-        // addDraft(formData);
+       const draft= await addDraft(formData);
+       if( draft){
+        router.push('/User/Drafts');   
+
+       }
+
       }
     };
 
-    const idleTimer = setTimeout(() => {
-      // addDraft(formData);
-    }, 60000);
+    const idleTimer = setTimeout(async () => {
+      const draft= await addDraft(formData);
+      if( draft){
+       router.push('/User/Drafts');   
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+      }    }, 60000);
+
+    document.addEventListener('visibilitychange', HandleVisibilityChange);
 
     return () => {
       clearTimeout(idleTimer);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener('visibilitychange', HandleVisibilityChange);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLSelectElement| HTMLInputElement>) => {
     if (!event) {

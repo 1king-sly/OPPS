@@ -240,9 +240,10 @@ export const addDraft = async (formData: any) => {
       revalidatePath('/User/Dashboard');
       revalidatePath('/User/Drafts');     
 
-     
-
+     if(newDraft){
       return newDraft
+     }
+
   
     }
   } catch (error) {
@@ -983,7 +984,7 @@ export const updateDraft = async (formData: any) => {
       })
 
       revalidatePath(`/User/Drafts/${projectId}`)
-       revalidatePath('/Admin/Drafts')
+       revalidatePath('/User/Drafts')
 
        return project
 
