@@ -75,9 +75,31 @@ export default function AuthForm() {
 
     toggleLoading();
 
+    if (variant === 'LOGIN'){
+      if(formData.email === ''|| formData.email===null || formData.password === ''|| formData.password===null){
+        toggleLoading();
+        toast.error('Please fill all the fields')
+        throw new Error('Missing fields')
+      }
+    }else{
+      if(formData.firstName === ''|| formData.firstName===null || formData.secondName === ''|| formData.secondName===null || formData.email === ''|| formData.email===null || formData.password === ''|| formData.password===null || formData.registrationNumber === ''|| formData.registrationNumber===null){
+        toggleLoading();
+        toast.error('Please fill all the fields')
+        throw new Error('Missing fields')
+      }
+    }
+
+    
+
     try {
 
+     
+
       if (variant === 'REGISTER') {
+
+        
+
+
         toast.loading("Sending request...")
 
         const preUser = await fetch ('/api/createPreuser',{
