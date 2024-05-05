@@ -10,10 +10,10 @@ export default withAuth({
 
 export const config ={
     matcher:[
-        '/Admin/:path*',
-        '/User/:path*',
-        '/SuperAdmin/:path*',
-        '/Moderator/:path*',
+        // '/Admin/:path*',
+        // '/User/:path*',
+        // '/SuperAdmin/:path*',
+        // '/Moderator/:path*',
     ]
 }
 
