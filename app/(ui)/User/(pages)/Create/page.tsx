@@ -184,10 +184,9 @@ export default  function Page() {
 
   return (
     <>
-      <div className='w-full min-h-screen flex flex-col items-center justify-center pb-40'>
+      <div className='w-full  flex flex-col items-center justify-center pb-40'>
         <div className='flex flex-col  items-center'>
           <Image src={logo} alt='logo' className='lg:h-24 lg:w-24 object-cover h-16 w-16'></Image>
-          <h3 className='text-sky-300 max-[425px]:text-xs'>MMUST ONLINE PROJECT PROPOSAL</h3>
         </div>
 
         <div>
