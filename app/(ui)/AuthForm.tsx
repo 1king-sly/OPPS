@@ -9,6 +9,9 @@ import clsx from 'clsx'
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/utils/authUptions';
 
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+
+
 
 type Variant = 'REGISTER' | 'LOGIN';
 
@@ -16,6 +19,8 @@ export default function AuthForm() {
   const [variant, setVariant] = useState<Variant>('LOGIN');
   const [loading, setisLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); 
+
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -162,6 +167,10 @@ export default function AuthForm() {
     });
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
   return (
     <>
       <div className=' mx-16 bg-white px-4 lg:px-10 py-6 mt-2 gap-2 rounded-md  shadow-lg'>
@@ -214,17 +223,29 @@ export default function AuthForm() {
            value={formData.email}
            onChange={handleChange}
          />
-         <Input
-           required
-           id='Pword'
-           name='password'
-           label='Password'
-           type='password'
-           placeholder='Enter Password'
-           disabled={disabled}
-           value={formData.password}
-           onChange={handleChange}
-         />
+   <div className='relative'>
+           <Input
+             required
+             id='Pword'
+             name='password'
+             label='Password'
+             type={showPassword ? 'text' : 'password'} 
+             placeholder='Enter Password'
+             disabled={disabled}
+             value={formData.password}
+             onChange={handleChange}
+           />
+           <div
+             className='absolute inset-y-0 right-0 flex  pr-1 cursor-pointer   items-center mt-7 '
+             onClick={togglePasswordVisibility} 
+           >
+             {showPassword ? (
+              <EyeSlashIcon className='w-4 max-[425px]:w-3'/>
+             ) : (
+               <EyeIcon className='w-4 max-[425px]:w-3'/>
+             )}
+           </div>
+         </div>
           <div className='mt-4 text-gray-100'>
             <Button
               type='submit'
