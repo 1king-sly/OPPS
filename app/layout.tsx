@@ -30,10 +30,10 @@ export default function RootLayout({
           <ToasterContext/>
 
           <div className='w-screen h-screen flex flex-col overflow-hidden gap-1'>
-      <div className={clsx(`w-full bg-gray-200 shadow-md h-[10vh]`, pathname === '/' && 'hidden')}>
+      <div className={clsx(`w-full bg-gray-200 shadow-md min-h-[10vh]`, pathname === '/' && 'hidden')}>
         <Header></Header>
       </div>
-      <div className='w-full  max-h-full h-full flex flex-row'>
+      <div className={clsx(`w-full h-full flex flex-1 flex-row`,pathname !== '/' && 'max-h-[90vh]')}>
         <div className='h-full overflow-y-auto w-full bg-gray-200 overflow-x-clip'>{children}
         </div>
       </div>
