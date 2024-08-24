@@ -18,6 +18,7 @@ model User {
   email              String    @unique
   registrationNumber String    @unique
   userType           UserType
+  status             UserStatus @default(ACTIVE)
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @default(now())
   school             School?
@@ -81,6 +82,11 @@ enum ProjectStatus {
   REFERRED
 }
 
+enum UserStatus{
+  ACTIVE
+  INACTIVE
+}
+
 model Preuser {
   id                 Int       @id @default(autoincrement())
   firstName          String
@@ -91,6 +97,8 @@ model Preuser {
   userType           UserType
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @default(now())
+  status             UserStatus @default(INACTIVE)
+
 }
 
 model Draft {
