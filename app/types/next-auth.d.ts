@@ -8,6 +8,7 @@ declare module "next-auth" {
     registrationNumber: string,
     email:string,
     id:string,
+    status:string,
   }
   interface Session {
     user:User 
@@ -17,6 +18,8 @@ declare module "next-auth" {
     registrationNumber: string,
     email:string,
     id:string,
+    status:string,
+
 
     
   }
@@ -29,6 +32,8 @@ declare module "next-auth" {
     ans2:string, 
     ans3: string,
     ans4:string,
+    status:string,
+
   }
 }
 

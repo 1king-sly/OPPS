@@ -1,5 +1,5 @@
 'use server';
-import {  ProjectStatus, School, UserType } from "@prisma/client";
+import {  ProjectStatus, School, UserStatus, UserType } from "@prisma/client";
 import prisma from '@/app/lib/prismadb';
 import { revalidatePath } from "next/cache";
 import { redirect, useRouter } from "next/navigation";
@@ -1431,35 +1431,67 @@ export const deleteSingleUser = async (formData: FormData) => {
   const userId = formData.get('userId') as string;
 
   try {
-    const projectsToDelete = await prisma.project.findMany({
-      where: {
-        userId: parseInt(userId),
-      },
-    });
+    // const projectsToDelete = await prisma.project.findMany({
+    //   where: {
+    //     userId: parseInt(userId),
+    //   },
+    // });
 
 
-    await Promise.all(projectsToDelete.map(async (project) => {
-      await prisma.project.delete({
-        where: {
-          projectId: project.projectId,
-        },
-      });
-    }));
+    // await Promise.all(projectsToDelete.map(async (project) => {
+    //   await prisma.project.delete({
+    //     where: {
+    //       projectId: project.projectId,
+    //     },
+    //   });
+    // }));
 
-    const deletedUser = await prisma.user.delete({
+    // const deletedUser = await prisma.user.delete({
+    //   where: {
+    //     id: parseInt(userId),
+    //   },
+    // });
+
+      const deletedUser = await prisma.user.update({
       where: {
         id: parseInt(userId),
       },
+      data:{
+        status:UserStatus.INACTIVE
+      }
     });
 
 
     revalidatePath('/SuperAdmin/Users');
   } catch (error) {
-    console.error("Error Deleting Single User", error);
+    console.error("Error Updating  Single User Status", error);
   }
 };
 
+export const reactivateUser = async (formData: FormData) => {
+  'use server';
 
+
+  const userId = formData.get('userId') as string;
+
+  try {
+  
+
+      const reactivatedUser = await prisma.user.update({
+      where: {
+        id: parseInt(userId),
+      },
+      data:{
+        status:UserStatus.ACTIVE
+      }
+    });
+
+
+    revalidatePath('/SuperAdmin/Users');
+  } catch (error) {
+    console.error("Error Reactivating User", error);
+  }
+};
 export const deleteSingleProject = async (formData: FormData) => {
   'use server';
 
