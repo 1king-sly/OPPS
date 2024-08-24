@@ -1461,7 +1461,6 @@ export const deleteSingleUser = async (formData: FormData) => {
       }
     });
 
-    console.log(deletedUser)
 
     revalidatePath('/SuperAdmin/Users');
   } catch (error) {
@@ -1469,7 +1468,30 @@ export const deleteSingleUser = async (formData: FormData) => {
   }
 };
 
+export const reactivateUser = async (formData: FormData) => {
+  'use server';
 
+
+  const userId = formData.get('userId') as string;
+
+  try {
+  
+
+      const reactivatedUser = await prisma.user.update({
+      where: {
+        id: parseInt(userId),
+      },
+      data:{
+        status:UserStatus.ACTIVE
+      }
+    });
+
+
+    revalidatePath('/SuperAdmin/Users');
+  } catch (error) {
+    console.error("Error Reactivating User", error);
+  }
+};
 export const deleteSingleProject = async (formData: FormData) => {
   'use server';
 
