@@ -321,6 +321,44 @@ export const fetchUserProjects = async (userId:number | undefined, query: string
 
   
 };
+export const fetchUserRecycles = async (userId:number | undefined, query: string) => {
+  'use server';
+
+
+  try{
+    if  (typeof query === 'string' && query.trim() !== '') {
+      const projects = await prisma.recycle.findMany({
+        where: {
+          userId:parseInt(userId as unknown as string),
+          title: {
+            contains: query.trim(),
+          },  
+        },
+        orderBy:{
+          createdAt:'desc'
+        }
+      });
+      return projects;
+    }
+      const projects = await prisma.recycle.findMany(
+       {
+        where: {
+          userId:parseInt(userId as unknown as string),
+        },
+        orderBy:{
+          createdAt:'desc'
+        }
+       }
+      )
+      return projects
+    
+
+  }catch(error){
+    console.error("Error fetching All User Recycled Projects",error)
+  }
+
+  
+};
 export const fetchUserDrafts = async (userId:number | undefined, query: string) => {
   'use server';
 
@@ -708,6 +746,42 @@ export const fetchSingleProject = async (projectId:string) => {
 
   }catch(error){
     console.error("Error fetching Single Project",error)
+  }
+
+  
+};
+export const fetchSingleRecycle = async (projectId:string) => {
+
+
+  try{
+
+      const project = await prisma.recycle.findUnique({
+        where:{
+          projectId:parseInt(projectId)
+        },
+         select: {
+          projectId: true,
+          title:true,
+          ans1:true,
+          file1:true,
+          ans2:true,
+          file2:true,
+          ans3:true,
+          file3:true,
+          ans4:true,
+          file4:true,
+          status:true,
+          school:true,
+          userId:true,
+        },
+      })
+
+
+      return project
+   
+
+  }catch(error){
+    console.error("Error fetching Single Recycled Project",error)
   }
 
   
@@ -1241,7 +1315,7 @@ export const fetchSuperAdminUser = async (userId:string) => {
         registrationNumber:true,
         hashedPassword:true,
         school:true,
-
+        recycle:true,
       },
     });
 
@@ -1431,27 +1505,6 @@ export const deleteSingleUser = async (formData: FormData) => {
   const userId = formData.get('userId') as string;
 
   try {
-    // const projectsToDelete = await prisma.project.findMany({
-    //   where: {
-    //     userId: parseInt(userId),
-    //   },
-    // });
-
-
-    // await Promise.all(projectsToDelete.map(async (project) => {
-    //   await prisma.project.delete({
-    //     where: {
-    //       projectId: project.projectId,
-    //     },
-    //   });
-    // }));
-
-    // const deletedUser = await prisma.user.delete({
-    //   where: {
-    //     id: parseInt(userId),
-    //   },
-    // });
-
       const deletedUser = await prisma.user.update({
       where: {
         id: parseInt(userId),
@@ -1500,15 +1553,103 @@ export const deleteSingleProject = async (formData: FormData) => {
 
   try{
 
-      const deletedProject=await prisma.project.delete({
-        where:{
-          status:ProjectStatus.PENDING,
-          projectId:parseInt(projectId),
-        }
-      })
+    const project = await prisma.project.findUnique({
+      where: {
+        projectId: parseInt(projectId),
+      },
+    });
+
+    if (!project) {
+      throw new Error('Could not fetch project');
+    }
+
+    const recycledProject = await prisma.recycle.create({
+      data: {
+        projectId: project.projectId,
+        title: project.title,
+        createdAt: project.createdAt,
+        ans1: project.ans1,
+        file1: project.file1,
+        ans2: project.ans2,
+        file2: project.file2,
+        ans3: project.ans3,
+        file3: project.file3,
+        ans4: project.ans4,
+        file4: project.file4,
+        school: project.school,
+        userId: project.userId,      },
+    });
+
+    if(recycledProject){
+
+      const deletedProject = await prisma.project.delete({
+        where: {
+          projectId: parseInt(projectId),
+        },
+      });
+    }
+
+  
+
+    revalidatePath('/Users/Projects');
+    revalidatePath('/Users/Dashboard');
+   
+
+  }catch(error){
+    console.error("Error Deleting Single Project",error)
+  }
+
+  
+};
+export const restoreSingleProject = async (formData: FormData) => {
+  'use server';
+
+  const projectId = formData.get('projectId') as string;
+
+  try{
+
+    const recycle = await prisma.recycle.findUnique({
+      where: {
+        projectId: parseInt(projectId),
+      },
+    });
+
+    if (!recycle) {
+      throw new Error('Could not fetch recycled project');
+    }
+
+    const restoredProject = await prisma.project.create({
+      data: {
+        projectId: recycle.projectId,
+        title: recycle.title,
+        createdAt: recycle.createdAt,
+        ans1: recycle.ans1,
+        file1: recycle.file1,
+        ans2: recycle.ans2,
+        file2: recycle.file2,
+        ans3: recycle.ans3,
+        file3: recycle.file3,
+        ans4: recycle.ans4,
+        file4: recycle.file4,
+        school: recycle.school,
+        userId: recycle.userId,   
+         },
+    });
+
+    if(restoredProject){
+
+      const deletedRecycle = await prisma.recycle.delete({
+        where: {
+          projectId: parseInt(projectId),
+        },
+      });
+    }
 
 
-      revalidatePath('/Users/Projects')
+  
+
+    revalidatePath('/Users/Projects');
+    revalidatePath('/Users/Dashboard');
    
 
   }catch(error){

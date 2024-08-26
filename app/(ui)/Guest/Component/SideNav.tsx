@@ -15,7 +15,7 @@ export default function SideNav() {
   ];
 
   return (
-    <div className='flex flex-col py-4 gap-3'>
+    <div className='flex flex-col py-4 gap-3 fixed'>
       {links.map((link) => {
         const LinkIcon = link.icon;
         return (

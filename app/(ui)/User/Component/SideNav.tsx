@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { HomeIcon, FolderIcon, UserIcon, ArrowRightEndOnRectangleIcon, PlusCircleIcon,ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
+import { HomeIcon, FolderIcon, UserIcon, ArrowRightEndOnRectangleIcon, PlusCircleIcon,ClipboardDocumentListIcon,TrashIcon } from '@heroicons/react/24/outline';
 import { signOut } from 'next-auth/react'; 
 import clsx from 'clsx';
 
@@ -10,15 +10,16 @@ export default function SideNav() {
   const pathName = usePathname();
   const links = [
     { name: 'Home', href: '/User/Dashboard', icon: HomeIcon },
+    { name: 'Create Project', href: '/User/Create', icon: PlusCircleIcon },
     { name: 'Projects', href: '/User/Projects', icon: FolderIcon },
     { name: 'Drafts', href: '/User/Drafts', icon: ClipboardDocumentListIcon },
-    { name: 'Create Project', href: '/User/Create', icon: PlusCircleIcon },
+    { name: 'Recycle Bin', href: '/User/recycle', icon: TrashIcon },
     { name: 'Profile', href: '/User/Profile', icon: UserIcon },
     { name: 'Logout', href: '#', icon: ArrowRightEndOnRectangleIcon },
   ];
 
   return (
-    <div className='flex flex-col py-4 gap-3'>
+    <div className='flex flex-col py-4 gap-3 fixed'>
       {links.map((link) => {
         const LinkIcon = link.icon;
 
