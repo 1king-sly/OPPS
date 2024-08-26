@@ -1241,7 +1241,7 @@ export const fetchSuperAdminUser = async (userId:string) => {
         registrationNumber:true,
         hashedPassword:true,
         school:true,
-
+        recycle:true,
       },
     });
 
@@ -1431,27 +1431,6 @@ export const deleteSingleUser = async (formData: FormData) => {
   const userId = formData.get('userId') as string;
 
   try {
-    // const projectsToDelete = await prisma.project.findMany({
-    //   where: {
-    //     userId: parseInt(userId),
-    //   },
-    // });
-
-
-    // await Promise.all(projectsToDelete.map(async (project) => {
-    //   await prisma.project.delete({
-    //     where: {
-    //       projectId: project.projectId,
-    //     },
-    //   });
-    // }));
-
-    // const deletedUser = await prisma.user.delete({
-    //   where: {
-    //     id: parseInt(userId),
-    //   },
-    // });
-
       const deletedUser = await prisma.user.update({
       where: {
         id: parseInt(userId),
@@ -1500,15 +1479,46 @@ export const deleteSingleProject = async (formData: FormData) => {
 
   try{
 
-      const deletedProject=await prisma.project.delete({
-        where:{
-          status:ProjectStatus.PENDING,
-          projectId:parseInt(projectId),
-        }
-      })
+    const project = await prisma.project.findUnique({
+      where: {
+        projectId: parseInt(projectId),
+      },
+    });
 
+    if (!project) {
+      throw new Error('Could not fetch project');
+    }
 
-      revalidatePath('/Users/Projects')
+    const recycledProject = await prisma.recycle.create({
+      data: {
+        projectId: project.projectId,
+        title: project.title,
+        createdAt: project.createdAt,
+        ans1: project.ans1,
+        file1: project.file1,
+        ans2: project.ans2,
+        file2: project.file2,
+        ans3: project.ans3,
+        file3: project.file3,
+        ans4: project.ans4,
+        file4: project.file4,
+        school: project.school,
+        userId: project.userId,      },
+    });
+
+    if(recycledProject){
+
+      const deletedProject = await prisma.project.delete({
+        where: {
+          projectId: parseInt(projectId),
+        },
+      });
+    }
+
+  
+
+    revalidatePath('/Users/Projects');
+    revalidatePath('/Users/Dashboard');
    
 
   }catch(error){

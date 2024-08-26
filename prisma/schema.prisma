@@ -23,6 +23,7 @@ model User {
   updatedAt          DateTime  @default(now())
   school             School?
   projects           Project[]
+  recycle           Recycle[]
   drafts             Draft[]
 }
 
@@ -119,37 +120,21 @@ model Draft {
 
 }
 
-// Potential databas model change
-
-// model Project {
-//   projectId       Int             @id @default(autoincrement())
-//   title           String
-//   createdAt       DateTime        @default(now())
-//   ans1            Answer
-//   ans2            Answer
-//   ans3            Answer
-//   ans4            Answer
-//   school          School
-//   status          ProjectStatus   @default(PENDING)
-//   userId          Int
-//   user            User            @relation(fields: [userId], references: [id])
-//   updatedBy       String?
-//   moderatorName   String?
-//   comment         String?
-//   moderatorComment String?
-//   referredTo      Reference[]
-// }
-
-// model Answer {
-//   id            Int       @id @default(autoincrement())
-//   content       String
-//   attachments   Attachment[]  // New field for attachments
-// }
-
-// model Attachment {
-//   id            Int        @id @default(autoincrement())
-//   answerId      Int
-//   answer        Answer     @relation(fields: [answerId], references: [id])
-//   fileUrl       String     // This could be the URL where the file is stored
-//   createdAt     DateTime   @default(now())
-// }
+model Recycle {
+  projectId  Int             @unique
+  title      String
+  created  DateTime        @default(now())
+  createdAt  DateTime       
+  ans1       String
+  file1     String?
+  ans2       String
+  file2     String?
+  ans3       String
+  file3     String?
+  ans4       String
+  file4     String?
+  school     School
+  status     ProjectStatus   @default(PENDING)
+  userId     Int
+  user       User            @relation(fields: [userId], references: [id])
+}
