@@ -93,14 +93,14 @@ export default function Refer({ projectId, userName,userId }: { projectId: strin
       ></textarea>
       <div className="w-full justify-around flex mt-2">
         <button
-          className={clsx(`bg-orange-300 p-3 rounded-md`, visible && `hidden`)}
+          className={clsx(`bg-sky-500 p-3 rounded-md`, visible && `hidden`)}
           onClick={toggleVisibility}
           disabled={disabled}
         >
           External Moderator
         </button>
         <button
-          className={clsx(`p-3 bg-green-500 rounded-md`, visible && `hidden`)}
+          className={clsx(`p-3 bg-sky-300 rounded-md`, visible && `hidden`)}
           onClick={() => handleSubmit('ACCEPTED')}
           disabled={disabled}
         >
@@ -127,7 +127,7 @@ export default function Refer({ projectId, userName,userId }: { projectId: strin
 
         <div className="w-full flex justify-end mt-3">
           <button
-            className="bg-orange-300 p-3 rounded-md"
+            className="outline-sky-500 p-3 rounded-md"
             name="status"
             disabled={disabled}
             onClick={() => handleSubmit('REFERRED')}
