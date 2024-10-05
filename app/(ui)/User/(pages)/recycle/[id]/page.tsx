@@ -1,7 +1,7 @@
 'use server'
 import React from 'react';
 import { getServerSession } from 'next-auth';
-import {  fetchSingleProject,fetchSingleRecycle } from '@/app/lib/actions';
+import {  fetchSingleRecycle } from '@/app/lib/actions';
 import NotFound from './not-found';
 import { redirect } from 'next/navigation';
 import RecycleView from '../../../Component/RecycleView';
