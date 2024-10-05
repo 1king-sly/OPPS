@@ -222,6 +222,8 @@ export default function AuthForm() {
            disabled={disabled}
            value={formData.email}
            onChange={handleChange}
+            pattern="^[a-zA-Z0-9._%+-]+@mmust\.ac\.ke$"
+           
          />
    <div className='relative'>
            <Input

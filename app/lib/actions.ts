@@ -2104,6 +2104,3 @@ export const createPreuser = async (email:string ) => {
     console.error('Error Creating User', error);
   } 
 };
-
-
-
