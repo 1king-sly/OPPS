@@ -93,6 +93,86 @@ export const addProject = async (formData: any) => {
   }
 };
 
+export const fetchTexts = async (user2Id: number) => {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    throw new Error('Session missing');
+  }
+
+  const user1Id = session.id;
+
+  try {
+    const chats = await prisma.message.findMany({
+      where: {
+        OR: [
+          {
+            senderId: parseInt(user1Id),
+            receiverId: user2Id,
+          },
+          {
+            senderId: user2Id,
+            receiverId: parseInt(user1Id),
+          },
+        ],
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+      select: {
+        content: true,
+        senderId: true,
+        receiverId: true,
+        createdAt: true,
+      },
+    });
+
+    if (chats.length === 0) {
+      console.log('No chats found between these users.');
+      return []; 
+    }
+
+    return chats; 
+  } catch (error: any) {
+    console.error('Error: ', error);
+    throw new Error('Error fetching messages'); 
+  }
+};
+export const sendText = async (formData:FormData) =>{
+  const session = await getServerSession(authOptions)
+
+  
+
+  if(!session){
+    throw new Error ('Session missing')
+  }
+
+  try{
+
+    const senderId = session.id
+    const receiverId = formData.get('receiverId') as unknown as string
+    const text = formData.get('text') as unknown as string
+
+    const newText = await prisma.message.create({
+      data:{
+        senderId:parseInt(senderId),
+        receiverId:parseInt(receiverId),
+        content:text,
+      }
+    })
+
+    return newText
+
+  }catch(error:any){
+    console.error('Error: ',error)
+    throw new Error('Error sending message'); 
+  }
+
+
+
+
+}
+
 export const convertDraftToProject = async (formData: any) => {
 
   try {
