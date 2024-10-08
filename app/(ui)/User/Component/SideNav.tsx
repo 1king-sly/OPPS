@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { HomeIcon, FolderIcon, UserIcon, ArrowRightEndOnRectangleIcon, PlusCircleIcon,ClipboardDocumentListIcon,TrashIcon } from '@heroicons/react/24/outline';
 import { signOut } from 'next-auth/react'; 
 import clsx from 'clsx';
+import { logOut } from '@/app/lib/actions';
 
 export default function SideNav() {
   const pathName = usePathname();
@@ -17,6 +18,19 @@ export default function SideNav() {
     { name: 'Profile', href: '/User/Profile', icon: UserIcon },
     { name: 'Logout', href: '#', icon: ArrowRightEndOnRectangleIcon },
   ];
+
+   const logUserOut = async () => {
+    try {
+      await logOut();
+      signOut();
+
+     
+    } catch (error: any) {
+      console.error('Failed to log out: ', error);
+    }
+  };
+  
+    
 
   return (
     <div className='flex flex-col py-4 gap-3 fixed'>
@@ -32,7 +46,7 @@ export default function SideNav() {
                 'bg-sky-100 text-blue-600': pathName === link.href,
               })}
               key={link.name}
-              onClick={() => signOut()} 
+              onClick={() => logUserOut()} 
             >
               <LinkIcon className='w-6 max-[425px]:w-4'></LinkIcon>
               <p className='hidden lg:block text-xs'>{link.name} </p>

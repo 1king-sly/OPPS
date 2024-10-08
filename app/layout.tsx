@@ -36,7 +36,7 @@ export default function RootLayout({
               <div
                 className={clsx(
                   `w-full h-full flex flex-1 flex-row`,
-                  pathname !== "/" && "max-h-[90vh]"
+                  pathname !== "/"  && pathname !== '/Admin/messages' && "max-h-[90vh]"
                 )}>
                 <div className="h-full overflow-y-auto w-full bg-gray-200 overflow-x-clip">
                   {children}

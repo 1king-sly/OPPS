@@ -5,6 +5,8 @@ import { deleteSingleProject, fetchUser, fetchUserDashboardProjects } from '@/ap
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { CheckCircleIcon, ClockIcon, ExclamationTriangleIcon,TrashIcon,EyeIcon } from '@heroicons/react/24/outline';
+import { authOptions } from "@/utils/authUptions";
+
 
 
 
@@ -13,6 +15,8 @@ export default async function Tables() {
   if(!session){
     redirect('/')
   }
+
+ 
   const email = session.user.email
 
 

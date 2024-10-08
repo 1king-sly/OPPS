@@ -17,6 +17,8 @@ type User = {
   updatedAt:Date;
   school:School | null;
   status:UserStatus;
+  isOnline:boolean;
+  lastActiveAt:Date;
 
 };
 type SessionStrategyType = 'jwt';
@@ -52,6 +54,8 @@ export const authOptions = {
             email: true,
             school:true,
             status:true,
+            isOnline:true,
+            lastActiveAt:true,
           },
         });
       
@@ -63,6 +67,11 @@ export const authOptions = {
          
         if (!isCorrectPassword) {
           throw new Error('Password Invalid');
+        }else{
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { isOnline: true },
+          });
         }
       
        
@@ -79,6 +88,8 @@ export const authOptions = {
           hashedPassword: user.hashedPassword,
           school:user.school,
           status:user.status,
+          isOnline:user.isOnline,
+          lastActiveAt:user.lastActiveAt,
 
           
           
@@ -103,6 +114,8 @@ export const authOptions = {
         updatedAt:user.updatedAt,
         school:user.school,
         status:user.status,
+        isOnline:user.isOnline,
+        lastActiveAt:user.lastActiveAt,
 
       }
     }
@@ -129,6 +142,8 @@ export const authOptions = {
       updatedAt:token.updatedAt,
       school:token.school,
       status:token.status,
+      isOnline:token.isOnline,
+      lastActiveAt:token.lastActiveAt,
 
 
     }
