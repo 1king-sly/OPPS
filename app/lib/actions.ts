@@ -12,6 +12,29 @@ const cron = require('node-cron');
 const nodemailer = require('nodemailer');
 
 
+export const logOut = async()=>{
+  const user = await getServerSession(authOptions)
+
+  try{
+
+    await prisma.user.update({
+      where:{
+        id:parseInt(user.id)
+      },
+      data:{
+        isOnline:false
+      }
+    })
+
+    
+
+  }catch(error:any){
+    console.error('Failed to logOut: ',error)
+
+  }
+
+}
+
 export const addProject = async (formData: any) => {
 
 

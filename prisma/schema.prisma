@@ -21,6 +21,8 @@ model User {
   status             UserStatus @default(ACTIVE)
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @default(now())
+  isOnline           Boolean   @default(false)
+  lastActiveAt       DateTime  @default(now())
   school             School?
   projects           Project[]
   recycle           Recycle[]
@@ -150,5 +152,6 @@ model Message {
   receiverId Int
   receiver   User     @relation("ReceiverMessages", fields: [receiverId], references: [id])
   content    String
+  isRead     Boolean  @default(false)
   createdAt  DateTime @default(now())
 }
