@@ -6,12 +6,12 @@ export default function ChatArea() {
   return (
     <div className="flex flex-col h-full w-full">
       {/* Chat Header */}
-      <header className="bg-white p-4 text-gray-700">
+      <header className=" p-4 text-gray-700 shadow-md">
         <h1 className="text-2xl font-semibold">Alice</h1>
       </header>
 
       {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto p-4 py-16 pt-2 ">
+      <div className="flex-1 overflow-y-auto p-4 py-16 pt-2 cursor-default ">
         {/* Incoming Message */}
         <div className="flex mb-4 cursor-pointer">
           <div className="w-9 h-9 rounded-full flex items-center justify-center mr-2">

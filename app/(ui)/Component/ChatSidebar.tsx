@@ -5,7 +5,7 @@ import profile from '@/public/images/profile.png'
 
 export default function ChatSidebar() {
   return (
-    <div className="w-full bg-white border-r border-gray-300">
+    <div className="w-full  border-r border-gray-300">
           {/* <!-- Sidebar Header --> */}
           <header className="p-4 border-b  border-l border-gray-300 flex justify-between items-center bg-sky-500 text-white">
             <h1 className="text-2xl font-semibold">Chat Web</h1>

@@ -13,7 +13,7 @@ export default function AdminChat() {
           <ChatSidebar />
         </div>
 
-        <div className="flex flex-1 bg-sky-300">
+        <div className="flex flex-1 ">
           <ChatArea />
         </div>
       </div>
