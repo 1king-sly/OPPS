@@ -1,9 +1,26 @@
 
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image'
 import profile from '@/public/images/profile.png'
+import { fetchContacts } from '@/app/lib/actions'
 
-export default function ChatSidebar() {
+export default function ChatSidebar({ setSelectedContact }:{setSelectedContact:any}) {
+
+   const [contacts, setContacts] = useState<any[]>([]); 
+  const [loading, setLoading] = useState(true); 
+  useEffect(() => {
+    const getContacts = async () => {
+      const sortedContacts = await fetchContacts();
+      setContacts(sortedContacts || []); 
+      setLoading(false); 
+    };
+
+    getContacts(); 
+  }, []);
+    const handleContactClick = (contact:any) => {
+    setSelectedContact(contact);
+  };
   return (
     <div className="w-full  border-r border-gray-300">
           {/* <!-- Sidebar Header --> */}
@@ -21,145 +38,43 @@ export default function ChatSidebar() {
                 <ul className="py-2 px-3">
                   <li><a href="#" className="block px-4 py-2 text-gray-800 hover:text-gray-400">Option 1</a></li>
                   <li><a href="#" className="block px-4 py-2 text-gray-800 hover:text-gray-400">Option 2</a></li>
-                  {/* <!-- Add more menu options here --> */}
+                 
                 </ul>
               </div>
             </div>
           </header>
         
           {/* <!-- Contact List --> */}
+
+         
           <div className="overflow-y-auto h-screen p-3 mb-9 pb-20">
-            <div className="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md">
+         {loading ? (
+          <p>Loading contacts...</p> 
+        ) : (
+          contacts.map((contact) => (
+            <div
+              className="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md"
+              key={contact.id}
+              onClick={() => handleContactClick(contact)}
+            >
               <div className="w-12 h-12 bg-gray-300 rounded-full mr-3">
-                <Image 
-                src={profile}
-                alt="User Avatar" className="w-12 h-12 rounded-full"
-                width ={100}
-                height={100}
-                ></Image>
+                <Image
+                  src={profile}
+                  alt="User Avatar"
+                  className="w-12 h-12 rounded-full"
+                  width={100}
+                  height={100}
+                />
               </div>
               <div className="flex-1">
-                <h2 className="text-lg font-semibold">Alice</h2>
-                <p className="text-gray-600">Hoorayy!!</p>
+                <h2 className="text-lg font-semibold">{contact.firstName}</h2>
+                <p className="text-gray-600">{contact.sentMessages||contact.receivedMessages || 'Start conversation'}</p>
               </div>
             </div>
+          ))
+        )}
             
-            <div className="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md">
-              <div className="w-12 h-12 bg-gray-300 rounded-full mr-3">
-                <Image src={profile}
-                alt="User Avatar" className="w-12 h-12 rounded-full"
-                width ={100}
-                height={100}></Image>
-              </div>
-              <div className="flex-1">
-                <h2 className="text-lg font-semibold">Martin</h2>
-                <p className="text-gray-600">That pizza place was amazing! We should go again sometime. 🍕</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md">
-              <div className="w-12 h-12 bg-gray-300 rounded-full mr-3">
-                <Image src={profile}
-                alt="User Avatar" className="w-12 h-12 rounded-full"
-                width ={100}
-                height={100}></Image>
-              </div>
-              <div className="flex-1">
-                <h2 className="text-lg font-semibold">Charlie</h2>
-                <p className="text-gray-600">Hey, do you have any recommendations for a good movie to watch?</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md">
-              <div className="w-12 h-12 bg-gray-300 rounded-full mr-3">
-                <Image src={profile}
-                 alt="User Avatar" className="w-12 h-12 rounded-full"
-                width ={100}
-                height={100}></Image>
-              </div>
-              <div className="flex-1">
-                <h2 className="text-lg font-semibold">David</h2>
-                <p className="text-gray-600">I just finished reading a great book! It was so captivating.</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md">
-              <div className="w-12 h-12 bg-gray-300 rounded-full mr-3">
-                <Image src={profile}
-                alt="User Avatar" className="w-12 h-12 rounded-full"
-                width ={100}
-                height={100}></Image>
-              </div>
-              <div className="flex-1">
-                <h2 className="text-lg font-semibold">Ella</h2>
-                <p className="text-gray-600"> the plan for this weekend? Anything fun?</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md">
-              <div className="w-12 h-12 bg-gray-300 rounded-full mr-3">
-                <Image src={profile}
-                alt="User Avatar" className="w-12 h-12 rounded-full"
-                width ={100}
-                height={100}></Image>
-              </div>
-              <div className="flex-1">
-                <h2 className="text-lg font-semibold">Fiona</h2>
-                <p className="text-gray-600">I heard  a new exhibit at the art museum. Interested?</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md">
-              <div className="w-12 h-12 bg-gray-300 rounded-full mr-3">
-                <Image src={profile}
-                alt="User Avatar" className="w-12 h-12 rounded-full"
-                width ={100}
-                height={100}></Image>
-              </div>
-              <div className="flex-1">
-                <h2 className="text-lg font-semibold">George</h2>
-                <p className="text-gray-600">I tried that new cafe downtown. The coffee was fantastic!</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md">
-              <div className="w-12 h-12 bg-gray-300 rounded-full mr-3">
-                <Image src={profile}
-                alt="User Avatar" className="w-12 h-12 rounded-full"
-                width ={100}
-                height={100}></Image>
-              </div>
-              <div className="flex-1">
-                <h2 className="text-lg font-semibold">Hannah</h2>
-                <p className="text-gray-600"> planning a hiking trip next month. Want to join?</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md">
-              <div className="w-12 h-12 bg-gray-300 rounded-full mr-3">
-                <Image src={profile}
-                alt="User Avatar" className="w-12 h-12 rounded-full"
-                width ={100}
-                height={100}></Image>
-              </div>
-              <div className="flex-1">
-                <h2 className="text-lg font-semibold">Ian</h2>
-                <p className="text-gray-600"> catch up soon.  been too long!</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md">
-              <div className="w-12 h-12 bg-gray-300 rounded-full mr-3">
-                <Image src={profile}
-                alt="User Avatar" className="w-12 h-12 rounded-full"
-                width ={100}
-                height={100}></Image>
-              </div>
-              <div className="flex-1">
-                <h2 className="text-lg font-semibold">Jack</h2>
-                <p className="text-gray-600">Remember that hilarious joke you told me? I  stop laughing!</p>
-              </div>
-            </div>
+          
             
             
           </div>

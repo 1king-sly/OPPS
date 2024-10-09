@@ -35,6 +35,81 @@ export const logOut = async()=>{
 
 }
 
+export const fetchContacts = async () => {
+  const user = await getServerSession(authOptions);
+
+  if (!user) {
+    return null;
+  }
+
+  if (user.userType === 'ADMIN') {
+    const messageCount = await prisma.message.count({
+      where: {
+        OR: [
+          { senderId: parseInt(user.id) },
+          { receiverId:parseInt( user.id) },
+        ],
+      },
+    });
+
+    if (messageCount === 0) {
+      return await prisma.user.findMany({
+        where: {
+          id: {
+            not:parseInt( user.id), 
+          },
+        },
+        orderBy:{
+          lastActiveAt:'desc'
+        }
+      });
+    }
+    const contacts = await prisma.user.findMany({
+      where: {
+        OR: [
+          {
+            sentMessages: {
+              some: { receiverId: parseInt( user.id) },
+            },
+          },
+          {
+            receivedMessages: {
+              some: { senderId: parseInt( user.id) },
+            },
+          },
+        ],
+      },
+      include: {
+        sentMessages: {
+          orderBy: {
+            createdAt: 'desc', 
+          },
+          take: 1, 
+        },
+        receivedMessages: {
+          orderBy: {
+            createdAt: 'desc', 
+          },
+          take: 1, 
+        },
+      },
+    });
+
+    
+    const sortedContacts = contacts.sort((a, b) => {
+      const latestA = a.sentMessages[0]?.createdAt || a.receivedMessages[0]?.createdAt;
+      const latestB = b.sentMessages[0]?.createdAt || b.receivedMessages[0]?.createdAt;
+
+      return new Date(latestB).getTime() - new Date(latestA).getTime(); 
+    });
+
+    return sortedContacts;
+  }
+
+  return [];
+};
+
+
 export const addProject = async (formData: any) => {
 
 
@@ -154,27 +229,23 @@ export const fetchTexts = async (user2Id: number) => {
       console.log('No chats found between these users.');
       return []; 
     }
-
+    console.log(chats)
     return chats; 
   } catch (error: any) {
     console.error('Error: ', error);
     throw new Error('Error fetching messages'); 
   }
 };
-export const sendText = async (formData:FormData) =>{
-  const session = await getServerSession(authOptions)
-
+export const sendText = async (formData:any) =>{
   
-
-  if(!session){
-    throw new Error ('Session missing')
-  }
+  
 
   try{
 
-    const senderId = session.id
-    const receiverId = formData.get('receiverId') as unknown as string
-    const text = formData.get('text') as unknown as string
+    // const senderId = session.id
+    const receiverId = formData.receiverId as unknown as string
+    const text = formData.text as unknown as string
+    const senderId = formData.senderId as unknown as string
 
     const newText = await prisma.message.create({
       data:{
@@ -183,6 +254,8 @@ export const sendText = async (formData:FormData) =>{
         content:text,
       }
     })
+
+    revalidatePath('/Admin/messages')
 
     return newText
 
