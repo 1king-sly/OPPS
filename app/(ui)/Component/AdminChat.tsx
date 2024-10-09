@@ -5,7 +5,8 @@ import profile from "@/public/images/profile.png";
 import ChatSidebar from "./ChatSidebar";
 import ChatArea from "./ChatArea";
 
-export default function AdminChat() {
+export default function AdminChat({userId}:{userId:any}) {
+
   const [selectedContact, setSelectedContact] = useState(null);
 
   return (
@@ -17,7 +18,7 @@ export default function AdminChat() {
 
         </div>
         <div className="flex flex-1 ">
-        <ChatArea selectedContact={selectedContact} /> 
+        <ChatArea selectedContact={selectedContact} userId={userId} /> 
          </div>
       </div>
     </>

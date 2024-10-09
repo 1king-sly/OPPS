@@ -229,27 +229,23 @@ export const fetchTexts = async (user2Id: number) => {
       console.log('No chats found between these users.');
       return []; 
     }
-
+    console.log(chats)
     return chats; 
   } catch (error: any) {
     console.error('Error: ', error);
     throw new Error('Error fetching messages'); 
   }
 };
-export const sendText = async (formData:FormData) =>{
-  const session = await getServerSession(authOptions)
-
+export const sendText = async (formData:any) =>{
   
-
-  if(!session){
-    throw new Error ('Session missing')
-  }
+  
 
   try{
 
-    const senderId = session.id
-    const receiverId = formData.get('receiverId') as unknown as string
-    const text = formData.get('text') as unknown as string
+    // const senderId = session.id
+    const receiverId = formData.receiverId as unknown as string
+    const text = formData.text as unknown as string
+    const senderId = formData.senderId as unknown as string
 
     const newText = await prisma.message.create({
       data:{
@@ -258,6 +254,8 @@ export const sendText = async (formData:FormData) =>{
         content:text,
       }
     })
+
+    revalidatePath('/Admin/messages')
 
     return newText
 
