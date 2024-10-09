@@ -2,12 +2,12 @@ import React from 'react';
 import Image from 'next/image';
 import profile from '@/public/images/profile.png';
 
-export default function ChatArea() {
+export default function ChatArea({ selectedContact }:{selectedContact:any}) {
   return (
     <div className="flex flex-col h-full w-full">
       {/* Chat Header */}
       <header className=" p-4 text-gray-700 shadow-md">
-        <h1 className="text-2xl font-semibold">Alice</h1>
+        <h1 className="text-2xl font-semibold">{selectedContact ? selectedContact.firstName : 'Select a contact'}</h1>
       </header>
 
       {/* Chat Messages */}
