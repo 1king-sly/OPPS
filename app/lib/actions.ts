@@ -218,6 +218,7 @@ export const fetchTexts = async (user2Id: number) => {
         createdAt: 'asc',
       },
       select: {
+        id:true,
         content: true,
         senderId: true,
         receiverId: true,
@@ -229,7 +230,6 @@ export const fetchTexts = async (user2Id: number) => {
       console.log('No chats found between these users.');
       return []; 
     }
-    console.log(chats)
     return chats; 
   } catch (error: any) {
     console.error('Error: ', error);
@@ -255,7 +255,9 @@ export const sendText = async (formData:any) =>{
       }
     })
 
-    revalidatePath('/Admin/messages')
+    if(newText){
+      fetchTexts(parseInt(receiverId))
+    }
 
     return newText
 
