@@ -2,26 +2,24 @@
 import React, { Suspense, useEffect, useState, useCallback, useRef } from "react";
 import Image from "next/image";
 import profile from "@/public/images/profile.png";
-import { sendText } from "@/app/lib/actions";
-import EmptyChatContainer from "./EmptyChatContainer";
+import { sendUserText } from "@/app/lib/actions";
+import EmptyChatContainer from "../../Component/EmptyChatContainer";
 
 // Define a Message type
 interface Message {
+  receiverId: string;
   id: string;
   senderId: string;
   content: string;
 }
 
-interface Contact {
-  id: string;
-  firstName: string;
-}
+
 
 export default function ChatArea({
-  selectedContact,
+ 
   userId,
 }: {
-  selectedContact: Contact | null;
+ 
   userId: string;
 }) {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -33,10 +31,11 @@ export default function ChatArea({
 
   const [loading, setLoading] = useState(false);
 
-  const messagesContainerRef = useRef<HTMLDivElement | null>(null); // Ref for the messages container
+  const messagesContainerRef = useRef<HTMLDivElement | null>(null); 
 
+  
   const fetchTexts = useCallback(async () => {
-    const response = await fetch(`/api/fetchTexts?receiverId=${formData.receiverId}`, {
+    const response = await fetch(`/api/fetchUserTexts`, {
       method: 'GET',
     });
     if (response.status !== 200) {
@@ -44,22 +43,20 @@ export default function ChatArea({
     }
     const data = await response.json();
     setMessages(data || []);
-  }, [formData.receiverId]);
+  }, []);
+
 
   useEffect(() => {
-    setFormData((prevData) => ({
-      ...prevData,
-      receiverId: selectedContact?.id || "",
-    }));
+
     fetchTexts();
-  }, [fetchTexts, selectedContact]);
 
-  useEffect(() => {
     // Ensure the scrollbar is always at the bottom when new messages arrive
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [fetchTexts, messages]);
+
+  
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -69,7 +66,7 @@ export default function ChatArea({
     }
     event.preventDefault();
     try {
-      const create = await sendText(formData);
+      const create = await sendUserText(formData);
       if (create) {
         formData.text = '';
         setLoading(false);
@@ -100,8 +97,8 @@ export default function ChatArea({
     <div className="flex flex-col h-full w-full">
       {/* Chat Header */}
       <header className="p-4 text-gray-700 shadow-md">
-        <h1 className="text-2xl font-semibold">
-          {selectedContact ? selectedContact.firstName : "Select a contact"}
+        <h1 className="text-2xl font-semibold text-sky-500">
+           Kingsly Assistant
         </h1>
       </header>
 
@@ -116,7 +113,7 @@ export default function ChatArea({
               {messages.map((message) => {
                 return (
                   <div className="flex mb-4 cursor-pointer" key={message.id}>
-                    {message.senderId ===formData.receiverId ? (
+                    {message.senderId == userId ? (
                       <>
                         {/* Incoming Message */}
                         <div className="flex mb-4 cursor-pointer">

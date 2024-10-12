@@ -8,18 +8,17 @@ import { fetchContacts } from '@/app/lib/actions'
 export default function ChatSidebar({ setSelectedContact }:{setSelectedContact:any}) {
 
    const [contacts, setContacts] = useState<any[]>([]); 
-  const [loading, setLoading] = useState(true); 
   useEffect(() => {
     const getContacts = async () => {
       const sortedContacts = await fetchContacts();
       setContacts(sortedContacts || []); 
-      setLoading(false); 
     };
-
     getContacts(); 
-  }, []);
+  }, [contacts]);
+
     const handleContactClick = (contact:any) => {
     setSelectedContact(contact);
+   
   };
   return (
     <div className="w-full  border-r border-gray-300">
@@ -48,10 +47,9 @@ export default function ChatSidebar({ setSelectedContact }:{setSelectedContact:a
 
          
           <div className="overflow-y-auto h-screen p-3 mb-9 pb-20">
-         {loading ? (
-          <p>Loading contacts...</p> 
-        ) : (
-          contacts.map((contact) => (
+       
+          {contacts.map((contact) => (
+
             <div
               className="flex items-center mb-4 cursor-pointer hover:bg-gray-100 p-2 rounded-md"
               key={contact.id}
@@ -68,14 +66,12 @@ export default function ChatSidebar({ setSelectedContact }:{setSelectedContact:a
               </div>
               <div className="flex-1">
                 <h2 className="text-lg font-semibold">{contact.firstName}</h2>
-                <p className="text-gray-600">{contact.sentMessages||contact.receivedMessages || 'Start conversation'}</p>
+                <p className="text-gray-600">{contact.
+      sentMessages[0]?.content||contact.
+      receivedMessages[0]?.content || 'Start conversation'}</p>
               </div>
             </div>
-          ))
-        )}
-            
-          
-            
+          ))} 
             
           </div>
         </div>

@@ -42,7 +42,7 @@ export const fetchContacts = async () => {
     return null;
   }
 
-  if (user.userType === 'ADMIN') {
+  if (user.userType === 'ADMIN' || user.userType === 'SUPERADMIN') {
     const messageCount = await prisma.message.count({
       where: {
         OR: [
@@ -102,6 +102,7 @@ export const fetchContacts = async () => {
 
       return new Date(latestB).getTime() - new Date(latestA).getTime(); 
     });
+
 
     return sortedContacts;
   }
@@ -236,6 +237,49 @@ export const fetchTexts = async (user2Id: number) => {
     throw new Error('Error fetching messages'); 
   }
 };
+export const sendUserText = async (formData:any) =>{
+  
+  
+
+  try{
+
+   
+    const text = formData.text as unknown as string
+    const senderId = formData.senderId as unknown as string
+
+   
+
+      const receivers = await prisma.user.findMany({
+        where:{
+          userType:'SUPERADMIN'
+        }
+      })
+
+      {receivers.map(async(receiver)=>{
+        console.log(receiver?.id)
+        const newText = await prisma.message.create({
+          data:{
+            senderId:parseInt(senderId),
+            receiverId:receiver?.id,
+            content:text,
+          }
+        })
+
+        return newText
+      })}
+
+      return receivers
+     
+
+  }catch(error:any){
+    console.error('Error: ',error)
+    throw new Error('Error sending message'); 
+  }
+
+
+
+
+}
 export const sendText = async (formData:any) =>{
   
   
@@ -247,6 +291,8 @@ export const sendText = async (formData:any) =>{
     const text = formData.text as unknown as string
     const senderId = formData.senderId as unknown as string
 
+   
+
     const newText = await prisma.message.create({
       data:{
         senderId:parseInt(senderId),
@@ -255,9 +301,7 @@ export const sendText = async (formData:any) =>{
       }
     })
 
-    if(newText){
-      fetchTexts(parseInt(receiverId))
-    }
+   
 
     return newText
 

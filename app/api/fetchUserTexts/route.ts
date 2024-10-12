@@ -6,20 +6,10 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { NextResponse } from 'next/server';
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
 
-    const { searchParams } = new URL(request.url);
-    const receiverId = searchParams.get('receiverId');
-
-    if(!receiverId){
-        return new NextResponse('Missing info', { status: 400 });
-    }
-
-
     const session = await getServerSession(authOptions);
-
-
 
 
     if (!session) {
@@ -32,12 +22,12 @@ export async function GET(request: Request) {
       where: {
         OR: [
           {
-            senderId: parseInt(receiverId),
+            
             receiverId: user1Id,
           },
           {
             senderId: user1Id,
-            receiverId: parseInt(receiverId),
+           
           },
         ],
       },
@@ -58,13 +48,6 @@ export async function GET(request: Request) {
       return []; 
     }
     return NextResponse.json(chats); 
-
-   
-
-     
-
-
-
 
 
   } catch (error: any) {
